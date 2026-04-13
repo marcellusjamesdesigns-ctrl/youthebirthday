@@ -4,6 +4,22 @@ import { birthdaySessions } from "@/lib/db/schema";
 import { BirthdayInputSchema } from "@/lib/validators/birthday-input";
 import { createSessionId } from "@/lib/utils/id";
 
+async function geocodeCity(city: string): Promise<{ lat: string; lng: string } | null> {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`,
+      { headers: { "User-Agent": "YouTheBirthday/1.0" } }
+    );
+    const data = await res.json();
+    if (data.length > 0) {
+      return { lat: data[0].lat, lng: data[0].lon };
+    }
+  } catch {
+    // Geocoding is best-effort — don't block session creation
+  }
+  return null;
+}
+
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -17,6 +33,17 @@ export async function POST(request: Request) {
 
   const input = parsed.data;
   const sessionId = createSessionId();
+
+  // Geocode birth city for Rising sign calculation if not already provided
+  let birthLat = input.birthLat || null;
+  let birthLng = input.birthLng || null;
+  if (input.birthCity && !birthLat) {
+    const coords = await geocodeCity(input.birthCity);
+    if (coords) {
+      birthLat = coords.lat;
+      birthLng = coords.lng;
+    }
+  }
 
   const db = getDb();
   await db.insert(birthdaySessions).values({
@@ -34,8 +61,8 @@ export async function POST(request: Request) {
     mode: input.mode,
     birthTime: input.birthTime || null,
     birthCity: input.birthCity || null,
-    birthLat: input.birthLat || null,
-    birthLng: input.birthLng || null,
+    birthLat,
+    birthLng,
     budget: input.budget || null,
     groupSize: input.groupSize || null,
     foodVibe: input.foodVibe || null,
