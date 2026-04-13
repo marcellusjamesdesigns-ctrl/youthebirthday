@@ -165,10 +165,7 @@ export function DashboardShell({
             </section>
           )}
 
-          {/* ─── Ad: after captions ───────────────────────────────────── */}
-          {sections?.captions && sections.captions.length > 0 && (
-            <AdUnit slot="3782501964" format="auto" className="my-2" />
-          )}
+          {/* ─── Ad: after captions (moved spacing for editorial flow) ── */}
 
           {/* ─── Celebration Style ─────────────────────────────────────── */}
           {sections?.celebrationStyle && (
@@ -195,6 +192,11 @@ export function DashboardShell({
                 </div>
               </div>
             </section>
+          )}
+
+          {/* ─── Ad: after celebration style (natural content break) ──── */}
+          {sections?.celebrationStyle && (
+            <AdUnit slot="3782501964" format="auto" className="my-10" />
           )}
 
           {/* ─── Destinations: Season Picks ──────────────────────────── */}
@@ -255,7 +257,7 @@ export function DashboardShell({
 
           {/* ─── Ad: between destinations and restaurants ─────────────── */}
           {sections?.destinations && sections.destinations.length > 0 && (
-            <AdUnit slot="7641823095" format="horizontal" className="my-2" />
+            <AdUnit slot="7641823095" format="horizontal" className="my-10" />
           )}
 
           {/* ─── Restaurants & Venues ───────────────────────────────────── */}
