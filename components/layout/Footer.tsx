@@ -10,7 +10,7 @@ export function Footer() {
         {/* Desktop */}
         <div className="hidden sm:grid gap-8 sm:grid-cols-3">
           <div>
-            <p className="font-editorial text-base text-foreground/80">you the birthday</p>
+            <p className="font-editorial text-base text-foreground/80">You the Birthday</p>
             <p className="text-xs text-muted-foreground/60 mt-1.5 leading-relaxed">
               Your personalized birthday experience.
             </p>
@@ -41,7 +41,7 @@ export function Footer() {
         {/* Mobile — compact accordion */}
         <div className="sm:hidden space-y-4">
           <div className="text-center">
-            <p className="font-editorial text-base text-foreground/80">you the birthday</p>
+            <p className="font-editorial text-base text-foreground/80">You the Birthday</p>
           </div>
           <MobileFooterGroup title="Explore">
             <FooterLink href="/birthday-captions">Captions</FooterLink>

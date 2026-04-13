@@ -8,7 +8,7 @@ export function Navbar() {
           href="/"
           className="font-editorial text-lg tracking-tight text-foreground/90 hover:text-foreground transition-colors"
         >
-          you the birthday
+          You the Birthday
         </Link>
         <div className="flex items-center gap-6">
           <Link
