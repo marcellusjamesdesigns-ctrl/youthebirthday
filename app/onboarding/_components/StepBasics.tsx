@@ -111,7 +111,7 @@ export function StepBasics() {
             onChange={(e) => setField("celebrationCity", e.target.value)}
             className="luxury-input w-full px-4 py-3.5 text-base"
           />
-          <p className="text-[11px] text-muted-foreground/40">
+          <p className="text-[11px] text-muted-foreground/60">
             Leave blank if you&apos;re celebrating where you live. We&apos;ll use this for restaurant and activity recs.
           </p>
         </div>

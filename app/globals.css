@@ -58,17 +58,17 @@
 :root {
   --background: #0a0a0b;
   --foreground: #f5f0eb;
-  --card: #141416;
+  --card: #19191c;
   --card-foreground: #f5f0eb;
-  --popover: #141416;
+  --popover: #19191c;
   --popover-foreground: #f5f0eb;
   --primary: #f5f0eb;
   --primary-foreground: #0a0a0b;
-  --secondary: #1e1e22;
+  --secondary: #222228;
   --secondary-foreground: #f5f0eb;
-  --muted: #1e1e22;
-  --muted-foreground: #8a8580;
-  --accent: #1e1e22;
+  --muted: #222228;
+  --muted-foreground: #a8a39d;
+  --accent: #222228;
   --accent-foreground: #f5f0eb;
   --destructive: #e5484d;
   --border: rgba(245, 240, 235, 0.08);
@@ -180,7 +180,7 @@
 /* ─── Luxury Card System ──────────────────────────────────────────────────── */
 
 .luxury-card {
-  background: #161618;
+  background: #1a1a1d;
   border: 1px solid rgba(245, 240, 235, 0.12);
   border-radius: var(--radius);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -285,9 +285,9 @@
 .skeleton-luxury {
   background: linear-gradient(
     90deg,
-    rgba(245, 240, 235, 0.04) 25%,
-    rgba(245, 240, 235, 0.08) 50%,
-    rgba(245, 240, 235, 0.04) 75%
+    rgba(245, 240, 235, 0.06) 25%,
+    rgba(245, 240, 235, 0.11) 50%,
+    rgba(245, 240, 235, 0.06) 75%
   );
   background-size: 200% 100%;
   animation: shimmer-sweep 2s ease-in-out infinite;
@@ -314,7 +314,7 @@
 /* ─── Gen UI: Glassmorphism Card ──────────────────────────────────────────── */
 
 .glass-card {
-  background: rgba(22, 22, 24, 0.6);
+  background: rgba(26, 26, 30, 0.65);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(245, 240, 235, 0.1);
@@ -325,7 +325,7 @@
 .glass-card:hover {
   border-color: rgba(212, 175, 55, 0.25);
   box-shadow: 0 8px 32px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.05) inset;
-  background: rgba(22, 22, 24, 0.8);
+  background: rgba(26, 26, 30, 0.85);
 }
 
 /* ─── Gen UI: Glow CTA Button ─────────────────────────────────────────────── */

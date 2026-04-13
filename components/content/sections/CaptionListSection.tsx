@@ -36,7 +36,7 @@ export function CaptionListSection({
             <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
               {cat.name}
             </p>
-            <span className="text-[10px] text-muted-foreground/30">{cat.captions.length}</span>
+            <span className="text-[10px] text-muted-foreground/50">{cat.captions.length}</span>
           </div>
           <div className="space-y-1.5">
             {cat.captions.map((caption, j) => {

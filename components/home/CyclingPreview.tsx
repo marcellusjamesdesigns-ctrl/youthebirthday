@@ -79,7 +79,7 @@ export function CyclingPreview() {
             {p.tag2}
           </span>
         </div>
-        <p className="text-xs text-muted-foreground/40">{p.name} · {p.age} · {p.city}</p>
+        <p className="text-xs text-muted-foreground/65">{p.name} · {p.age} · {p.city}</p>
       </div>
 
       {/* Color palette */}
@@ -90,7 +90,7 @@ export function CyclingPreview() {
             <div key={i} className="flex-1 transition-all duration-700" style={{ backgroundColor: color }} />
           ))}
         </div>
-        <p className="text-[11px] text-muted-foreground/40">{p.paletteName}</p>
+        <p className="text-[11px] text-muted-foreground/65">{p.paletteName}</p>
       </div>
 
       {/* Caption */}
@@ -106,7 +106,7 @@ export function CyclingPreview() {
         <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/40">Destination match</p>
         <p className="text-sm text-foreground/60">
           {p.destination}{" "}
-          <span className="text-muted-foreground/30">· {p.destTags}</span>
+          <span className="text-muted-foreground/55">· {p.destTags}</span>
         </p>
       </div>
 

@@ -56,7 +56,7 @@ export function BirthdayHero({
         )}
       </div>
 
-      <p className="text-[13px] text-muted-foreground/40 tracking-wide animate-fade-rise stagger-3 relative">
+      <p className="text-[13px] text-muted-foreground/65 tracking-wide animate-fade-rise stagger-3 relative">
         {name} · turning {ageTurning}
       </p>
 

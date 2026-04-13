@@ -95,7 +95,7 @@ export function StepCosmic() {
                   maxLength={8}
                   className="luxury-input w-full px-4 py-3.5 text-base"
                 />
-                <p className="text-[11px] text-muted-foreground/40">
+                <p className="text-[11px] text-muted-foreground/60">
                   12h (10:30 PM) or 24h (22:30) — both work
                 </p>
               </div>
@@ -113,7 +113,7 @@ export function StepCosmic() {
                   onChange={(e) => setField("birthCity", e.target.value)}
                   className="luxury-input w-full px-4 py-3.5 text-base"
                 />
-                <p className="text-[11px] text-muted-foreground/40">
+                <p className="text-[11px] text-muted-foreground/60">
                   Used to calculate your Rising sign
                 </p>
               </div>
@@ -121,7 +121,7 @@ export function StepCosmic() {
 
             {/* Inline validation nudge */}
             {(!birthTime.trim() || !birthCity.trim()) && (
-              <p className="text-[12px] text-center text-muted-foreground/50">
+              <p className="text-[12px] text-center text-muted-foreground/65">
                 Fill in both fields above to unlock your full chart, or switch to Quick Mode.
               </p>
             )}

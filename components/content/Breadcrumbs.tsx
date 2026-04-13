@@ -45,7 +45,7 @@ export function breadcrumbsForHub(category: string): BreadcrumbItem[] {
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex items-center gap-1.5 text-[11px] text-muted-foreground/50">
+      <ol className="flex items-center gap-1.5 text-[11px] text-muted-foreground/65">
         {items.map((item, i) => (
           <li key={item.href + i} className="flex items-center gap-1.5">
             {i > 0 && <span className="text-muted-foreground/25">/</span>}

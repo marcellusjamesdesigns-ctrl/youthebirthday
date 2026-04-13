@@ -28,16 +28,16 @@ export function RelatedContentBlock({ page }: RelatedContentBlockProps) {
               {r.headline}
             </p>
             <div className="flex gap-1.5">
-              <span className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground/40">
+              <span className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground/60">
                 {r.category}
               </span>
               {r.tags.age && (
-                <span className="text-[10px] text-muted-foreground/30">
+                <span className="text-[10px] text-muted-foreground/50">
                   · {r.tags.age}th
                 </span>
               )}
               {r.tags.zodiac && (
-                <span className="text-[10px] text-muted-foreground/30">
+                <span className="text-[10px] text-muted-foreground/50">
                   · {r.tags.zodiac}
                 </span>
               )}

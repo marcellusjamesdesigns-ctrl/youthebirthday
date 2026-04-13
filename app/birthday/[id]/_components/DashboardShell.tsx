@@ -209,7 +209,7 @@ export function DashboardShell({
                   <section className="animate-fade-rise space-y-5">
                     <div>
                       <SectionLabel>Best for Your Birthday Season</SectionLabel>
-                      <p className="text-[12px] text-muted-foreground/50 mt-1.5">
+                      <p className="text-[12px] text-muted-foreground/65 mt-1.5">
                         Picked for your vibe, budget, and the time of year you&apos;re actually celebrating.
                       </p>
                     </div>
@@ -225,7 +225,7 @@ export function DashboardShell({
                   <section className="animate-fade-rise space-y-5">
                     <div>
                       <SectionLabel>Dream Picks for Your Birthday Year</SectionLabel>
-                      <p className="text-[12px] text-muted-foreground/50 mt-1.5">
+                      <p className="text-[12px] text-muted-foreground/65 mt-1.5">
                         These match your energy beautifully, even if they shine best in another season.
                       </p>
                     </div>
@@ -273,7 +273,7 @@ export function DashboardShell({
                         {r.whyItFitsYou}
                       </p>
                     )}
-                    <p className="text-[11px] text-muted-foreground/40">
+                    <p className="text-[11px] text-muted-foreground/60">
                       {r.address}
                     </p>
                   </div>
@@ -560,7 +560,7 @@ function DestinationCard({ dest, index }: { dest: Destination; index: number }) 
     perfect: "text-green-400/70",
     good: "text-champagne/60",
     workable: "text-muted-foreground/50",
-    "off-season": "text-muted-foreground/40",
+    "off-season": "text-muted-foreground/55",
   };
 
   return (

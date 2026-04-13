@@ -114,7 +114,7 @@ export default function Home() {
             <Link href="/onboarding" className="glow-btn">
               Start Your Birthday
             </Link>
-            <p className="text-xs text-muted-foreground/40 tracking-wide">
+            <p className="text-xs text-muted-foreground/60 tracking-wide">
               No account needed. Takes 2 minutes.
             </p>
           </div>
@@ -156,7 +156,7 @@ export default function Home() {
                 <p className="text-[11px] uppercase tracking-[0.2em] text-champagne font-medium">
                   {item.label}
                 </p>
-                <p className="text-[13px] text-foreground/55 leading-relaxed">
+                <p className="text-[13px] text-foreground/75 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -176,7 +176,7 @@ export default function Home() {
             ].map(({ value, label }, i) => (
               <div key={i}>
                 <p className="text-2xl font-editorial text-foreground">{value}</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 mt-1">
                   {label}
                 </p>
               </div>
