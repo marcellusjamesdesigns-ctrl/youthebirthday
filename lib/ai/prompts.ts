@@ -15,6 +15,7 @@ function vibeContext(input: NormalizedInput): string {
   if (input.budget) parts.push(`Budget: ${input.budget}`);
   if (input.groupSize) parts.push(`Group size: ${input.groupSize}`);
   if (input.aestheticPreference) parts.push(`Aesthetic: ${input.aestheticPreference}`);
+  if (input.foodVibe) parts.push(`Food vibe: ${input.foodVibe}`);
   return parts.join("\n");
 }
 
@@ -218,7 +219,9 @@ Generate:
 - outfit: Outfit direction — not a specific product, but a mood/direction. Example: "All black with one gold accent piece" or "Linen and bare feet"
 - playlist: Genre/vibe descriptor for a birthday playlist. Example: "90s R&B meets lo-fi sunset" or "Afrobeats and champagne energy"
 
-Make it feel like a creative director designed their birthday.`,
+Make it feel like a creative director designed their birthday.
+
+${input.foodVibe ? `Their food vibe is "${input.foodVibe}" — let this shape the ritual suggestions, dinner direction, and any food-adjacent recommendations.` : ""}`,
   };
 }
 

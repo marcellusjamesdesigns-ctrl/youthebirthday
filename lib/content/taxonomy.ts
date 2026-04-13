@@ -17,6 +17,46 @@ export const zodiacLabels: Record<string, string> = {
   sagittarius: "Sagittarius", capricorn: "Capricorn", aquarius: "Aquarius", pisces: "Pisces",
 };
 
+export const zodiacRulingPlanets: Record<string, string> = {
+  aries: "Mars", taurus: "Venus", gemini: "Mercury", cancer: "Moon",
+  leo: "Sun", virgo: "Mercury", libra: "Venus", scorpio: "Pluto & Mars",
+  sagittarius: "Jupiter", capricorn: "Saturn", aquarius: "Uranus & Saturn", pisces: "Neptune & Jupiter",
+};
+
+export const zodiacElements: Record<string, string> = {
+  aries: "Fire", taurus: "Earth", gemini: "Air", cancer: "Water",
+  leo: "Fire", virgo: "Earth", libra: "Air", scorpio: "Water",
+  sagittarius: "Fire", capricorn: "Earth", aquarius: "Air", pisces: "Water",
+};
+
+export const zodiacModalities: Record<string, string> = {
+  aries: "Cardinal", taurus: "Fixed", gemini: "Mutable", cancer: "Cardinal",
+  leo: "Fixed", virgo: "Mutable", libra: "Cardinal", scorpio: "Fixed",
+  sagittarius: "Mutable", capricorn: "Cardinal", aquarius: "Fixed", pisces: "Mutable",
+};
+
+export const zodiacCompatible: Record<string, string[]> = {
+  aries:       ["Leo", "Sagittarius", "Gemini", "Aquarius"],
+  taurus:      ["Virgo", "Capricorn", "Cancer", "Pisces"],
+  gemini:      ["Libra", "Aquarius", "Aries", "Leo"],
+  cancer:      ["Scorpio", "Pisces", "Taurus", "Virgo"],
+  leo:         ["Aries", "Sagittarius", "Gemini", "Libra"],
+  virgo:       ["Taurus", "Capricorn", "Cancer", "Scorpio"],
+  libra:       ["Gemini", "Aquarius", "Leo", "Sagittarius"],
+  scorpio:     ["Cancer", "Pisces", "Virgo", "Capricorn"],
+  sagittarius: ["Aries", "Leo", "Libra", "Aquarius"],
+  capricorn:   ["Taurus", "Virgo", "Scorpio", "Pisces"],
+  aquarius:    ["Gemini", "Libra", "Aries", "Sagittarius"],
+  pisces:      ["Cancer", "Scorpio", "Taurus", "Capricorn"],
+};
+
+export const zodiacElementGroups: Record<string, string[]> = {
+  Fire:  ["Aries", "Leo", "Sagittarius"],
+  Earth: ["Taurus", "Virgo", "Capricorn"],
+  Air:   ["Gemini", "Libra", "Aquarius"],
+  Water: ["Cancer", "Scorpio", "Pisces"],
+};
+
 export const zodiacDateRanges: Record<string, string> = {
   aries: "March 21 – April 19", taurus: "April 20 – May 20",
   gemini: "May 21 – June 20", cancer: "June 21 – July 22",

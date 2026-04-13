@@ -1,6 +1,14 @@
 import { registerPage } from "@/lib/content/registry";
 import type { ContentPage } from "@/lib/content/types";
-import { zodiacLabels, zodiacDateRanges } from "@/lib/content/taxonomy";
+import {
+  zodiacLabels,
+  zodiacDateRanges,
+  zodiacRulingPlanets,
+  zodiacElements,
+  zodiacModalities,
+  zodiacCompatible,
+  zodiacElementGroups,
+} from "@/lib/content/taxonomy";
 import type { ZodiacSign } from "@/lib/content/taxonomy";
 
 function articleFor(label: string): string {
@@ -226,6 +234,17 @@ function createZodiacPage(sign: ZodiacSign): ContentPage {
     updatedAt: "2026-04-13",
     sections: [
       { type: "hero", headline: `${label} Birthday Ideas`, subheadline: `${dates}. ${data.thesis}` },
+      {
+        type: "tip-list",
+        heading: `${label} at a Glance`,
+        tips: [
+          { title: "Dates", body: dates },
+          { title: "Ruling Planet", body: zodiacRulingPlanets[sign] },
+          { title: "Element", body: `${zodiacElements[sign]} — ${zodiacElementGroups[zodiacElements[sign]]?.join(", ")}` },
+          { title: "Modality", body: zodiacModalities[sign] },
+          { title: "Most Compatible With", body: zodiacCompatible[sign].join(", ") },
+        ],
+      },
       { type: "paragraph", body: data.intro },
       { type: "paragraph", heading: `How ${article} ${label} Likes to Celebrate`, body: data.birthdayVibe },
       {
