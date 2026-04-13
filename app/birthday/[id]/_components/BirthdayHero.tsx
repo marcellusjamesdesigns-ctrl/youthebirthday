@@ -25,7 +25,7 @@ export function BirthdayHero({
       )}
 
       <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60 animate-fade-rise relative">
-        you the birthday
+        You the Birthday
       </p>
 
       {title ? (

@@ -325,11 +325,11 @@ export function DashboardShell({
                 {sections.activities.map((a) => {
                   const categoryColors: Record<string, string> = {
                     experience: "border-champagne/20 text-champagne/60 bg-champagne/5",
-                    attraction: "border-sky-400/20 text-sky-400/60 bg-sky-400/5",
-                    outdoor: "border-emerald-400/20 text-emerald-400/60 bg-emerald-400/5",
+                    attraction: "border-foreground/20 text-foreground/50",
+                    outdoor: "border-emerald-500/15 text-emerald-500/50 bg-emerald-500/3",
                     nightlife: "border-plum/20 text-plum/60 bg-plum/5",
-                    wellness: "border-rose-400/20 text-rose-400/60 bg-rose-400/5",
-                    culture: "border-amber-400/20 text-amber-400/60 bg-amber-400/5",
+                    wellness: "border-rose-400/15 text-rose-400/50 bg-rose-400/3",
+                    culture: "border-champagne/15 text-champagne/50 bg-champagne/3",
                   };
                   return (
                     <div key={a.name} className="luxury-card p-5 space-y-2.5">
@@ -354,7 +354,7 @@ export function DashboardShell({
                       </p>
                       {a.bookingTip && (
                         <p className="text-[11px] text-champagne/50">
-                          💡 {a.bookingTip}
+                          Tip — {a.bookingTip}
                         </p>
                       )}
                     </div>

@@ -58,7 +58,7 @@ export function Footer() {
 
         <div className="mt-6 pt-4 border-t border-border/10 text-center">
           <p className="text-[10px] text-muted-foreground/25 tracking-wide">
-            &copy; {new Date().getFullYear()} You The Birthday
+            &copy; {new Date().getFullYear()} You the Birthday
           </p>
         </div>
       </div>

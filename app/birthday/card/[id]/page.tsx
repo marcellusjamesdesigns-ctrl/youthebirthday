@@ -62,9 +62,9 @@ export default async function ShareCardPage({ params }: PageProps) {
   const firstDest = destinations?.[0];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-4">
-      {/* Screenshot-friendly card — fixed 420px width for mobile screenshots */}
-      <div className="w-[420px] rounded-2xl border border-white/10 overflow-hidden bg-[#111]">
+    <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
+      {/* Screenshot-friendly card — responsive width for mobile screenshots */}
+      <div className="w-full max-w-[420px] rounded-2xl border border-white/10 overflow-hidden bg-card">
         {/* Color bar */}
         {primaryPalette && (
           <div className="flex h-2">
@@ -79,12 +79,12 @@ export default async function ShareCardPage({ params }: PageProps) {
         )}
 
         <div className="p-8 space-y-6 text-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-white/40">
-            you the birthday
+          <p className="text-xs uppercase tracking-[0.3em] text-white/40">
+            You the Birthday
           </p>
 
           {generation?.birthdayTitle ? (
-            <h1 className="text-2xl font-bold leading-tight">
+            <h1 className="heading-editorial text-2xl leading-tight">
               {generation.birthdayTitle}
             </h1>
           ) : (
@@ -93,7 +93,7 @@ export default async function ShareCardPage({ params }: PageProps) {
 
           <div className="flex justify-center gap-2">
             {generation?.birthdayArchetype && (
-              <span className="text-xs bg-white/10 rounded-full px-3 py-1">
+              <span className="text-xs bg-white/10 rounded-full px-3 py-1 border border-champagne/25">
                 {generation.birthdayArchetype}
               </span>
             )}

@@ -91,7 +91,7 @@ export default function Home() {
           {/* Eyebrow */}
           <div className="space-y-6 animate-fade-rise">
             <p className="text-[11px] uppercase tracking-[0.35em] text-champagne/60 font-medium">
-              You The Birthday
+              You the Birthday
             </p>
 
             {/* Hero headline */}
