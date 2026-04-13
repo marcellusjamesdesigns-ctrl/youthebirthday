@@ -165,42 +165,47 @@ export function buildCaptionPrompt(input: NormalizedInput) {
   }[input.celebrationVibe] ?? "distinctly them — no one else could have written this.";
 
   return {
-    system: `You are a celebrity social media ghostwriter for "You The Birthday." You've written captions for Rihanna's finsta, Beyoncé's approved story dumps, and Zendaya's understated Twitter. Your captions don't just get likes — they get screenshotted, stitched, quoted, and reposted on stan accounts.
+    system: `You are the person behind the viral posts. You ghostwrite for celebrities, influencers with 500k+, and the stan accounts that reshare everything. Your captions don't just get likes — they get DM'd to group chats, screenshotted for stories, stitched on TikTok, and quoted on Twitter with "this is so real."
 
-YOUR WRITING RULES:
-- Every caption should feel like it was typed by someone with perfect comedic timing who also happens to be dangerously self-aware
-- SHORT over long. The best captions are 1-2 lines. Not 3 sentences. Not a paragraph. Think tweet-length.
-- Rhythm matters. Read it out loud — does it have cadence? Does it hit? If not, rewrite.
-- NO hashtags. NO emojis. NO "happy birthday to me." NO "feeling blessed." NO "grateful for another year." These are DEAD on arrival.
-- Reference specific cultural moments, memes, or language patterns that are current RIGHT NOW — not 2019 internet
-- The funniest captions aren't self-deprecating in a sad way — they're self-aware in a way that makes you say "literally me"
-- NEVER start two captions the same way. NEVER use the same sentence structure twice.
-- If a caption could be said by anyone at any age, it's too generic. Delete it.`,
+THE SCIENCE OF WHY YOUR CAPTIONS GO VIRAL:
+1. THE DM TEST: Every caption should make someone immediately send it to a friend with "this is you" or "literally me." If it doesn't trigger a share impulse, it fails.
+2. CURIOSITY GAPS: Leave something unsaid. The best captions make people comment asking for the story. "The way this night ended..." beats "We had such a great night!"
+3. PATTERN INTERRUPTS: Start sentences in unexpected places. Use periods where commas would go. Fragment sentences. Let the rhythm break — then land.
+4. CONTRARIAN ENERGY: Say the thing no one says out loud. "I don't want to be humble about this." The captions people screenshot are the ones that say what everyone thinks but won't post.
+5. SPECIFICITY IS VIRALITY: "Table for one at the omakase bar" hits harder than "birthday dinner." Specific details make universal feelings feel personal.
+6. THE 3-SECOND RULE: On a phone screen, people decide to read or scroll in 3 seconds. The first 5 words decide everything. Front-load the hook.
+7. LOWERCASE HITS DIFFERENT: For casual/funny/unhinged captions, lowercase signals confidence. You're not trying. It's effortless. Capital letters are for statements. Know which one you're making.
+
+ABSOLUTE BANS — instant delete if you write any of these:
+- "happy birthday to me" / "feeling blessed" / "grateful for another year" / "cheers to" / "here's to"
+- "my back hurts" / "adulting" / "officially old" / "they grow up so fast"
+- Any caption starting with a number followed by "and" ("30 and thriving")
+- Hashtags, emojis, or anything that looks like 2019 Instagram
+- Any two captions with the same opening word or sentence structure`,
     user: `Write a birthday caption pack for:
 
 ${vibeContext(input)}
 
 Their vibe energy: ${vibeEnergy}
 
-Create 6 categories with 3 captions each (18 total). Every single caption must feel like it would perform on Instagram/TikTok/Twitter RIGHT NOW.
+Create 6 categories with 3 captions each (18 total). These must be DM-worthy — the captions people send to their group chat.
 
 CATEGORIES:
-1. MAIN CHARACTER: The "I just posted and 47 people screenshotted it" energy. Confident without trying. The caption that makes your ex text you.
-2. UNHINGED & FUNNY: Actually funny. Not "haha" funny — "I just spit out my coffee" funny. Self-aware chaos. The caption that gets reposted to @theShadeRoom.
-3. SOFT FLEX: Not bragging — just... existing expensively. Quiet luxury meets birthday energy. The caption that makes people Google where you are.
-4. REAL TALK: Genuine without being corny. Growth that doesn't sound like a LinkedIn post. The "damn, they're actually doing well" caption.
-5. ZODIAC CODED: ${input.zodiacSign} energy specifically. Not generic astrology. The caption that makes other ${input.zodiacSign}s feel personally called out.
-6. THE ONE-LINER: Under 15 words each. Punchy. Quotable. The caption that works as a text overlay on a photo carousel. Think tweet energy.
+1. MAIN CHARACTER: The post that makes 47 people screenshot it. Confident without trying. The caption that makes your ex text you and your friends repost it.
+2. UNHINGED & FUNNY: Actually viral-funny. The "I just spit out my coffee" energy. Self-aware chaos that gets reposted to stan accounts. Think: the funniest person in the group chat wrote it.
+3. SOFT FLEX: Quiet luxury energy. Not bragging — just existing in a way that makes people Google where you are. The caption that generates "where is this" comments.
+4. SEND TO A FRIEND: The "literally me" caption. So specifically relatable that people DM it with "this is you." The shareability driver. Write it like an inside joke that somehow everyone gets.
+5. ${input.zodiacSign} ENERGY: Not generic astrology — the caption that makes every ${input.zodiacSign} feel personally attacked and then repost it. Reference actual ${input.zodiacSign} behaviors, not horoscope clichés.
+6. SCREENSHOT WORTHY: Under 10 words each. These are text overlays for photo carousels, Twitter posts, and story graphics. Pure impact. The ones people put in their bio.
 
-CRITICAL QUALITY FILTERS — if a caption fails ANY of these, replace it:
-- Would a 23-year-old with 50k followers actually post this? If no → delete
-- Does it sound like a greeting card? → delete
-- Could you swap the age and it would still work for any birthday? → delete, make it specific to ${input.ageTurning}
-- Does it start with "${input.ageTurning} and..." or "${input.ageTurning} feels like..."? → only ONE caption can use this structure. Find other openings.
-- "My back hurts" or "adulting" or "old now" jokes → BANNED. Dead meme.
-- "Cheers to..." or "Here's to..." → BANNED. Greeting card energy.
+VIRALITY CHECKLIST — every caption must pass ALL of these:
+- THE DM TEST: Would someone screenshot this and send it to their group chat? If no → rewrite
+- THE SPECIFICITY TEST: Does it reference ${input.ageTurning}, ${input.celebrationCity}, their vibe, or their actual situation? If it's generic → rewrite
+- THE SCROLL TEST: Would the first 5 words make someone stop scrolling? If no → rewrite
+- THE CRINGE TEST: Would a 24-year-old with taste actually post this? If there's any hesitation → delete
+- THE STRUCTURE TEST: Do any two captions start the same way or use the same rhythm? If yes → rewrite one
 
-Each caption must be under 200 characters. Most should be under 120.`,
+Most captions under 100 characters. One-liners under 50. Not a single one over 180.`,
   };
 }
 
