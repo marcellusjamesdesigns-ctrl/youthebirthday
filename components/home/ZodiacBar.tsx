@@ -2,17 +2,17 @@ import Link from "next/link";
 import {
   Sun,
   Moon,
-  GeminiLogo,
+  ArrowsHorizontal,
   StarFour,
   Scales,
-  Scorpio,
+  Waves,
   Infinity,
   Fish,
   Mountains,
   Wind,
   Drop,
   Fire,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@phosphor-icons/react";
 
 const SIGNS: {
   name: string;
@@ -20,18 +20,18 @@ const SIGNS: {
   Icon: React.ElementType;
   dates: string;
 }[] = [
-  { name: "Aries",       slug: "aries",       Icon: Fire,        dates: "Mar 21 – Apr 19" },
-  { name: "Taurus",      slug: "taurus",      Icon: Mountains,   dates: "Apr 20 – May 20" },
-  { name: "Gemini",      slug: "gemini",      Icon: GeminiLogo,  dates: "May 21 – Jun 20" },
-  { name: "Cancer",      slug: "cancer",      Icon: Moon,        dates: "Jun 21 – Jul 22" },
-  { name: "Leo",         slug: "leo",         Icon: Sun,         dates: "Jul 23 – Aug 22" },
-  { name: "Virgo",       slug: "virgo",       Icon: Infinity,    dates: "Aug 23 – Sep 22" },
-  { name: "Libra",       slug: "libra",       Icon: Scales,      dates: "Sep 23 – Oct 22" },
-  { name: "Scorpio",     slug: "scorpio",     Icon: Scorpio,     dates: "Oct 23 – Nov 21" },
-  { name: "Sagittarius", slug: "sagittarius", Icon: Wind,        dates: "Nov 22 – Dec 21" },
-  { name: "Capricorn",   slug: "capricorn",   Icon: Mountains,   dates: "Dec 22 – Jan 19" },
-  { name: "Aquarius",    slug: "aquarius",    Icon: Drop,        dates: "Jan 20 – Feb 18" },
-  { name: "Pisces",      slug: "pisces",      Icon: Fish,        dates: "Feb 19 – Mar 20" },
+  { name: "Aries",       slug: "aries",       Icon: Fire,             dates: "Mar 21 – Apr 19" },
+  { name: "Taurus",      slug: "taurus",      Icon: Mountains,        dates: "Apr 20 – May 20" },
+  { name: "Gemini",      slug: "gemini",      Icon: ArrowsHorizontal, dates: "May 21 – Jun 20" },
+  { name: "Cancer",      slug: "cancer",      Icon: Moon,             dates: "Jun 21 – Jul 22" },
+  { name: "Leo",         slug: "leo",         Icon: Sun,              dates: "Jul 23 – Aug 22" },
+  { name: "Virgo",       slug: "virgo",       Icon: Infinity,         dates: "Aug 23 – Sep 22" },
+  { name: "Libra",       slug: "libra",       Icon: Scales,           dates: "Sep 23 – Oct 22" },
+  { name: "Scorpio",     slug: "scorpio",     Icon: Waves,            dates: "Oct 23 – Nov 21" },
+  { name: "Sagittarius", slug: "sagittarius", Icon: Wind,             dates: "Nov 22 – Dec 21" },
+  { name: "Capricorn",   slug: "capricorn",   Icon: StarFour,         dates: "Dec 22 – Jan 19" },
+  { name: "Aquarius",    slug: "aquarius",    Icon: Drop,             dates: "Jan 20 – Feb 18" },
+  { name: "Pisces",      slug: "pisces",      Icon: Fish,             dates: "Feb 19 – Mar 20" },
 ];
 
 export function ZodiacBar() {
