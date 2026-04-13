@@ -39,6 +39,7 @@ export const birthdaySessions = pgTable("birthday_sessions", {
   birthCity: text("birth_city"),
   birthLat: text("birth_lat"),
   birthLng: text("birth_lng"),
+  birthTimezoneOffset: text("birth_timezone_offset"), // UTC offset in hours (e.g., "-5", "5.5")
   // Budget & preferences
   budget: text("budget"), // "budget" | "mid" | "luxury"
   groupSize: text("group_size"), // "solo" | "partner" | "small" | "large"

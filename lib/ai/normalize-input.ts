@@ -1,6 +1,5 @@
 import { parseBirthdate, getAgeTurning } from "@/lib/utils/date";
 import { calculateChart, getSunSignFromDate, type AstroChart } from "@/lib/astrology/calculate";
-import { find as findTimezone } from "geo-tz";
 import type { InferSelectModel } from "drizzle-orm";
 import type { birthdaySessions } from "@/lib/db/schema";
 
@@ -41,37 +40,15 @@ export function normalizeInput(session: Session): NormalizedInput {
   if (session.mode === "cosmic" || session.birthTime) {
     const birthLat = session.birthLat ? parseFloat(session.birthLat) : undefined;
     const birthLng = session.birthLng ? parseFloat(session.birthLng) : undefined;
-
-    let birthHour: number | undefined;
-    let birthMinute: number | undefined;
-    let timezoneOffset: number | undefined;
-
-    if (session.birthTime) {
-      birthHour = parseInt(session.birthTime.split(":")[0]);
-      birthMinute = parseInt(session.birthTime.split(":")[1]);
-
-      // Determine timezone offset from birth city coordinates
-      if (birthLat !== undefined && birthLng !== undefined) {
-        const tzNames = findTimezone(birthLat, birthLng);
-        if (tzNames.length > 0) {
-          // Get the UTC offset for this timezone at the actual birth date
-          const localDate = new Date(session.birthYear, month - 1, day, birthHour, birthMinute);
-          const formatter = new Intl.DateTimeFormat("en-US", {
-            timeZone: tzNames[0],
-            timeZoneName: "shortOffset",
-          });
-          const parts = formatter.formatToParts(localDate);
-          const offsetPart = parts.find((p) => p.type === "timeZoneName")?.value ?? "";
-          const offsetMatch = offsetPart.match(/GMT([+-]?)(\d{1,2})(?::(\d{2}))?/);
-          if (offsetMatch) {
-            const sign = offsetMatch[1] === "-" ? -1 : 1;
-            const hrs = parseInt(offsetMatch[2]) * sign;
-            const mins = parseInt(offsetMatch[3] || "0") * sign;
-            timezoneOffset = hrs + mins / 60;
-          }
-        }
-      }
-    }
+    const birthHour = session.birthTime
+      ? parseInt(session.birthTime.split(":")[0])
+      : undefined;
+    const birthMinute = session.birthTime
+      ? parseInt(session.birthTime.split(":")[1])
+      : undefined;
+    const timezoneOffset = session.birthTimezoneOffset
+      ? parseFloat(session.birthTimezoneOffset)
+      : undefined;
 
     chart = calculateChart({
       year: session.birthYear,
