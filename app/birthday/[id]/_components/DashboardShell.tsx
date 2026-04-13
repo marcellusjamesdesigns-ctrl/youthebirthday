@@ -17,6 +17,7 @@ import { BirthdayHero } from "./BirthdayHero";
 import { StreamingStatus } from "./StreamingStatus";
 import { ShareButtons } from "./ShareButtons";
 import AdUnit from "@/components/AdUnit";
+import { DestinationGlobe } from "@/components/dashboard/DestinationGlobe";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -213,6 +214,7 @@ export function DashboardShell({
                         Picked for your vibe, budget, and the time of year you&apos;re actually celebrating.
                       </p>
                     </div>
+                    <DestinationGlobe destinations={sections.destinations!} />
                     <div className="space-y-3">
                       {seasonPicks.map((dest, i) => (
                         <DestinationCard key={dest.city} dest={dest} index={i} />
