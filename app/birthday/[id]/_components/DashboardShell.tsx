@@ -16,6 +16,7 @@ import type { InferSelectModel } from "drizzle-orm";
 import { BirthdayHero } from "./BirthdayHero";
 import { StreamingStatus } from "./StreamingStatus";
 import { ShareButtons } from "./ShareButtons";
+import AdUnit from "@/components/AdUnit";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -163,6 +164,11 @@ export function DashboardShell({
             </section>
           )}
 
+          {/* ─── Ad: after captions ───────────────────────────────────── */}
+          {sections?.captions && sections.captions.length > 0 && (
+            <AdUnit slot="3782501964" format="auto" className="my-2" />
+          )}
+
           {/* ─── Celebration Style ─────────────────────────────────────── */}
           {sections?.celebrationStyle && (
             <section className="animate-fade-rise">
@@ -233,6 +239,11 @@ export function DashboardShell({
               </>
             );
           })()}
+
+          {/* ─── Ad: between destinations and restaurants ─────────────── */}
+          {sections?.destinations && sections.destinations.length > 0 && (
+            <AdUnit slot="7641823095" format="horizontal" className="my-2" />
+          )}
 
           {/* ─── Restaurants & Venues ───────────────────────────────────── */}
           {sections?.restaurants && sections.restaurants.length > 0 && (
@@ -363,6 +374,11 @@ export function DashboardShell({
               />
             </div>
           </div>
+        )}
+
+        {/* ─── Ad: bottom of completed dashboard ─────────────────────── */}
+        {status === "complete" && (
+          <AdUnit slot="5920347618" format="auto" className="mt-10" />
         )}
 
         {/* Viral CTA — for recipients viewing a shared dashboard */}
