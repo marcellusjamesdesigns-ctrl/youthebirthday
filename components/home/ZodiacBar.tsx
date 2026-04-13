@@ -75,7 +75,7 @@ export function ZodiacBar() {
             return (
               <Link
                 key={sign.slug}
-                href={`/zodiac-birthdays/${sign.slug}`}
+                href={`/zodiac-birthdays/${sign.slug}-birthday-ideas`}
                 className="group flex items-center gap-2 rounded-full border border-border/40 px-4 py-2 text-[13px] text-muted-foreground/60 hover:text-champagne hover:border-champagne/30 hover:bg-champagne/5 transition-all duration-200"
               >
                 <Icon
