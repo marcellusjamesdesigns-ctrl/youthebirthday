@@ -59,9 +59,9 @@ export function StreamingStatus({ stepStatus }: StreamingStatusProps) {
       <p className="text-sm text-muted-foreground animate-gentle-pulse italic font-editorial">
         {currentLabel}
       </p>
-      <div className="h-[1px] bg-border relative">
+      <div className="h-[2px] bg-border/50 rounded-full relative overflow-hidden">
         <div
-          className="h-[1px] bg-champagne/50 transition-all duration-1000 ease-out"
+          className="h-[2px] bg-champagne/60 rounded-full transition-all duration-1000 ease-out"
           style={{ width: `${progressPercent}%` }}
         />
       </div>

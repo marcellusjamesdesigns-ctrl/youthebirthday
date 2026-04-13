@@ -10,12 +10,11 @@ interface ShareButtonsProps {
 export function ShareButtons({ sessionId, title }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = typeof window !== "undefined"
-    ? `${window.location.origin}/birthday/card/${sessionId}`
-    : `/birthday/card/${sessionId}`;
-  const dashboardUrl = typeof window !== "undefined"
-    ? `${window.location.origin}/birthday/${sessionId}`
-    : `/birthday/${sessionId}`;
+  const getUrl = (path: string) =>
+    typeof window !== "undefined" ? `${window.location.origin}${path}` : path;
+
+  const shareUrl = getUrl(`/birthday/card/${sessionId}`);
+  const dashboardUrl = getUrl(`/birthday/${sessionId}`);
 
   function handleCopyLink() {
     navigator.clipboard.writeText(dashboardUrl);

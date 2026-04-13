@@ -104,7 +104,7 @@ export default function Home() {
             </h1>
           </div>
 
-          <p className="mx-auto max-w-lg text-base text-muted-foreground/70 leading-relaxed animate-fade-rise stagger-2">
+          <p className="mx-auto max-w-lg text-base text-muted-foreground leading-relaxed animate-fade-rise stagger-2">
             Birthday titles, captions, color palettes, destinations,
             and celebration style — curated for you, powered by your
             vibe and your story.
