@@ -21,6 +21,7 @@ import {
   buildDestinationPrompt,
   buildCelebrationPrompt,
   buildRestaurantPrompt,
+  buildActivityPrompt,
   buildCosmicPrompt,
 } from "./prompts";
 import {
@@ -30,6 +31,7 @@ import {
   DestinationSchema,
   CelebrationStyleSchema,
   RestaurantSchema,
+  ActivitySchema,
   CosmicProfileSchema,
 } from "./schemas";
 import type { InferSelectModel } from "drizzle-orm";
@@ -263,12 +265,11 @@ export async function runBirthdayPipeline(
         .where(eq(birthdayGenerations.id, generationId));
     }
 
-    // ─── Step 4: Restaurants (AI-generated local recs) ───────────────
-    const restaurantResult = await runAIStep(
-      "restaurants",
-      RestaurantSchema,
-      buildRestaurantPrompt
-    );
+    // ─── Step 4: Restaurants + Activities (parallel — both use celebrationCity) ──
+    const [restaurantResult, activityResult] = await Promise.all([
+      runAIStep("restaurants", RestaurantSchema, buildRestaurantPrompt),
+      runAIStep("activities", ActivitySchema, buildActivityPrompt),
+    ]);
 
     if (restaurantResult) {
       const restaurants = restaurantResult.restaurants.map((r) => ({
@@ -284,6 +285,13 @@ export async function runBirthdayPipeline(
       await db
         .update(birthdayGenerations)
         .set({ restaurants })
+        .where(eq(birthdayGenerations.id, generationId));
+    }
+
+    if (activityResult) {
+      await db
+        .update(birthdayGenerations)
+        .set({ activities: activityResult.activities })
         .where(eq(birthdayGenerations.id, generationId));
     }
 

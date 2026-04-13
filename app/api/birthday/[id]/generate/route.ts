@@ -49,6 +49,7 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
     destinations: "queued",
     celebrationStyle: "queued",
     restaurants: "queued",
+    activities: "queued",
     cosmic: session.mode === "cosmic" ? "queued" : "skipped",
   };
 

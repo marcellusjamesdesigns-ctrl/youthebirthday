@@ -87,6 +87,22 @@ export const RestaurantSchema = z.object({
   ).min(4).max(6),
 });
 
+// Step 4b: Activities / What to Do
+export const ActivitySchema = z.object({
+  activities: z.array(
+    z.object({
+      name: z.string().describe("Real name of the experience or attraction"),
+      category: z.enum(["experience", "attraction", "outdoor", "nightlife", "wellness", "culture"]),
+      description: z.string().describe("1-2 sentence description of what this is"),
+      whyItFitsYou: z.string().describe("1-2 sentence personalized explanation"),
+      neighborhood: z.string().describe("Neighborhood or area in the city"),
+      priceRange: z.enum(["free", "$", "$$", "$$$"]),
+      bestTimeOfDay: z.enum(["morning", "afternoon", "evening", "anytime"]),
+      bookingTip: z.string().optional().describe("Practical tip like 'book 2 weeks ahead' or 'walk-ins only'"),
+    })
+  ).min(4).max(7),
+});
+
 // Step 5: Cosmic profile (conditional)
 export const CosmicProfileSchema = z.object({
   sunSign: z.string(),

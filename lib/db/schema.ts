@@ -72,6 +72,7 @@ export const birthdayGenerations = pgTable("birthday_generations", {
   cosmicProfile: jsonb("cosmic_profile").$type<CosmicProfile>(),
   // External data (fetched, not AI-generated)
   restaurants: jsonb("restaurants").$type<Restaurant[]>(),
+  activities: jsonb("activities").$type<Activity[]>(),
   // Share assets
   shareCardUrl: text("share_card_url"), // Vercel Blob URL
   shareCardThumbnailUrl: text("share_card_thumbnail_url"),
@@ -131,6 +132,7 @@ export type StepStatusMap = {
   destinations: StepStatus;
   celebrationStyle: StepStatus;
   restaurants: StepStatus;
+  activities: StepStatus;
   cosmic: StepStatus;
 };
 
@@ -166,6 +168,17 @@ export interface Restaurant {
   googlePlaceId?: string;
   rating?: number;
   venueType?: "dinner" | "drinks" | "wildcard";
+}
+
+export interface Activity {
+  name: string;
+  category: "experience" | "attraction" | "outdoor" | "nightlife" | "wellness" | "culture";
+  description: string;
+  whyItFitsYou: string;
+  neighborhood: string;
+  priceRange: "free" | "$" | "$$" | "$$$";
+  bestTimeOfDay: "morning" | "afternoon" | "evening" | "anytime";
+  bookingTip?: string;
 }
 
 export interface CelebrationStyle {

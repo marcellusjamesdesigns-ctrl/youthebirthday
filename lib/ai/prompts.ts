@@ -307,6 +307,49 @@ ${input.groupSize === "large" ? "They're celebrating with a large group — reco
   };
 }
 
+export function buildActivityPrompt(input: NormalizedInput) {
+  const groupContext = input.groupSize === "solo"
+    ? "solo-friendly experiences — things that feel intentional alone, not lonely"
+    : input.groupSize === "partner"
+    ? "couple-friendly or intimate experiences for two"
+    : input.groupSize === "large"
+    ? "group-friendly activities that work for larger parties"
+    : "activities that work for a small group of close friends";
+
+  return {
+    system: `You are a birthday experience curator for "You The Birthday." You recommend REAL activities, attractions, and experiences that currently exist in the specified city. You know cities like someone who lived there for years — what's worth doing, what's overhyped, and what the locals actually recommend.
+
+CRITICAL RULES:
+1. Every recommendation MUST be a real, currently operating experience, attraction, or activity. Do NOT invent venue names or experiences that don't exist.
+2. Mix timeless institutions with newer or seasonal experiences. Not everything should be a museum or a park.
+3. Think about the FLOW of a birthday day/weekend — morning, afternoon, evening activities that could be assembled into a loose itinerary.
+4. Match the user's vibe and energy. A "Wild & Social" birthday should have different activity picks than a "Self-Care & Restoration" birthday.
+5. Include the real neighborhood or area so they can plan logistics.`,
+    user: `Recommend 5-6 birthday activities and experiences in ${input.celebrationCity} for:
+
+${vibeContext(input)}
+
+This person wants ${groupContext}.
+
+Generate a curated mix of things to DO (not eat — restaurants are covered separately):
+- 1-2 SIGNATURE EXPERIENCES: The "main event" activities — the thing they'd post about. Could be a specific attraction, a unique experience, a class, or an event type that exists in ${input.celebrationCity}.
+- 1-2 VIBE ACTIVITIES: Lower-key but atmosphere-rich — a neighborhood to wander, a park with a view, a market to browse, a scenic walk, a bookstore-and-coffee situation. Things that make the day feel intentional.
+- 1-2 CELEBRATION ACTIVITIES: Things that specifically match their birthday energy — ${input.celebrationVibe} vibe. Could be wellness (spa, sound bath), adventure (boat tour, rooftop), cultural (gallery, live music), or social (comedy show, wine tasting).
+
+For each activity:
+- name: Real name of the experience, attraction, or venue
+- category: "experience" | "attraction" | "outdoor" | "nightlife" | "wellness" | "culture"
+- description: 1-2 sentences describing what this is
+- whyItFitsYou: 1-2 sentences explaining why THIS person should do THIS on their birthday. Reference their vibe, goals, or celebration energy.
+- neighborhood: The area/neighborhood in ${input.celebrationCity}
+- priceRange: "free", "$", "$$", or "$$$"
+- bestTimeOfDay: "morning", "afternoon", "evening", or "anytime"
+- bookingTip: Optional practical tip (e.g. "Book 2 weeks ahead", "Walk-ins after 3pm", "Free on first Sundays")
+
+Make it feel like a friend who knows ${input.celebrationCity} built them a birthday itinerary.`,
+  };
+}
+
 export function buildCosmicPrompt(input: NormalizedInput) {
   const chart = input.chart;
 

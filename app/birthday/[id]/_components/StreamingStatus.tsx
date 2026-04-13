@@ -9,6 +9,7 @@ const stepLabels: Record<keyof StepStatusMap, string> = {
   destinations: "Mapping your travel vibe",
   celebrationStyle: "Designing your celebration",
   restaurants: "Looking for your dinner spots",
+  activities: "Curating your birthday experiences",
   cosmic: "Reading the stars",
 };
 
@@ -19,6 +20,7 @@ const stepOrder: (keyof StepStatusMap)[] = [
   "destinations",
   "celebrationStyle",
   "restaurants",
+  "activities",
   "cosmic",
 ];
 

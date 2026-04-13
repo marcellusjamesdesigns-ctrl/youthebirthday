@@ -11,6 +11,7 @@ import type {
   CelebrationStyle,
   CosmicProfile,
   Restaurant,
+  Activity,
 } from "@/lib/db/schema";
 import type { InferSelectModel } from "drizzle-orm";
 import { BirthdayHero } from "./BirthdayHero";
@@ -33,6 +34,7 @@ interface Sections {
   destinations: Destination[] | null;
   celebrationStyle: CelebrationStyle | null;
   restaurants: Restaurant[] | null;
+  activities: Activity[] | null;
   cosmicProfile: CosmicProfile | null;
 }
 
@@ -306,6 +308,58 @@ export function DashboardShell({
                     </p>
                   </div>
                 ))}
+              </div>
+            </section>
+          )}
+
+          {/* ─── Activities: What to Do ─────────────────────────────────── */}
+          {sections?.activities && sections.activities.length > 0 && (
+            <section className="animate-fade-rise space-y-5">
+              <div>
+                <SectionLabel>What to Do</SectionLabel>
+                <p className="text-[12px] text-muted-foreground/65 mt-1.5">
+                  Experiences and attractions in your celebration city — curated for your vibe.
+                </p>
+              </div>
+              <div className="space-y-3">
+                {sections.activities.map((a) => {
+                  const categoryColors: Record<string, string> = {
+                    experience: "border-champagne/20 text-champagne/60 bg-champagne/5",
+                    attraction: "border-sky-400/20 text-sky-400/60 bg-sky-400/5",
+                    outdoor: "border-emerald-400/20 text-emerald-400/60 bg-emerald-400/5",
+                    nightlife: "border-plum/20 text-plum/60 bg-plum/5",
+                    wellness: "border-rose-400/20 text-rose-400/60 bg-rose-400/5",
+                    culture: "border-amber-400/20 text-amber-400/60 bg-amber-400/5",
+                  };
+                  return (
+                    <div key={a.name} className="luxury-card p-5 space-y-2.5">
+                      <div className="flex justify-between items-start gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-sm font-medium text-foreground">{a.name}</h3>
+                            <span className={`text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 rounded-full border shrink-0 ${categoryColors[a.category] ?? "border-border/40 text-muted-foreground/55"}`}>
+                              {a.category}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground/60 mt-0.5">
+                            {a.neighborhood} · {a.priceRange} · {a.bestTimeOfDay}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-[13px] text-muted-foreground/70 leading-relaxed">
+                        {a.description}
+                      </p>
+                      <p className="text-[13px] text-foreground/75 leading-relaxed italic">
+                        {a.whyItFitsYou}
+                      </p>
+                      {a.bookingTip && (
+                        <p className="text-[11px] text-champagne/50">
+                          💡 {a.bookingTip}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </section>
           )}
