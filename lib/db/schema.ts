@@ -147,9 +147,12 @@ export interface Destination {
   city: string;
   country: string;
   whyItFitsYou: string;
-  bestMonth: string;
+  bestMonths: string[]; // e.g. ["March", "April"]
+  timingFit: "perfect" | "good" | "workable" | "off-season";
+  timingNote: string; // e.g. "Great around your birthday" or "Best as a birthday-year trip"
   vibeMatch: string[];
   estimatedBudget: "budget" | "mid" | "luxury";
+  section: "season" | "dream"; // which section this belongs in
 }
 
 export interface Restaurant {

@@ -51,12 +51,15 @@ export const DestinationSchema = z.object({
     z.object({
       city: z.string(),
       country: z.string(),
-      whyItFitsYou: z.string().describe("Personalized 2-3 sentence explanation"),
-      bestMonth: z.string(),
+      whyItFitsYou: z.string().describe("Personalized 2-3 sentence explanation of why THIS person should go THERE"),
+      bestMonths: z.array(z.string()).min(1).max(4).describe("Best months to visit, e.g. ['March', 'April']"),
+      timingFit: z.enum(["perfect", "good", "workable", "off-season"]).describe("How well this destination fits the user's birthday month"),
+      timingNote: z.string().describe("Human-readable timing note, e.g. 'Great around your birthday' or 'Best as a birthday-year trip later on'"),
       vibeMatch: z.array(z.string()).min(2).max(4),
       estimatedBudget: z.enum(["budget", "mid", "luxury"]),
+      section: z.enum(["season", "dream"]).describe("'season' = fits their birthday window, 'dream' = great vibe match but better in another season"),
     })
-  ).length(5),
+  ).min(5).max(7),
 });
 
 // Step 3: Celebration style

@@ -1,0 +1,250 @@
+import type { NormalizedInput } from "./normalize-input";
+
+export const PROMPT_VERSION = "v3";
+
+function vibeContext(input: NormalizedInput): string {
+  const parts = [
+    `Name: ${input.name}`,
+    `Turning: ${input.ageTurning}`,
+    `Zodiac: ${input.zodiacSign}`,
+    `City: ${input.currentCity}`,
+    `Vibe: ${input.celebrationVibe}`,
+    `Goals: ${input.birthdayGoals.join(", ")}`,
+  ];
+  if (input.pronoun) parts.push(`Pronouns: ${input.pronoun}`);
+  if (input.budget) parts.push(`Budget: ${input.budget}`);
+  if (input.groupSize) parts.push(`Group size: ${input.groupSize}`);
+  if (input.aestheticPreference) parts.push(`Aesthetic: ${input.aestheticPreference}`);
+  return parts.join("\n");
+}
+
+export function buildIdentityPrompt(input: NormalizedInput) {
+  return {
+    system: `You are the creative engine behind "You The Birthday" — a culturally sharp birthday experience platform. You write like someone who understands internet culture, astrology vibes, luxury aesthetics, and real life. Your outputs should feel personal, specific, and screenshot-worthy. Never generic. Never corny. Never "wishing you the best on your special day" energy.`,
+    user: `Create a birthday identity for this person:
+
+${vibeContext(input)}
+
+Generate:
+- birthdayTitle: A punchy, personalized birthday headline (max 8 words). This is the hero text on their dashboard. It should feel like a thesis statement for their year. Examples of the energy: "Thirty and Threatening", "The Unbothered Era Begins", "Quarter Century, Full Volume". Make it specific to their age, vibe, and energy.
+- birthdayArchetype: A 2-3 word archetype that captures their birthday energy. Think tarot-meets-pop-culture. Examples: "Solar Eclipse Queen", "Velvet Reckoning", "Main Character Ascending". This should feel like a title card.
+- birthdayEra: A short era declaration. Think cultural moment meets personal chapter. Examples: "Your Soft Launch Era", "Chapter ${input.ageTurning}: The Reclamation", "The Luxury Rewrite". Make it feel like they'd put this in their bio.
+- celebrationNarrative: 2-3 sentences that read like someone who knows them wrote it. Reference their age, vibe, and goals. Don't be preachy. Be real. This should feel like the opening monologue of their birthday documentary.`,
+  };
+}
+
+export function buildPalettePrompt(input: NormalizedInput) {
+  const seasonalDirection = getSeasonalColorDirection(input.birthMonth);
+  const aestheticDirection = getAestheticColorDirection(input.aestheticPreference, input.celebrationVibe);
+
+  return {
+    system: `You are a color director for "You The Birthday." You design birthday color palettes that feel intentional, premium, and aesthetically coherent. Every palette should be usable for: invitations, outfits, nails, decor, and Instagram grids.
+
+CRITICAL DIFFERENTIATION RULES:
+- The user's SEASON and AESTHETIC must materially shape the palette. A winter birthday should feel different from a summer birthday. A Y2K aesthetic should look nothing like an old-money aesthetic.
+- Do NOT default to the same "luxury editorial" color family every time. Champagne/mauve/navy is one valid palette family — but it is not the only one. Push beyond it.
+- Each palette must occupy a DIFFERENT color temperature and mood. If one palette is warm and earthy, the next should be cool and oceanic or bright and citrusy.
+- Palette names must be UNIQUE and specific to this person — never use generic names like "Midnight Luxe", "Golden Hour", "Soft Bloom", or "Earth & Stone" that could apply to anyone.`,
+    user: `Design 4 birthday color palettes for:
+
+${vibeContext(input)}
+Birthday season: ${input.birthMonthName} (${seasonalDirection.season})
+
+SEASONAL COLOR DIRECTION: ${seasonalDirection.direction}
+AESTHETIC COLOR DIRECTION: ${aestheticDirection}
+
+Each palette needs:
+- A distinctive name that references THIS person's energy, not generic luxury (e.g. for a Miami turn-up Leo: "Neon Reign" not "Golden Hour")
+- A 2-3 word mood descriptor
+- Exactly 5 colors with: valid hex code, color name, and role (primary/accent/neutral/background/statement)
+
+The 4 palettes must be structured as:
+1. SEASONAL SIGNATURE: A palette anchored to ${input.birthMonthName}. ${seasonalDirection.palette1Direction}
+2. VIBE MATCH: A palette that captures their ${input.celebrationVibe} energy specifically. This should feel like their celebration vibe turned into colors.
+3. AESTHETIC PULL: ${input.aestheticPreference ? `A palette inspired by their "${input.aestheticPreference}" aesthetic preference.` : `A palette that matches their zodiac energy (${input.zodiacSign}).`}
+4. UNEXPECTED CONTRAST: A palette that surprises — a different color temperature, mood, or cultural reference than the other three. Still cohesive, but not the obvious choice.
+
+FORBIDDEN DEFAULTS (do not generate these unless the inputs specifically demand them):
+- The standard "champagne + mauve + navy + gold" luxury palette
+- Any palette that could equally apply to a wedding invitation
+- More than one palette using predominantly neutral/muted tones
+
+All hex codes must be valid 6-digit hex (#RRGGBB). Colors should work together as a real palette — not random.`,
+  };
+}
+
+function getSeasonalColorDirection(month: number): { season: string; direction: string; palette1Direction: string } {
+  if (month >= 3 && month <= 5) {
+    return {
+      season: "spring",
+      direction: "Spring energy: fresh greens, soft florals, bright pastels, lavender fields, cherry blossom pinks, new-growth yellows. Light, optimistic, alive.",
+      palette1Direction: "Use spring-forward colors — fresh, light, blooming. Think cherry blossom, new leaf, morning sky.",
+    };
+  }
+  if (month >= 6 && month <= 8) {
+    return {
+      season: "summer",
+      direction: "Summer energy: saturated tropicals, ocean blues, sunset oranges, hot pinks, golden yellows, coral reds. Bold, warm, sun-drenched.",
+      palette1Direction: "Use high-summer colors — saturated, warm, sun-kissed. Think sunset, tropical water, ripe fruit.",
+    };
+  }
+  if (month >= 9 && month <= 11) {
+    return {
+      season: "fall",
+      direction: "Fall energy: burnt orange, deep burgundy, forest green, mustard, plum, warm browns, copper. Rich, grounded, cinematic.",
+      palette1Direction: "Use autumnal colors — rich, warm, cinematic. Think harvest, amber light, velvet.",
+    };
+  }
+  return {
+    season: "winter",
+    direction: "Winter energy: deep jewel tones, icy blues, silver, evergreen, midnight navy, cranberry, frosted metallics. Dramatic, elegant, crystalline.",
+    palette1Direction: "Use winter colors — deep, dramatic, crystalline. Think midnight, frost, jewel box.",
+  };
+}
+
+function getAestheticColorDirection(aesthetic: string | null, vibe: string): string {
+  if (aesthetic) {
+    const lower = aesthetic.toLowerCase();
+    if (lower.includes("y2k")) return "Y2K aesthetic: iridescent, baby blue, hot pink, chrome silver, lilac. Playful futurism.";
+    if (lower.includes("old money")) return "Old money aesthetic: navy, cream, hunter green, burgundy, camel. Inherited elegance.";
+    if (lower.includes("cottagecore")) return "Cottagecore aesthetic: sage, cream, dusty rose, wheat, lavender. Pastoral warmth.";
+    if (lower.includes("minimalist")) return "Minimalist aesthetic: pure whites, warm grays, single accent color. Restrained precision.";
+    if (lower.includes("maximalist")) return "Maximalist aesthetic: jewel-saturated, bold pattern clashes, rich layering. More is more.";
+    if (lower.includes("afro") || lower.includes("african")) return "Afrofuturist aesthetic: kente golds, indigo, terracotta, electric purple, sun orange. Cultural richness.";
+    return `"${aesthetic}" aesthetic — translate this into a color language that feels authentic to this aesthetic.`;
+  }
+
+  // Fallback: use vibe for direction
+  const vibeDirections: Record<string, string> = {
+    "Luxury & Indulgence": "Lean into opulence: deep golds, rich blacks, emerald, champagne. But avoid the default mauve trap.",
+    "Adventure & Travel": "Lean into movement: oceanic teals, sunset warmth, earthy neutrals, sky blues.",
+    "Intimate & Cozy": "Lean into warmth: candlelight amber, soft blush, warm cream, muted wine.",
+    "Wild & Social": "Lean into energy: electric brights, neon accents, bold contrasts, party-ready saturations.",
+    "Self-Care & Restoration": "Lean into calm: spa greens, cloud whites, soft lavender, mineral blues.",
+    "Cultural & Intellectual": "Lean into depth: museum neutrals, ink blues, architectural grays, accent vermillion.",
+    "Romantic & Dreamy": "Lean into softness: blush, peony, soft gold, dove gray, moonlight blue.",
+    "Spiritual & Intentional": "Lean into transcendence: amethyst, sage, midnight, moonstone, incense smoke.",
+  };
+  return vibeDirections[vibe] ?? "Match the celebration energy to a distinct color language.";
+}
+
+export function buildCaptionPrompt(input: NormalizedInput) {
+  return {
+    system: `You write Instagram captions for "You The Birthday." Your captions get screenshotted. They're not greeting cards — they're posts from someone who knows exactly who they are. You understand how people actually talk on Instagram, Twitter, and TikTok. Short, rhythmic, confident. No hashtags. No emojis unless they're truly earned.`,
+    user: `Write a birthday caption pack for:
+
+${vibeContext(input)}
+
+Create at least 5 categories with 2-3 captions each:
+- Hype & Confident: energy, self-assurance, main character
+- Soft & Reflective: gratitude, growth, peace
+- Funny & Real: self-deprecating, relatable, witty
+- Luxury & Glamour: expensive taste, celebration, flex
+- Mystical & Zodiac: cosmic, spiritual, ${input.zodiacSign} energy
+
+Every caption must:
+- Feel postable RIGHT NOW (not dated, not try-hard)
+- Be specific to turning ${input.ageTurning}
+- Match their ${input.celebrationVibe} energy
+- Work as a standalone post — no context needed
+- Be under 280 characters
+
+Do NOT write: "Another year around the sun", "Birthday girl/boy", "It's my birthday and I'll...", or any played-out birthday cliché.`,
+  };
+}
+
+export function buildDestinationPrompt(input: NormalizedInput) {
+  const birthdayWindow = getBirthdayWindow(input.birthMonth);
+
+  return {
+    system: `You are a birthday travel advisor for "You The Birthday." You recommend destinations like a well-traveled friend who knows the person — not a search engine. Your picks should feel curated, not algorithmic.
+
+CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. The first 3-4 destinations MUST be genuinely great to visit around their birthday month (${birthdayWindow}). The remaining 2-3 can be "dream picks" — places that match their vibe beautifully but shine best in a different season.
+
+This is a birthday product. If someone sees "best in March" for their June birthday in the top section, trust drops immediately. Timing truth matters more than poetic matching.`,
+    user: `Recommend 6-7 birthday destinations for:
+
+${vibeContext(input)}
+Birthday month: ${input.birthMonthName}
+Birthday window: ${birthdayWindow}
+
+Generate TWO groups:
+
+GROUP 1 — "season" picks (3-4 destinations):
+These MUST be genuinely good to visit during ${birthdayWindow}. Timing fit should be "perfect" or "good".
+
+GROUP 2 — "dream" picks (2-3 destinations):
+These deeply match their vibe but are best in another season. Timing fit should be "workable" or "off-season".
+
+For each destination:
+- city and country
+- whyItFitsYou: 2-3 sentences explaining why THIS person should go THERE. Reference their vibe, age, and goals. Don't just describe the city — explain the match.
+- bestMonths: array of the best 2-4 months to visit (e.g. ["March", "April"])
+- timingFit: "perfect" (their birthday month is peak season), "good" (shoulder season, still great), "workable" (doable but not ideal), or "off-season" (genuinely better another time)
+- timingNote: human-readable timing copy:
+  - For perfect: "Great around your birthday"
+  - For good: "Still excellent in ${input.birthMonthName}"
+  - For workable: "Doable in ${input.birthMonthName} — expect [specific condition]"
+  - For off-season: "Best in [months] — a strong birthday-year trip"
+- vibeMatch: 2-4 vibe tags (luxury, beach, nightlife, cultural, wellness, adventure, romantic, solo-friendly, foodie, artistic)
+- estimatedBudget: "budget", "mid", or "luxury"
+- section: "season" for Group 1, "dream" for Group 2
+
+Mix it up: at least 2 destinations outside the US/Europe. Include one unexpected pick. Make "whyItFitsYou" feel like advice from a friend, not a travel brochure.`,
+  };
+}
+
+function getBirthdayWindow(month: number): string {
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+  const prev = monthNames[(month - 2 + 12) % 12];
+  const curr = monthNames[month - 1];
+  const next = monthNames[month % 12];
+  return `late ${prev} through early ${next}`;
+}
+
+export function buildCelebrationPrompt(input: NormalizedInput) {
+  return {
+    system: `You are a birthday celebration director for "You The Birthday." You design birthday celebrations that feel like a creative brief — specific, aesthetic, and actionable. Not vague suggestions. Real direction that someone could hand to a friend and say "this is what I want."`,
+    user: `Design a celebration style for:
+
+${vibeContext(input)}
+
+Generate:
+- primaryStyle: A named celebration style (e.g. "Intimate Dinner Goddess", "Rooftop Revival", "Solo Pilgrimage"). This is the headline for their celebration section.
+- description: 2-3 sentences describing the overall feel of how they should celebrate. Specific and visual.
+- rituals: 3-5 specific birthday rituals or activities for their day. These should be concrete actions, not vague ideas. Example: "Start the morning with a sunrise walk and voice-memo your intentions for ${input.ageTurning}" not "reflect on the year."
+- aesthetic: One-line aesthetic direction (what the visual vibe should be)
+- outfit: Outfit direction — not a specific product, but a mood/direction. Example: "All black with one gold accent piece" or "Linen and bare feet"
+- playlist: Genre/vibe descriptor for a birthday playlist. Example: "90s R&B meets lo-fi sunset" or "Afrobeats and champagne energy"
+
+Make it feel like a creative director designed their birthday.`,
+  };
+}
+
+export function buildCosmicPrompt(input: NormalizedInput) {
+  const chart = input.chart;
+
+  return {
+    system: `You are a cosmic birthday advisor for "You The Birthday." You blend real astrological knowledge with accessible, modern interpretation. You're not writing a horoscope — you're giving someone their cosmic birthday briefing. Informed but not dry. Mystical but not vague.
+
+IMPORTANT: The astronomical positions (sun sign, moon sign, rising sign, dominant element) have already been computed using real ephemeris data. Do NOT change or override them. Your job is to write the interpretive content — the birthday message and astrocartography highlights.`,
+    user: `Create a cosmic birthday profile for:
+
+${vibeContext(input)}
+
+Their computed chart data:
+- Sun: ${chart?.sunSign ?? input.zodiacSign} at ${chart?.sunDegree ?? "?"}°
+- Moon: ${chart?.moonSign ?? "unknown"}${chart?.moonDegree ? ` at ${chart.moonDegree}°` : ""}
+- Rising: ${chart?.risingSign ?? "not available"}${chart?.risingDegree ? ` at ${chart.risingDegree}°` : ""}
+- Dominant Element: ${chart?.dominantElement ?? "unknown"}
+
+DO NOT generate sunSign, moonSign, risingSign, or dominantElement — these are already computed astronomically. Only generate:
+
+- birthdayMessage: A personalized 2-3 sentence cosmic birthday message. Reference their sun sign (${chart?.sunSign ?? input.zodiacSign}), moon sign (${chart?.moonSign ?? "unknown"}), age (${input.ageTurning}), and vibe. This should feel like the universe wrote them a note. Be specific to their chart placements.
+
+${input.birthCity ? `- astrocartographyHighlights: 2-3 locations where someone with this chart configuration would feel energized for celebration, travel, or growth. Frame these as "places where your chart lights up" — inspirational travel suggestions informed by their sign placements, not precise planetary line calculations.` : "Skip astrocartographyHighlights."}
+
+Keep it grounded. This should feel insightful, not like a fortune cookie.`,
+  };
+}

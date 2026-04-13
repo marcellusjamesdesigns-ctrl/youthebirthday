@@ -1,0 +1,63 @@
+"use client";
+
+import { useState } from "react";
+
+interface ShareButtonsProps {
+  sessionId: string;
+  title?: string;
+}
+
+export function ShareButtons({ sessionId, title }: ShareButtonsProps) {
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl = typeof window !== "undefined"
+    ? `${window.location.origin}/birthday/card/${sessionId}`
+    : `/birthday/card/${sessionId}`;
+  const dashboardUrl = typeof window !== "undefined"
+    ? `${window.location.origin}/birthday/${sessionId}`
+    : `/birthday/${sessionId}`;
+
+  function handleCopyLink() {
+    navigator.clipboard.writeText(dashboardUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  function handleShare() {
+    if (navigator.share) {
+      navigator.share({
+        title: title ?? "My Birthday Experience",
+        text: "Check out my personalized birthday dashboard on You The Birthday",
+        url: shareUrl,
+      });
+    } else {
+      handleCopyLink();
+    }
+  }
+
+  return (
+    <div className="flex flex-wrap gap-3 justify-center">
+      {/* Primary */}
+      <button
+        onClick={handleShare}
+        className="rounded-full bg-foreground px-7 py-2.5 text-[13px] font-medium text-background tracking-wide transition-all hover:bg-foreground/90 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.2)]"
+      >
+        Share
+      </button>
+      {/* Secondary */}
+      <button
+        onClick={handleCopyLink}
+        className="rounded-full border border-border px-5 py-2.5 text-[13px] text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-all"
+      >
+        {copied ? "Copied!" : "Copy Link"}
+      </button>
+      {/* Tertiary */}
+      <button
+        onClick={() => window.open(`/birthday/card/${sessionId}`, "_blank")}
+        className="rounded-full px-5 py-2.5 text-[13px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+      >
+        View Card
+      </button>
+    </div>
+  );
+}
