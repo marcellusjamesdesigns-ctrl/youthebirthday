@@ -20,6 +20,7 @@ import {
   buildCaptionPrompt,
   buildDestinationPrompt,
   buildCelebrationPrompt,
+  buildRestaurantPrompt,
   buildCosmicPrompt,
 } from "./prompts";
 import {
@@ -28,6 +29,7 @@ import {
   CaptionPackSchema,
   DestinationSchema,
   CelebrationStyleSchema,
+  RestaurantSchema,
   CosmicProfileSchema,
 } from "./schemas";
 import type { InferSelectModel } from "drizzle-orm";
@@ -223,44 +225,28 @@ export async function runBirthdayPipeline(
         .where(eq(birthdayGenerations.id, generationId));
     }
 
-    // ─── Step 4: Restaurants (non-blocking external data) ─────────────
-    await updateStepStatus("restaurants", "running");
-    const restaurantStart = Date.now();
-    try {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-      const res = await fetch(
-        `${appUrl}/api/restaurants?city=${encodeURIComponent(input.currentCity)}&vibe=${encodeURIComponent(input.celebrationVibe)}&limit=5`
-      );
-      if (res.ok) {
-        const restaurants = await res.json();
-        await db
-          .update(birthdayGenerations)
-          .set({ restaurants: restaurants.results ?? [] })
-          .where(eq(birthdayGenerations.id, generationId));
-        await updateStepStatus("restaurants", "complete");
-        await recordEvent(
-          "restaurants",
-          "complete",
-          Date.now() - restaurantStart,
-          null,
-          false
-        );
-      } else {
-        throw new Error(`Restaurant API returned ${res.status}`);
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
-      await updateStepStatus("restaurants", "error");
-      await recordEvent(
-        "restaurants",
-        "error",
-        Date.now() - restaurantStart,
-        null,
-        false,
-        errorMessage
-      );
-      // Non-blocking: restaurants failure doesn't kill the pipeline
+    // ─── Step 4: Restaurants (AI-generated local recs, optional Places enrichment) ───
+    const restaurantResult = await runAIStep(
+      "restaurants",
+      RestaurantSchema,
+      buildRestaurantPrompt
+    );
+
+    if (restaurantResult) {
+      // Map AI output to Restaurant[] format matching DB schema
+      const restaurants = restaurantResult.restaurants.map((r) => ({
+        name: r.name,
+        cuisine: r.cuisine,
+        priceRange: r.priceRange as "$" | "$$" | "$$$" | "$$$$",
+        address: r.address,
+        whyItFitsYou: r.whyItFitsYou,
+        rating: r.rating ?? undefined,
+      }));
+
+      await db
+        .update(birthdayGenerations)
+        .set({ restaurants })
+        .where(eq(birthdayGenerations.id, generationId));
     }
 
     // ─── Step 5: Cosmic Profile (conditional) ─────────────────────────

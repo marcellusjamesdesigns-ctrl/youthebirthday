@@ -7,7 +7,8 @@ function vibeContext(input: NormalizedInput): string {
     `Name: ${input.name}`,
     `Turning: ${input.ageTurning}`,
     `Zodiac: ${input.zodiacSign}`,
-    `City: ${input.currentCity}`,
+    `Home city: ${input.currentCity}`,
+    `Celebrating in: ${input.celebrationCity}`,
     `Vibe: ${input.celebrationVibe}`,
     `Goals: ${input.birthdayGoals.join(", ")}`,
   ];
@@ -156,11 +157,14 @@ Do NOT write: "Another year around the sun", "Birthday girl/boy", "It's my birth
 
 export function buildDestinationPrompt(input: NormalizedInput) {
   const birthdayWindow = getBirthdayWindow(input.birthMonth);
+  const isDifferentCity = input.celebrationCity.toLowerCase() !== input.currentCity.toLowerCase();
 
   return {
     system: `You are a birthday travel advisor for "You The Birthday." You recommend destinations like a well-traveled friend who knows the person — not a search engine. Your picks should feel curated, not algorithmic.
 
 CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. The first 3-4 destinations MUST be genuinely great to visit around their birthday month (${birthdayWindow}). The remaining 2-3 can be "dream picks" — places that match their vibe beautifully but shine best in a different season.
+
+${isDifferentCity ? `NOTE: This person is already planning to celebrate in ${input.celebrationCity}. At least one "season" pick should be a destination near or easily accessible from ${input.celebrationCity}. The other picks should be distinct alternatives.` : `NOTE: This person is based in ${input.currentCity}. Include at least one driveable/short-flight option from there as a "season" pick.`}
 
 This is a birthday product. If someone sees "best in March" for their June birthday in the top section, trust drops immediately. Timing truth matters more than poetic matching.`,
     user: `Recommend 6-7 birthday destinations for:
@@ -206,22 +210,68 @@ function getBirthdayWindow(month: number): string {
 
 export function buildCelebrationPrompt(input: NormalizedInput) {
   return {
-    system: `You are a birthday celebration director for "You The Birthday." You design birthday celebrations that feel like a creative brief — specific, aesthetic, and actionable. Not vague suggestions. Real direction that someone could hand to a friend and say "this is what I want."`,
+    system: `You are a birthday celebration director for "You The Birthday." You design birthday celebrations that feel like a creative brief — specific, aesthetic, and actionable. Not vague suggestions. Real direction that someone could hand to a friend and say "this is what I want."
+
+CRITICAL: All suggestions must be grounded in where this person is ACTUALLY CELEBRATING. Your rituals, activity ideas, and venue references should make sense for the specific city they're celebrating in. Reference real neighborhoods, vibes, and cultural context of that city.`,
     user: `Design a celebration style for:
 
 ${vibeContext(input)}
 
+This person is celebrating in ${input.celebrationCity}. Every ritual and suggestion should feel rooted in that city — reference real neighborhoods, local energy, and things that actually exist there.
+
 Generate:
 - primaryStyle: A named celebration style (e.g. "Intimate Dinner Goddess", "Rooftop Revival", "Solo Pilgrimage"). This is the headline for their celebration section.
-- description: 2-3 sentences describing the overall feel of how they should celebrate. Specific and visual.
-- rituals: 3-5 specific birthday rituals or activities for their day. These should be concrete actions, not vague ideas. Example: "Start the morning with a sunrise walk and voice-memo your intentions for ${input.ageTurning}" not "reflect on the year."
+- description: 2-3 sentences describing the overall feel of how they should celebrate. Specific and visual. Reference ${input.celebrationCity} and what makes celebrating there special.
+- rituals: 3-5 specific birthday rituals or activities for their day. These should be concrete actions grounded in ${input.celebrationCity} — reference real neighborhoods, types of venues that exist there, and things you can actually do in that city. Example for NYC: "Start with a sunrise walk across the Brooklyn Bridge and voice-memo your intentions for ${input.ageTurning}" not "reflect on the year."
 - aesthetic: One-line aesthetic direction (what the visual vibe should be)
 - outfit: Outfit direction — not a specific product, but a mood/direction. Example: "All black with one gold accent piece" or "Linen and bare feet"
 - playlist: Genre/vibe descriptor for a birthday playlist. Example: "90s R&B meets lo-fi sunset" or "Afrobeats and champagne energy"
 
-Make it feel like a creative director designed their birthday.
+Make it feel like a creative director who knows ${input.celebrationCity} designed their birthday.
 
-${input.foodVibe ? `Their food vibe is "${input.foodVibe}" — let this shape the ritual suggestions, dinner direction, and any food-adjacent recommendations.` : ""}`,
+${input.foodVibe ? `Their food vibe is "${input.foodVibe}" — let this shape the ritual suggestions, dinner direction, and any food-adjacent recommendations for ${input.celebrationCity}.` : ""}`,
+  };
+}
+
+export function buildRestaurantPrompt(input: NormalizedInput) {
+  const budgetDirection = input.budget === "luxury"
+    ? "Focus on upscale and fine dining. $$$-$$$$ range. Places with tasting menus, wine programs, or chef-driven concepts."
+    : input.budget === "budget"
+    ? "Focus on high-quality affordable spots. $-$$ range. The gems that locals love — incredible food without the markup."
+    : "Mix of mid-range and special-occasion spots. $$-$$$ range. Quality over flash.";
+
+  return {
+    system: `You are a local dining and nightlife curator for "You The Birthday." You recommend REAL venues that actually exist in the specified city. You know restaurant scenes like a food journalist — what's acclaimed, what's trending, what's the hidden gem locals gatekeep.
+
+CRITICAL RULES:
+1. Every venue MUST be a real, currently operating establishment. Do NOT invent restaurant names. If you aren't confident a place exists and is currently open, do NOT include it.
+2. Prioritize places with strong reputations — well-reviewed (4.0+ stars equivalent), acclaimed by local press, trending on social media, or beloved neighborhood institutions.
+3. Include a mix: at least one acclaimed/established spot, at least one newer or trending spot, and at least one hidden gem or local favorite.
+4. Cuisine types should match the user's food vibe and celebration energy.
+5. Include the REAL address or neighborhood — if you're not sure of the exact address, give the neighborhood/area.`,
+    user: `Recommend 5-6 birthday dining and nightlife spots in ${input.celebrationCity} for:
+
+${vibeContext(input)}
+
+${budgetDirection}
+
+Generate a mix of:
+- 2-3 DINNER spots: restaurants perfect for a birthday dinner. These should be the "reservation you plan around" — not chains, not generic. Places that feel special.
+- 1-2 DRINKS/NIGHTLIFE spots: bars, lounges, rooftop bars, speakeasies, or wine bars for pre-dinner drinks or after-dinner vibes. Match their energy.
+- 1 WILDCARD: a brunch spot, dessert destination, cafe, or activity-venue (cooking class, supper club, etc.) that fits their vibe.
+
+For each venue:
+- name: The real name of the establishment
+- cuisine: Cuisine type or venue type (e.g. "Japanese Omakase", "Craft Cocktail Bar", "New American", "Wine Bar")
+- priceRange: "$", "$$", "$$$", or "$$$$"
+- address: Real address or at minimum the neighborhood/area in ${input.celebrationCity}
+- whyItFitsYou: 1-2 sentences explaining why this specific spot matches THIS person's birthday energy. Reference their vibe, food preferences, or celebration style. Not a generic review.
+- rating: approximate rating out of 5 based on your knowledge (only include if confident, otherwise null)
+- venueType: "dinner", "drinks", or "wildcard"
+
+${input.foodVibe ? `Their food vibe is "${input.foodVibe}" — this should heavily shape the restaurant selection. Find places that match this energy specifically.` : ""}
+${input.groupSize === "solo" ? "They're celebrating solo — recommend places with great bar seating, counter dining, or solo-friendly atmospheres." : ""}
+${input.groupSize === "large" ? "They're celebrating with a large group — recommend places that handle groups well, have private dining options, or communal vibes." : ""}`,
   };
 }
 

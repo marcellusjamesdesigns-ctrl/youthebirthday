@@ -234,28 +234,37 @@ export function DashboardShell({
             );
           })()}
 
-          {/* ─── Restaurants ────────────────────────────────────────────── */}
+          {/* ─── Restaurants & Venues ───────────────────────────────────── */}
           {sections?.restaurants && sections.restaurants.length > 0 && (
             <section className="animate-fade-rise space-y-5">
-              <SectionLabel>Where to Eat</SectionLabel>
+              <SectionLabel>Where to Go</SectionLabel>
               <div className="space-y-3">
                 {sections.restaurants.map((r) => (
                   <div
                     key={r.name}
-                    className="luxury-card p-5 flex justify-between items-start"
+                    className="luxury-card p-5 space-y-2.5"
                   >
-                    <div>
-                      <h3 className="text-sm font-medium text-foreground">{r.name}</h3>
-                      <p className="text-xs text-muted-foreground/60 mt-0.5">
-                        {r.cuisine} · {r.priceRange}
-                      </p>
-                      <p className="text-xs text-muted-foreground/40 mt-1">
-                        {r.address}
-                      </p>
+                    <div className="flex justify-between items-start gap-3">
+                      <div>
+                        <h3 className="text-sm font-medium text-foreground">{r.name}</h3>
+                        <p className="text-xs text-muted-foreground/60 mt-0.5">
+                          {r.cuisine} · {r.priceRange}
+                        </p>
+                      </div>
+                      {r.rating != null && (
+                        <span className="text-sm font-mono text-champagne/60 shrink-0">
+                          {r.rating}★
+                        </span>
+                      )}
                     </div>
-                    {r.rating && (
-                      <span className="text-sm font-mono text-champagne/60">{r.rating}</span>
+                    {r.whyItFitsYou && r.whyItFitsYou !== "A great spot for your birthday." && (
+                      <p className="text-[13px] text-muted-foreground/70 leading-relaxed">
+                        {r.whyItFitsYou}
+                      </p>
                     )}
+                    <p className="text-[11px] text-muted-foreground/40">
+                      {r.address}
+                    </p>
                   </div>
                 ))}
               </div>

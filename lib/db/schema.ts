@@ -30,6 +30,7 @@ export const birthdaySessions = pgTable("birthday_sessions", {
   currentCity: text("current_city").notNull(),
   currentLat: text("current_lat"),
   currentLng: text("current_lng"),
+  celebrationCity: text("celebration_city"), // where they're celebrating (defaults to currentCity)
   celebrationVibe: text("celebration_vibe").notNull(),
   birthdayGoals: jsonb("birthday_goals").$type<string[]>(),
   mode: birthdayModeEnum("mode").notNull().default("quick"),

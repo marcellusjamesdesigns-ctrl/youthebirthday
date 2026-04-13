@@ -33,6 +33,7 @@ export const BirthdayInputSchema = z.object({
   currentCity: z.string().min(1).max(200),
   currentLat: z.string().optional(),
   currentLng: z.string().optional(),
+  celebrationCity: z.string().max(200).optional(), // where they're celebrating (defaults to currentCity)
 
   // Step 2 — Vibe
   celebrationVibe: z.enum(celebrationVibes),

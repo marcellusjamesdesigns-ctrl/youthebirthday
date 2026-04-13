@@ -12,6 +12,7 @@ export interface NormalizedInput {
   birthMonth: number; // 1-12
   birthMonthName: string; // "June"
   currentCity: string;
+  celebrationCity: string; // where they're actually celebrating (resolved: falls back to currentCity)
   celebrationVibe: string;
   birthdayGoals: string[];
   mode: "quick" | "cosmic";
@@ -75,6 +76,7 @@ export function normalizeInput(session: Session): NormalizedInput {
     birthMonth: month,
     birthMonthName: monthNames[month - 1],
     currentCity: session.currentCity,
+    celebrationCity: session.celebrationCity?.trim() || session.currentCity,
     celebrationVibe: session.celebrationVibe,
     birthdayGoals: (session.birthdayGoals as string[]) ?? [],
     mode: session.mode ?? "quick",
@@ -98,6 +100,7 @@ export function inputToCacheKey(input: NormalizedInput, step: string, promptVers
     zodiacSign: input.zodiacSign,
     birthMonth: input.birthMonth, // critical for seasonal differentiation
     currentCity: input.currentCity,
+    celebrationCity: input.celebrationCity,
     celebrationVibe: input.celebrationVibe,
     birthdayGoals: input.birthdayGoals,
     mode: input.mode,

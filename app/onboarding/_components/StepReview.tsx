@@ -45,7 +45,13 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
         <Divider />
         <ReviewRow label="Birthday" value={`${store.birthdate} · turning ${ageTurning}`} />
         <Divider />
-        <ReviewRow label="City" value={store.currentCity} />
+        <ReviewRow label="Home city" value={store.currentCity} />
+        {store.celebrationCity && store.celebrationCity !== store.currentCity && (
+          <>
+            <Divider />
+            <ReviewRow label="Celebrating in" value={store.celebrationCity} accent />
+          </>
+        )}
         <Divider />
         <ReviewRow label="Vibe" value={store.celebrationVibe} />
         <Divider />

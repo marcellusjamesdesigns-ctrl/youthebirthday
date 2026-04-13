@@ -12,6 +12,7 @@ export interface OnboardingState {
   currentCity: string;
   currentLat: string;
   currentLng: string;
+  celebrationCity: string; // where they're celebrating (defaults to currentCity)
   // Step 2 — Vibe
   celebrationVibe: string;
   birthdayGoals: string[];
@@ -47,6 +48,7 @@ const initialState: OnboardingState = {
   currentCity: "",
   currentLat: "",
   currentLng: "",
+  celebrationCity: "",
   celebrationVibe: "",
   birthdayGoals: [],
   pronoun: "",

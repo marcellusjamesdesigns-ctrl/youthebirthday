@@ -28,6 +28,7 @@ export async function POST(request: Request) {
     currentCity: input.currentCity,
     currentLat: input.currentLat || null,
     currentLng: input.currentLng || null,
+    celebrationCity: input.celebrationCity || null,
     celebrationVibe: input.celebrationVibe,
     birthdayGoals: input.birthdayGoals,
     mode: input.mode,

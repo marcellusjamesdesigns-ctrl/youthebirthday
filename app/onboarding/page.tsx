@@ -33,6 +33,7 @@ export default function OnboardingPage() {
           currentCity: store.currentCity,
           currentLat: store.currentLat || undefined,
           currentLng: store.currentLng || undefined,
+          celebrationCity: store.celebrationCity || undefined,
           celebrationVibe: store.celebrationVibe,
           birthdayGoals: store.birthdayGoals,
           pronoun: store.pronoun || undefined,

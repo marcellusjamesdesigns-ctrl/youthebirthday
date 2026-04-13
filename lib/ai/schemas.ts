@@ -72,6 +72,21 @@ export const CelebrationStyleSchema = z.object({
   playlist: z.string().describe("Genre/vibe descriptor for a birthday playlist"),
 });
 
+// Step 4: Restaurant / venue recommendations (AI-generated)
+export const RestaurantSchema = z.object({
+  restaurants: z.array(
+    z.object({
+      name: z.string().describe("Real name of the venue"),
+      cuisine: z.string().describe("Cuisine type or venue type"),
+      priceRange: z.enum(["$", "$$", "$$$", "$$$$"]),
+      address: z.string().describe("Real address or neighborhood"),
+      whyItFitsYou: z.string().describe("1-2 sentence personalized explanation"),
+      rating: z.number().min(1).max(5).nullable().describe("Rating out of 5, null if unsure"),
+      venueType: z.enum(["dinner", "drinks", "wildcard"]).describe("Category of venue"),
+    })
+  ).min(4).max(6),
+});
+
 // Step 5: Cosmic profile (conditional)
 export const CosmicProfileSchema = z.object({
   sunSign: z.string(),
