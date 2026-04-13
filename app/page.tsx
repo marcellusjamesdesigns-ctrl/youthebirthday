@@ -1,5 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ParticleField } from "@/components/home/ParticleField";
+import { BirthdayTicker } from "@/components/home/BirthdayTicker";
+import { CyclingPreview } from "@/components/home/CyclingPreview";
+import { ZodiacBar } from "@/components/home/ZodiacBar";
 
 export const metadata: Metadata = {
   title: "You The Birthday — Personalized Birthday Titles, Captions, Palettes & Trip Ideas",
@@ -51,67 +55,77 @@ const features = [
 ];
 
 const accentColors: Record<string, string> = {
-  champagne: "rgba(212, 175, 55, 0.08)",
-  rose: "rgba(212, 160, 160, 0.08)",
-  coral: "rgba(232, 131, 107, 0.08)",
-  lavender: "rgba(184, 169, 201, 0.08)",
-  plum: "rgba(155, 114, 207, 0.08)",
+  champagne: "rgba(212, 175, 55, 0.06)",
+  rose:      "rgba(212, 160, 160, 0.06)",
+  coral:     "rgba(232, 131, 107, 0.06)",
+  lavender:  "rgba(184, 169, 201, 0.06)",
+  plum:      "rgba(155, 114, 207, 0.06)",
 };
 
 const accentBorders: Record<string, string> = {
-  champagne: "rgba(212, 175, 55, 0.15)",
-  rose: "rgba(212, 160, 160, 0.15)",
-  coral: "rgba(232, 131, 107, 0.15)",
-  lavender: "rgba(184, 169, 201, 0.15)",
-  plum: "rgba(155, 114, 207, 0.15)",
+  champagne: "rgba(212, 175, 55, 0.18)",
+  rose:      "rgba(212, 160, 160, 0.18)",
+  coral:     "rgba(232, 131, 107, 0.18)",
+  lavender:  "rgba(184, 169, 201, 0.18)",
+  plum:      "rgba(155, 114, 207, 0.18)",
 };
 
 export default function Home() {
   return (
     <div className="bg-gradient-hero">
-      {/* Hero */}
-      <section className="flex min-h-[85vh] flex-col items-center justify-center px-6 relative">
-        {/* Subtle radial glow behind hero text */}
+
+      {/* ── HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative flex min-h-[90vh] flex-col items-center justify-center px-6 overflow-hidden">
+
+        {/* Ambient radial glow */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-champagne/[0.03] blur-[120px]" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-champagne/[0.04] blur-[140px]" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] rounded-full bg-plum/[0.03] blur-[120px]" />
         </div>
 
-        <div className="max-w-3xl text-center space-y-10 relative">
+        {/* Particle field */}
+        <ParticleField />
+
+        <div className="max-w-3xl text-center space-y-10 relative z-10">
+
+          {/* Eyebrow */}
           <div className="space-y-6 animate-fade-rise">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/70 font-medium">
+            <p className="text-[11px] uppercase tracking-[0.35em] text-champagne/60 font-medium">
               You The Birthday
             </p>
-            <h1 className="heading-editorial text-4xl sm:text-6xl lg:text-7xl xl:text-8xl text-foreground">
+
+            {/* Hero headline */}
+            <h1 className="heading-editorial text-5xl sm:text-6xl lg:text-7xl xl:text-[90px] text-foreground">
               Your birthday,
               <br />
-              <span className="italic text-champagne/80">personalized</span>
+              <span className="shimmer-gold italic">personalized</span>
               <br />
               like an experience.
             </h1>
           </div>
 
-          <p className="mx-auto max-w-lg text-base text-muted-foreground leading-relaxed animate-fade-rise stagger-2">
+          <p className="mx-auto max-w-lg text-base text-muted-foreground/70 leading-relaxed animate-fade-rise stagger-2">
             Birthday titles, captions, color palettes, destinations,
             and celebration style — curated for you, powered by your
             vibe and your story.
           </p>
 
           <div className="space-y-4 animate-fade-rise stagger-3">
-            <Link
-              href="/onboarding"
-              className="inline-block rounded-full bg-foreground px-10 py-3.5 text-[15px] font-medium text-background tracking-wide transition-all hover:bg-foreground/90 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.25)]"
-            >
+            <Link href="/onboarding" className="glow-btn">
               Start Your Birthday
             </Link>
-            <p className="text-xs text-muted-foreground/50 tracking-wide">
+            <p className="text-xs text-muted-foreground/40 tracking-wide">
               No account needed. Takes 2 minutes.
             </p>
           </div>
         </div>
       </section>
 
-      {/* What You Get — promotional card grid */}
-      <section className="py-20 px-6">
+      {/* ── TICKER ────────────────────────────────────────────────────── */}
+      <BirthdayTicker />
+
+      {/* ── FEATURES ──────────────────────────────────────────────────── */}
+      <section className="py-24 px-6">
         <div className="mx-auto max-w-5xl">
           <div className="text-center mb-14 space-y-3">
             <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground/50">
@@ -121,21 +135,22 @@ export default function Home() {
               Six personalized sections, one dashboard
             </h2>
           </div>
+
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((item) => (
               <div
                 key={item.label}
-                className="group relative rounded-xl p-6 space-y-3 border transition-all duration-300 hover:scale-[1.01]"
+                className="glass-card group relative rounded-xl p-6 space-y-3 transition-all duration-300 hover:scale-[1.02]"
                 style={{
-                  background: accentColors[item.accent],
-                  borderColor: accentBorders[item.accent],
+                  background:   accentColors[item.accent],
+                  borderColor:  accentBorders[item.accent],
                 }}
               >
-                {/* Subtle top glow line */}
+                {/* Top glow line */}
                 <div
-                  className="absolute top-0 left-6 right-6 h-px opacity-40"
+                  className="absolute top-0 left-6 right-6 h-px opacity-50"
                   style={{
-                    background: `linear-gradient(90deg, transparent, ${accentBorders[item.accent].replace("0.15", "0.4")}, transparent)`,
+                    background: `linear-gradient(90deg, transparent, ${accentBorders[item.accent]}, transparent)`,
                   }}
                 />
                 <p className="text-[11px] uppercase tracking-[0.2em] text-champagne font-medium">
@@ -150,30 +165,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social proof moment */}
-      <section className="py-12 px-6">
-        <div className="mx-auto max-w-3xl text-center space-y-4">
-          <div className="flex justify-center gap-8 text-center">
-            <div>
-              <p className="text-2xl font-editorial text-foreground">2 min</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">to generate</p>
-            </div>
-            <div className="w-px bg-border/20" />
-            <div>
-              <p className="text-2xl font-editorial text-foreground">6</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">sections</p>
-            </div>
-            <div className="w-px bg-border/20" />
-            <div>
-              <p className="text-2xl font-editorial text-foreground">Free</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">no account</p>
-            </div>
+      {/* ── STATS ─────────────────────────────────────────────────────── */}
+      <section className="py-12 px-6 border-t border-border/10">
+        <div className="mx-auto max-w-3xl">
+          <div className="flex justify-center gap-8 sm:gap-16 text-center">
+            {[
+              { value: "2 min", label: "to generate" },
+              { value: "6",     label: "sections"    },
+              { value: "Free",  label: "no account"  },
+            ].map(({ value, label }, i) => (
+              <div key={i}>
+                <p className="text-2xl font-editorial text-foreground">{value}</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 mt-1">
+                  {label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Sample Output Preview — proves quality before commitment */}
-      <section className="py-20 px-6 border-t border-border/20">
+      {/* ── PRODUCT PREVIEW ───────────────────────────────────────────── */}
+      <section className="py-24 px-6 border-t border-border/20">
         <div className="mx-auto max-w-4xl">
           <div className="text-center mb-12 space-y-3">
             <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground/50">
@@ -184,59 +197,20 @@ export default function Home() {
             </h2>
           </div>
 
-          {/* Sample dashboard preview */}
-          <div className="luxury-card p-6 sm:p-8 space-y-8">
-            {/* Identity preview */}
-            <div className="text-center space-y-3">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-champagne/50">you the birthday</p>
-              <h3 className="heading-editorial text-2xl sm:text-3xl">Thirty, Dripped Out, and Untouchable</h3>
-              <div className="flex justify-center gap-2">
-                <span className="text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full border border-champagne/20 text-champagne/60">Velvet Sovereign</span>
-                <span className="text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full border border-border/60 text-muted-foreground/50">The Indulgence Epoch</span>
-              </div>
-              <p className="text-xs text-muted-foreground/40">Jade · turning 30</p>
-            </div>
+          <CyclingPreview />
 
-            {/* Palette preview */}
-            <div className="space-y-2">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/40">Color story</p>
-              <div className="flex h-12 rounded-lg overflow-hidden">
-                <div className="flex-1" style={{ backgroundColor: "#1a1a2e" }} />
-                <div className="flex-1" style={{ backgroundColor: "#C47E3A" }} />
-                <div className="flex-1" style={{ backgroundColor: "#d4af37" }} />
-                <div className="flex-1" style={{ backgroundColor: "#8B1A2F" }} />
-                <div className="flex-1" style={{ backgroundColor: "#E8D5B0" }} />
-              </div>
-              <p className="text-[11px] text-muted-foreground/40">Midnight Luxe · sophisticated, mysterious</p>
-            </div>
-
-            {/* Caption preview */}
-            <div className="space-y-2">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/40">Caption</p>
-              <p className="text-sm text-foreground/70 italic font-editorial">
-                &ldquo;Jade. 30. Atlanta. Not a warning — a welcome.&rdquo;
-              </p>
-            </div>
-
-            {/* Destination preview */}
-            <div className="space-y-1">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/40">Destination match</p>
-              <p className="text-sm text-foreground/60">Kyoto, Japan <span className="text-muted-foreground/30">· luxury · cultural</span></p>
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-            <Link
-              href="/onboarding"
-              className="inline-block rounded-full bg-foreground px-8 py-3 text-[14px] font-medium text-background tracking-wide transition-all hover:bg-foreground/90 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.25)]"
-            >
+          <div className="text-center mt-10">
+            <Link href="/onboarding" className="glow-btn">
               Get Yours
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Explore Content */}
+      {/* ── ZODIAC BAR ────────────────────────────────────────────────── */}
+      <ZodiacBar />
+
+      {/* ── EXPLORE CONTENT ───────────────────────────────────────────── */}
       <section className="py-16 px-6 border-t border-border/20">
         <div className="mx-auto max-w-5xl text-center space-y-8">
           <h2 className="heading-editorial text-2xl sm:text-3xl">
@@ -244,17 +218,17 @@ export default function Home() {
           </h2>
           <div className="flex flex-wrap justify-center gap-2.5">
             {[
-              { label: "30th Captions", href: "/birthday-captions/30th-birthday-captions" },
-              { label: "Luxury Destinations", href: "/birthday-destinations/luxury-birthday-destinations" },
-              { label: "Soft Life Theme", href: "/birthday-themes/soft-life-birthday-theme" },
-              { label: "Color Palettes", href: "/birthday-palettes/birthday-color-palette-inspiration" },
-              { label: "Zodiac Birthdays", href: "/zodiac-birthdays" },
-              { label: "Birthday Ideas", href: "/birthday-ideas" },
+              { label: "30th Captions",      href: "/birthday-captions/30th-birthday-captions"             },
+              { label: "Luxury Destinations", href: "/birthday-destinations/luxury-birthday-destinations"   },
+              { label: "Soft Life Theme",     href: "/birthday-themes/soft-life-birthday-theme"             },
+              { label: "Color Palettes",      href: "/birthday-palettes/birthday-color-palette-inspiration" },
+              { label: "Zodiac Birthdays",    href: "/zodiac-birthdays"                                     },
+              { label: "Birthday Ideas",      href: "/birthday-ideas"                                       },
             ].map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-full border border-border/60 px-5 py-2 text-[13px] text-muted-foreground/60 hover:text-foreground hover:border-foreground/20 hover:bg-foreground/3 transition-all"
+                className="rounded-full border border-border/50 px-5 py-2 text-[13px] text-muted-foreground/60 hover:text-champagne hover:border-champagne/30 hover:bg-champagne/5 transition-all duration-200"
               >
                 {link.label}
               </Link>
@@ -262,6 +236,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
     </div>
   );
 }

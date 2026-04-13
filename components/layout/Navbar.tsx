@@ -31,7 +31,7 @@ export function Navbar() {
           </Link>
           <Link
             href="/onboarding"
-            className="rounded-full border border-foreground/20 bg-foreground/5 px-5 py-2.5 min-h-[44px] flex items-center text-[13px] font-medium text-foreground tracking-wide transition-all hover:bg-foreground/10 hover:border-foreground/30"
+            className="glow-nav-btn"
           >
             Start
           </Link>
