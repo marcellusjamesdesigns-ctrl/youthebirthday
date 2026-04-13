@@ -256,8 +256,21 @@ export function DashboardShell({
                     className="luxury-card p-5 space-y-2.5"
                   >
                     <div className="flex justify-between items-start gap-3">
-                      <div>
-                        <h3 className="text-sm font-medium text-foreground">{r.name}</h3>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h3 className="text-sm font-medium text-foreground">{r.name}</h3>
+                          {r.venueType && (
+                            <span className={`text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 rounded-full border shrink-0 ${
+                              r.venueType === "dinner"
+                                ? "border-champagne/20 text-champagne/60 bg-champagne/5"
+                                : r.venueType === "drinks"
+                                ? "border-plum/20 text-plum/60 bg-plum/5"
+                                : "border-border/40 text-muted-foreground/55"
+                            }`}>
+                              {r.venueType}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-muted-foreground/60 mt-0.5">
                           {r.cuisine} · {r.priceRange}
                         </p>
@@ -306,8 +319,9 @@ export function DashboardShell({
                         accent="plum"
                       />
                     ) : (
-                      <div className="rounded-xl border border-border/20 p-4 flex items-center justify-center">
+                      <div className="rounded-xl border border-border/20 p-4 flex flex-col items-center justify-center gap-1 text-center">
                         <span className="text-[10px] text-muted-foreground/30 uppercase tracking-widest">Moon</span>
+                        <span className="text-[9px] text-muted-foreground/25 leading-tight">add birth time</span>
                       </div>
                     )}
                     {sections.cosmicProfile.risingSign ? (
@@ -318,8 +332,9 @@ export function DashboardShell({
                         accent="mixed"
                       />
                     ) : (
-                      <div className="rounded-xl border border-border/20 p-4 flex items-center justify-center">
+                      <div className="rounded-xl border border-border/20 p-4 flex flex-col items-center justify-center gap-1 text-center">
                         <span className="text-[10px] text-muted-foreground/30 uppercase tracking-widest">Rising</span>
+                        <span className="text-[9px] text-muted-foreground/25 leading-tight">add birth time</span>
                       </div>
                     )}
                   </div>

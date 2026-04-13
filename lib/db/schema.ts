@@ -164,6 +164,7 @@ export interface Restaurant {
   whyItFitsYou: string;
   googlePlaceId?: string;
   rating?: number;
+  venueType?: "dinner" | "drinks" | "wildcard";
 }
 
 export interface CelebrationStyle {

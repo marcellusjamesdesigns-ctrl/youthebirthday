@@ -30,7 +30,7 @@ export const ColorPaletteSchema = z.object({
         })
       ).length(5),
     })
-  ).length(4),
+  ).min(4).max(6),
 });
 
 // Step 2b: Caption pack

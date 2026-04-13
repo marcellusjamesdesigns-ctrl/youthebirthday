@@ -1,6 +1,6 @@
 import type { NormalizedInput } from "./normalize-input";
 
-export const PROMPT_VERSION = "v3";
+export const PROMPT_VERSION = "v4";
 
 function vibeContext(input: NormalizedInput): string {
   const parts = [
@@ -38,16 +38,19 @@ Generate:
 export function buildPalettePrompt(input: NormalizedInput) {
   const seasonalDirection = getSeasonalColorDirection(input.birthMonth);
   const aestheticDirection = getAestheticColorDirection(input.aestheticPreference, input.celebrationVibe);
+  // Entropy seed forces LLM to produce different output even for identical inputs
+  const seed = Math.floor(Math.random() * 9000) + 1000;
 
   return {
     system: `You are a color director for "You The Birthday." You design birthday color palettes that feel intentional, premium, and aesthetically coherent. Every palette should be usable for: invitations, outfits, nails, decor, and Instagram grids.
 
 CRITICAL DIFFERENTIATION RULES:
-- The user's SEASON and AESTHETIC must materially shape the palette. A winter birthday should feel different from a summer birthday. A Y2K aesthetic should look nothing like an old-money aesthetic.
-- Do NOT default to the same "luxury editorial" color family every time. Champagne/mauve/navy is one valid palette family — but it is not the only one. Push beyond it.
-- Each palette must occupy a DIFFERENT color temperature and mood. If one palette is warm and earthy, the next should be cool and oceanic or bright and citrusy.
-- Palette names must be UNIQUE and specific to this person — never use generic names like "Midnight Luxe", "Golden Hour", "Soft Bloom", or "Earth & Stone" that could apply to anyone.`,
-    user: `Design 4 birthday color palettes for:
+- The user's MOOD, VIBE, and AESTHETIC are the primary drivers. A "Wild & Social" vibe should look RADICALLY different from a "Self-Care & Restoration" vibe. Do not average them out.
+- NEVER produce two palettes with the same dominant color family. If palette 1 has warm golds, palette 2 must not. If palette 3 has blues, palette 4 must not also be blue-forward.
+- Do NOT default to the "luxury editorial" color family (champagne/mauve/navy) unless the user explicitly chose old-money or luxury aesthetics. Push beyond it.
+- Palette names must be hyper-specific to THIS person — reference their age, city, vibe, or cultural moment. Never use names like "Midnight Luxe", "Golden Hour", "Soft Bloom", or "Earth & Stone".
+- Each palette must feel like it was designed for a completely different shoot, mood board, or editorial — not variations of the same theme.`,
+    user: `Design 6 birthday color palettes for:
 
 ${vibeContext(input)}
 Birthday season: ${input.birthMonthName} (${seasonalDirection.season})
@@ -55,23 +58,28 @@ Birthday season: ${input.birthMonthName} (${seasonalDirection.season})
 SEASONAL COLOR DIRECTION: ${seasonalDirection.direction}
 AESTHETIC COLOR DIRECTION: ${aestheticDirection}
 
+Generation seed: ${seed} (use this to introduce variation — don't produce the same palettes you'd generate for seed 0000)
+
 Each palette needs:
-- A distinctive name that references THIS person's energy, not generic luxury (e.g. for a Miami turn-up Leo: "Neon Reign" not "Golden Hour")
+- A UNIQUE name that could only apply to this person (reference their age, city, vibe, or a specific cultural moment)
 - A 2-3 word mood descriptor
 - Exactly 5 colors with: valid hex code, color name, and role (primary/accent/neutral/background/statement)
 
-The 4 palettes must be structured as:
-1. SEASONAL SIGNATURE: A palette anchored to ${input.birthMonthName}. ${seasonalDirection.palette1Direction}
-2. VIBE MATCH: A palette that captures their ${input.celebrationVibe} energy specifically. This should feel like their celebration vibe turned into colors.
-3. AESTHETIC PULL: ${input.aestheticPreference ? `A palette inspired by their "${input.aestheticPreference}" aesthetic preference.` : `A palette that matches their zodiac energy (${input.zodiacSign}).`}
-4. UNEXPECTED CONTRAST: A palette that surprises — a different color temperature, mood, or cultural reference than the other three. Still cohesive, but not the obvious choice.
+The 6 palettes MUST be structured as:
+1. SEASONAL SIGNATURE: Anchored to ${input.birthMonthName}. ${seasonalDirection.palette1Direction} — use the dominant color of this season.
+2. VIBE MATCH: Captures their "${input.celebrationVibe}" energy. ${getVibeMoodBoardDirection(input.celebrationVibe)} — name it after their specific celebration.
+3. AESTHETIC PULL: ${input.aestheticPreference ? `Inspired by "${input.aestheticPreference}" — translate this aesthetic into a color language.` : `Matches their ${input.zodiacSign} energy — use the planetary/elemental colors of this sign.`}
+4. UNEXPECTED CONTRAST: Completely different color temperature and mood. Not the obvious choice. Surprises but still cohesive.
+5. CITY COLOR: A palette that captures the color energy of ${input.celebrationCity} — think of it as a visual postcard of the city they're celebrating in.
+6. BOLD STATEMENT: The most saturated, high-contrast, "you cannot miss this" palette. Not subtle. Not muted. Maximum impact.
 
-FORBIDDEN DEFAULTS (do not generate these unless the inputs specifically demand them):
-- The standard "champagne + mauve + navy + gold" luxury palette
-- Any palette that could equally apply to a wedding invitation
-- More than one palette using predominantly neutral/muted tones
+FORBIDDEN DEFAULTS (never generate these):
+- Champagne + mauve + navy + gold (wedding palette trap)
+- More than one palette with predominantly muted/desaturated tones
+- Any two palettes sharing the same dominant hue family
+- Generic palette names that could apply to any birthday
 
-All hex codes must be valid 6-digit hex (#RRGGBB). Colors should work together as a real palette — not random.`,
+All hex codes must be valid 6-digit hex (#RRGGBB). Colors within each palette must actually work together.`,
   };
 }
 
@@ -102,6 +110,20 @@ function getSeasonalColorDirection(month: number): { season: string; direction: 
     direction: "Winter energy: deep jewel tones, icy blues, silver, evergreen, midnight navy, cranberry, frosted metallics. Dramatic, elegant, crystalline.",
     palette1Direction: "Use winter colors — deep, dramatic, crystalline. Think midnight, frost, jewel box.",
   };
+}
+
+function getVibeMoodBoardDirection(vibe: string): string {
+  const directions: Record<string, string> = {
+    "Luxury & Indulgence": "Think: deep emerald, rich cognac, black onyx, brushed gold. NOT champagne-beige. Rich and decadent.",
+    "Adventure & Travel": "Think: cerulean ocean, sun-baked terracotta, jungle green, sandstone. Saturated and kinetic.",
+    "Intimate & Cozy": "Think: candlelight amber, wine-stained burgundy, warm ivory, dusty rose. Tactile and warm.",
+    "Wild & Social": "Think: neon coral, electric cyan, hot magenta, acid yellow. Loud, party-ready, impossible to ignore.",
+    "Self-Care & Restoration": "Think: cool sage, mineral blue, cloud white, soft eucalyptus, quartz pink. Spa-calming.",
+    "Cultural & Intellectual": "Think: ink navy, oxidized copper, gallery white, terracotta, deep sienna. Museum-editorial.",
+    "Romantic & Dreamy": "Think: deep blush, silvery lavender, moonstone gray, rose gold, garnet. Soft but not saccharine.",
+    "Spiritual & Intentional": "Think: deep amethyst, midnight teal, smoke gray, gold leaf, burnt umber. Mystical and grounded.",
+  };
+  return directions[vibe] ?? "Push the color story beyond the obvious — make it feel like a distinct era.";
 }
 
 function getAestheticColorDirection(aesthetic: string | null, vibe: string): string {

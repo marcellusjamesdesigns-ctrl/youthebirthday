@@ -241,6 +241,7 @@ export async function runBirthdayPipeline(
         address: r.address,
         whyItFitsYou: r.whyItFitsYou,
         rating: r.rating ?? undefined,
+        venueType: r.venueType,
       }));
 
       await db
