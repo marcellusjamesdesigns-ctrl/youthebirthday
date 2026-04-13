@@ -1,25 +1,47 @@
 import Link from "next/link";
+import {
+  Sun,
+  Moon,
+  GeminiLogo,
+  StarFour,
+  Scales,
+  Scorpio,
+  Infinity,
+  Fish,
+  Mountains,
+  Wind,
+  Drop,
+  Fire,
+} from "@phosphor-icons/react/dist/ssr";
 
-const SIGNS = [
-  { name: "Aries",       slug: "aries",       symbol: "♈" },
-  { name: "Taurus",      slug: "taurus",      symbol: "♉" },
-  { name: "Gemini",      slug: "gemini",      symbol: "♊" },
-  { name: "Cancer",      slug: "cancer",      symbol: "♋" },
-  { name: "Leo",         slug: "leo",         symbol: "♌" },
-  { name: "Virgo",       slug: "virgo",       symbol: "♍" },
-  { name: "Libra",       slug: "libra",       symbol: "♎" },
-  { name: "Scorpio",     slug: "scorpio",     symbol: "♏" },
-  { name: "Sagittarius", slug: "sagittarius", symbol: "♐" },
-  { name: "Capricorn",   slug: "capricorn",   symbol: "♑" },
-  { name: "Aquarius",    slug: "aquarius",    symbol: "♒" },
-  { name: "Pisces",      slug: "pisces",      symbol: "♓" },
+const SIGNS: {
+  name: string;
+  slug: string;
+  Icon: React.ElementType;
+  dates: string;
+}[] = [
+  { name: "Aries",       slug: "aries",       Icon: Fire,        dates: "Mar 21 – Apr 19" },
+  { name: "Taurus",      slug: "taurus",      Icon: Mountains,   dates: "Apr 20 – May 20" },
+  { name: "Gemini",      slug: "gemini",      Icon: GeminiLogo,  dates: "May 21 – Jun 20" },
+  { name: "Cancer",      slug: "cancer",      Icon: Moon,        dates: "Jun 21 – Jul 22" },
+  { name: "Leo",         slug: "leo",         Icon: Sun,         dates: "Jul 23 – Aug 22" },
+  { name: "Virgo",       slug: "virgo",       Icon: Infinity,    dates: "Aug 23 – Sep 22" },
+  { name: "Libra",       slug: "libra",       Icon: Scales,      dates: "Sep 23 – Oct 22" },
+  { name: "Scorpio",     slug: "scorpio",     Icon: Scorpio,     dates: "Oct 23 – Nov 21" },
+  { name: "Sagittarius", slug: "sagittarius", Icon: Wind,        dates: "Nov 22 – Dec 21" },
+  { name: "Capricorn",   slug: "capricorn",   Icon: Mountains,   dates: "Dec 22 – Jan 19" },
+  { name: "Aquarius",    slug: "aquarius",    Icon: Drop,        dates: "Jan 20 – Feb 18" },
+  { name: "Pisces",      slug: "pisces",      Icon: Fish,        dates: "Feb 19 – Mar 20" },
 ];
 
 export function ZodiacBar() {
   return (
     <section className="relative py-20 px-6 border-t border-border/20 overflow-hidden">
-      {/* Ambient rotating ring in background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+      {/* Ambient rotating rings */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        aria-hidden="true"
+      >
         <div
           className="zodiac-ring w-[600px] h-[600px] rounded-full opacity-[0.025]"
           style={{
@@ -48,18 +70,23 @@ export function ZodiacBar() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-2.5">
-          {SIGNS.map((sign) => (
-            <Link
-              key={sign.slug}
-              href={`/zodiac-birthdays/${sign.slug}`}
-              className="group flex items-center gap-2 rounded-full border border-border/40 px-4 py-2 text-[13px] text-muted-foreground/60 hover:text-champagne hover:border-champagne/30 hover:bg-champagne/5 transition-all duration-200"
-            >
-              <span className="text-base group-hover:text-champagne/70 transition-colors">
-                {sign.symbol}
-              </span>
-              {sign.name}
-            </Link>
-          ))}
+          {SIGNS.map((sign) => {
+            const Icon = sign.Icon;
+            return (
+              <Link
+                key={sign.slug}
+                href={`/zodiac-birthdays/${sign.slug}`}
+                className="group flex items-center gap-2 rounded-full border border-border/40 px-4 py-2 text-[13px] text-muted-foreground/60 hover:text-champagne hover:border-champagne/30 hover:bg-champagne/5 transition-all duration-200"
+              >
+                <Icon
+                  size={15}
+                  weight="duotone"
+                  className="text-muted-foreground/50 group-hover:text-champagne/70 transition-colors"
+                />
+                {sign.name}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
