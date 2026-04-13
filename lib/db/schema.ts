@@ -177,12 +177,18 @@ export interface CelebrationStyle {
   playlist: string;
 }
 
+export interface AstrocartographyHighlight {
+  city: string;
+  country: string;
+  reason: string;
+}
+
 export interface CosmicProfile {
   sunSign: string;
   risingSign?: string;
   moonSign?: string;
   dominantElement: string;
-  astrocartographyHighlights?: string[];
+  astrocartographyHighlights?: AstrocartographyHighlight[];
   birthdayMessage: string;
 }
 

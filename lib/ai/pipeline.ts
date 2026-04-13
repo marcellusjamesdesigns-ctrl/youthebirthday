@@ -189,10 +189,16 @@ export async function runBirthdayPipeline(
         .where(eq(birthdayGenerations.id, generationId));
     }
 
-    // ─── Step 2: Palettes + Captions (parallel) ───────────────────────
-    const [paletteResult, captionResult] = await Promise.all([
+    // ─── Step 2: Palettes + Captions + Cosmic (parallel) ──────────────
+    // Cosmic runs early so astrocartography can feed into destinations
+    const cosmicPromise = input.mode === "cosmic"
+      ? runAIStep("cosmic", CosmicProfileSchema, buildCosmicPrompt)
+      : Promise.resolve(null);
+
+    const [paletteResult, captionResult, cosmicResult] = await Promise.all([
       runAIStep("palettes", ColorPaletteSchema, buildPalettePrompt),
       runAIStep("captions", CaptionPackSchema, buildCaptionPrompt),
+      cosmicPromise,
     ]);
 
     if (paletteResult || captionResult) {
@@ -205,14 +211,44 @@ export async function runBirthdayPipeline(
         .where(eq(birthdayGenerations.id, generationId));
     }
 
+    // Merge cosmic data (computed chart overrides AI for sign data)
+    let astrocartographyCities: string[] = [];
+    if (cosmicResult) {
+      const chart = input.chart;
+      const mergedCosmic = {
+        ...cosmicResult,
+        sunSign: chart?.sunSign ?? cosmicResult.sunSign,
+        moonSign: chart?.moonSign ?? cosmicResult.moonSign,
+        risingSign: chart?.risingSign ?? cosmicResult.risingSign,
+        dominantElement: chart?.dominantElement ?? cosmicResult.dominantElement,
+        birthdayMessage: cosmicResult.birthdayMessage,
+        astrocartographyHighlights: cosmicResult.astrocartographyHighlights,
+      };
+
+      await db
+        .update(birthdayGenerations)
+        .set({ cosmicProfile: mergedCosmic })
+        .where(eq(birthdayGenerations.id, generationId));
+
+      // Extract city names to seed the destination prompt
+      if (cosmicResult.astrocartographyHighlights) {
+        astrocartographyCities = cosmicResult.astrocartographyHighlights
+          .map((h: { city: string }) => h.city);
+      }
+    }
+
     // ─── Step 3: Celebration Style + Destinations (parallel) ──────────
+    // Destinations now receive astrocartography seeds if cosmic mode
+    const destinationPromptBuilder = (inp: NormalizedInput) =>
+      buildDestinationPrompt(inp, astrocartographyCities);
+
     const [celebrationResult, destinationResult] = await Promise.all([
       runAIStep(
         "celebrationStyle",
         CelebrationStyleSchema,
         buildCelebrationPrompt
       ),
-      runAIStep("destinations", DestinationSchema, buildDestinationPrompt),
+      runAIStep("destinations", DestinationSchema, destinationPromptBuilder),
     ]);
 
     if (celebrationResult || destinationResult) {
@@ -227,7 +263,7 @@ export async function runBirthdayPipeline(
         .where(eq(birthdayGenerations.id, generationId));
     }
 
-    // ─── Step 4: Restaurants (AI-generated local recs, optional Places enrichment) ───
+    // ─── Step 4: Restaurants (AI-generated local recs) ───────────────
     const restaurantResult = await runAIStep(
       "restaurants",
       RestaurantSchema,
@@ -235,7 +271,6 @@ export async function runBirthdayPipeline(
     );
 
     if (restaurantResult) {
-      // Map AI output to Restaurant[] format matching DB schema
       const restaurants = restaurantResult.restaurants.map((r) => ({
         name: r.name,
         cuisine: r.cuisine,
@@ -251,38 +286,6 @@ export async function runBirthdayPipeline(
         .set({ restaurants })
         .where(eq(birthdayGenerations.id, generationId));
     }
-
-    // ─── Step 5: Cosmic Profile (conditional) ─────────────────────────
-    // Uses computed astronomical data + AI-generated interpretive content
-    if (input.mode === "cosmic") {
-      const cosmicResult = await runAIStep(
-        "cosmic",
-        CosmicProfileSchema,
-        buildCosmicPrompt
-      );
-
-      if (cosmicResult) {
-        // Merge: computed chart values override AI output for sign data
-        const chart = input.chart;
-        const mergedCosmic = {
-          ...cosmicResult,
-          // Use computed values — these are astronomically calculated
-          sunSign: chart?.sunSign ?? cosmicResult.sunSign,
-          moonSign: chart?.moonSign ?? cosmicResult.moonSign,
-          risingSign: chart?.risingSign ?? cosmicResult.risingSign,
-          dominantElement: chart?.dominantElement ?? cosmicResult.dominantElement,
-          // Keep AI-generated interpretive content
-          birthdayMessage: cosmicResult.birthdayMessage,
-          astrocartographyHighlights: cosmicResult.astrocartographyHighlights,
-        };
-
-        await db
-          .update(birthdayGenerations)
-          .set({ cosmicProfile: mergedCosmic })
-          .where(eq(birthdayGenerations.id, generationId));
-      }
-    }
-    // cosmic already marked "skipped" in initial status if mode !== cosmic
 
     // ─── Finalize ─────────────────────────────────────────────────────
     await db

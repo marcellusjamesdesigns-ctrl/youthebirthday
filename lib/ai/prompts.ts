@@ -1,6 +1,6 @@
 import type { NormalizedInput } from "./normalize-input";
 
-export const PROMPT_VERSION = "v4";
+export const PROMPT_VERSION = "v5";
 
 function vibeContext(input: NormalizedInput): string {
   const parts = [
@@ -177,18 +177,32 @@ Do NOT write: "Another year around the sun", "Birthday girl/boy", "It's my birth
   };
 }
 
-export function buildDestinationPrompt(input: NormalizedInput) {
+export function buildDestinationPrompt(input: NormalizedInput, astrocartographyCities: string[] = []) {
   const birthdayWindow = getBirthdayWindow(input.birthMonth);
   const isDifferentCity = input.celebrationCity.toLowerCase() !== input.currentCity.toLowerCase();
+  const isLocal = !isDifferentCity;
+
+  const astroSeedInstruction = astrocartographyCities.length > 0
+    ? `\n\nCOSMIC SEED: This person's astrocartography chart highlights these cities: ${astrocartographyCities.join(", ")}. If any of these fit the timing and vibe, include 1-2 as picks and note they're a "cosmic match" in whyItFitsYou. Don't force them if they don't fit.`
+    : "";
+
+  const localInstruction = isLocal
+    ? `THIS PERSON IS CELEBRATING LOCALLY in ${input.celebrationCity}. They are NOT looking for flights — they want to be inspired by:
+- 1-2 "season" picks that are genuinely worth traveling to for a birthday trip (alternative destinations they could consider)
+- 1-2 "season" picks that are day trips, weekend getaways, or nearby escapes from ${input.celebrationCity} (driveable or short train/flight)
+- "dream" picks are bucket-list destinations they should plan for their birthday year
+
+Frame the local picks as "if you want to get away" not "you should leave" — respect that they chose to celebrate at home.`
+    : `This person is celebrating in ${input.celebrationCity} (traveling from ${input.currentCity}). They've already chosen their celebration city, so the destination section should inspire FUTURE birthday trips and alternatives. At least one "season" pick should be near or accessible from ${input.celebrationCity}.`;
 
   return {
     system: `You are a birthday travel advisor for "You The Birthday." You recommend destinations like a well-traveled friend who knows the person — not a search engine. Your picks should feel curated, not algorithmic.
 
-CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. The first 3-4 destinations MUST be genuinely great to visit around their birthday month (${birthdayWindow}). The remaining 2-3 can be "dream picks" — places that match their vibe beautifully but shine best in a different season.
+CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. "Season" picks MUST be genuinely great to visit around their birthday month (${birthdayWindow}). "Dream" picks match their vibe but shine best in a different season.
 
-${isDifferentCity ? `NOTE: This person is already planning to celebrate in ${input.celebrationCity}. At least one "season" pick should be a destination near or easily accessible from ${input.celebrationCity}. The other picks should be distinct alternatives.` : `NOTE: This person is based in ${input.currentCity}. Include at least one driveable/short-flight option from there as a "season" pick.`}
+${localInstruction}${astroSeedInstruction}
 
-This is a birthday product. If someone sees "best in March" for their June birthday in the top section, trust drops immediately. Timing truth matters more than poetic matching.`,
+This is a birthday product. Timing truth matters more than poetic matching.`,
     user: `Recommend 6-7 birthday destinations for:
 
 ${vibeContext(input)}
@@ -205,14 +219,10 @@ These deeply match their vibe but are best in another season. Timing fit should 
 
 For each destination:
 - city and country
-- whyItFitsYou: 2-3 sentences explaining why THIS person should go THERE. Reference their vibe, age, and goals. Don't just describe the city — explain the match.
+- whyItFitsYou: 2-3 sentences explaining why THIS person should go THERE. Reference their vibe, age, and goals. Don't just describe the city — explain the match.${astrocartographyCities.length > 0 ? " If this is a cosmic match, mention it." : ""}
 - bestMonths: array of the best 2-4 months to visit (e.g. ["March", "April"])
-- timingFit: "perfect" (their birthday month is peak season), "good" (shoulder season, still great), "workable" (doable but not ideal), or "off-season" (genuinely better another time)
-- timingNote: human-readable timing copy:
-  - For perfect: "Great around your birthday"
-  - For good: "Still excellent in ${input.birthMonthName}"
-  - For workable: "Doable in ${input.birthMonthName} — expect [specific condition]"
-  - For off-season: "Best in [months] — a strong birthday-year trip"
+- timingFit: "perfect" | "good" | "workable" | "off-season"
+- timingNote: human-readable timing copy
 - vibeMatch: 2-4 vibe tags (luxury, beach, nightlife, cultural, wellness, adventure, romantic, solo-friendly, foodie, artistic)
 - estimatedBudget: "budget", "mid", or "luxury"
 - section: "season" for Group 1, "dream" for Group 2
@@ -318,7 +328,11 @@ DO NOT generate sunSign, moonSign, risingSign, or dominantElement — these are 
 
 - birthdayMessage: A personalized 2-3 sentence cosmic birthday message. Reference their sun sign (${chart?.sunSign ?? input.zodiacSign}), moon sign (${chart?.moonSign ?? "unknown"}), age (${input.ageTurning}), and vibe. This should feel like the universe wrote them a note. Be specific to their chart placements.
 
-${input.birthCity ? `- astrocartographyHighlights: 2-3 locations where someone with this chart configuration would feel energized for celebration, travel, or growth. Frame these as "places where your chart lights up" — inspirational travel suggestions informed by their sign placements, not precise planetary line calculations.` : "Skip astrocartographyHighlights."}
+${input.birthCity ? `- astrocartographyHighlights: 2-3 locations where someone with this chart configuration would feel energized for celebration, travel, or growth. For each, provide:
+  - city: the city name (e.g. "Lisbon")
+  - country: the country (e.g. "Portugal")
+  - reason: 1-2 sentences explaining why this place lights up their chart. Reference specific planetary placements.
+  Frame these as "places where your chart lights up" — inspirational travel suggestions informed by their sign placements, not precise planetary line calculations.` : "Skip astrocartographyHighlights."}
 
 Keep it grounded. This should feel insightful, not like a fortune cookie.`,
   };

@@ -93,7 +93,13 @@ export const CosmicProfileSchema = z.object({
   risingSign: z.string().optional(),
   moonSign: z.string().optional(),
   dominantElement: z.string(),
-  astrocartographyHighlights: z.array(z.string()).optional(),
+  astrocartographyHighlights: z.array(
+    z.object({
+      city: z.string().describe("City name"),
+      country: z.string().describe("Country name"),
+      reason: z.string().describe("1-2 sentence explanation of why this place lights up their chart"),
+    })
+  ).optional(),
   birthdayMessage: z
     .string()
     .describe("Personalized cosmic birthday message, 2-3 sentences"),

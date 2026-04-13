@@ -41,12 +41,27 @@ const C: Record<string, [number, number]> = {
   "Tel Aviv":[32.09,34.78],Fez:[34.02,-5.01],Bogotá:[4.71,-74.07],
 };
 
-const CHAMPAGNE_COBE: [number, number, number] = [0.831, 0.686, 0.216];
-const PLUM_COBE: [number, number, number] = [0.608, 0.447, 0.812];
+const DEFAULT_SEASON: [number, number, number] = [0.831, 0.686, 0.216]; // champagne
+const DEFAULT_DREAM: [number, number, number] = [0.608, 0.447, 0.812]; // plum
+
+function hexToCobeColor(hex: string): [number, number, number] {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  return [r, g, b];
+}
 
 interface MarkerEntry { lat: number; lng: number; dest: Destination }
 
-export function DestinationGlobe({ destinations }: { destinations: Destination[] }) {
+interface DestinationGlobeProps {
+  destinations: Destination[];
+  seasonColor?: string; // hex from user's palette primary
+  dreamColor?: string;  // hex from user's palette accent
+}
+
+export function DestinationGlobe({ destinations, seasonColor, dreamColor }: DestinationGlobeProps) {
+  const seasonCobe = seasonColor ? hexToCobeColor(seasonColor) : DEFAULT_SEASON;
+  const dreamCobe = dreamColor ? hexToCobeColor(dreamColor) : DEFAULT_DREAM;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const phiRef = useRef(0);
@@ -69,7 +84,7 @@ export function DestinationGlobe({ destinations }: { destinations: Destination[]
       const cobeMarkers = markers.map((m) => ({
         location: [m.lat, m.lng] as [number, number],
         size: m.dest.section === "dream" ? 0.05 : 0.07,
-        color: m.dest.section === "dream" ? PLUM_COBE : CHAMPAGNE_COBE,
+        color: m.dest.section === "dream" ? dreamCobe : seasonCobe,
       }));
 
       const globe = createGlobe(canvas, {
@@ -83,7 +98,7 @@ export function DestinationGlobe({ destinations }: { destinations: Destination[]
         mapSamples: 20000,
         mapBrightness: 4.5,
         baseColor: [0.12, 0.12, 0.13],
-        markerColor: CHAMPAGNE_COBE,
+        markerColor: seasonCobe,
         glowColor: [0.08, 0.07, 0.06],
         markers: cobeMarkers,
       });
@@ -170,12 +185,12 @@ export function DestinationGlobe({ destinations }: { destinations: Destination[]
 
       <div className="absolute bottom-3 left-3 flex flex-col gap-1 pointer-events-none">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: "#d4af37", boxShadow: "0 0 5px #d4af3780" }} />
-          <span className="text-[9px] uppercase tracking-[0.15em] text-champagne/55">Season match</span>
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: seasonColor || "#d4af37", boxShadow: `0 0 5px ${seasonColor || "#d4af37"}80` }} />
+          <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/55">Season match</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: "#9b72cf", boxShadow: "0 0 5px #9b72cf70" }} />
-          <span className="text-[9px] uppercase tracking-[0.15em] text-plum/50">Dream pick</span>
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dreamColor || "#9b72cf", boxShadow: `0 0 5px ${dreamColor || "#9b72cf"}70` }} />
+          <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/50">Dream pick</span>
         </div>
       </div>
     </div>

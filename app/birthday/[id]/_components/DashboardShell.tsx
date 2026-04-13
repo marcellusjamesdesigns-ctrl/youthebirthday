@@ -204,6 +204,13 @@ export function DashboardShell({
             // Fallback: if no section field (old generations), show all as season
             const hasNewFormat = sections.destinations.some((d) => d.section);
 
+            // Extract primary + accent colors from user's first palette for globe theming
+            const firstPalette = sections?.palettes?.[0];
+            const seasonHex = firstPalette?.colors?.find((c) => c.role?.includes("primary"))?.hex
+              ?? firstPalette?.colors?.[0]?.hex;
+            const dreamHex = firstPalette?.colors?.find((c) => c.role?.includes("accent"))?.hex
+              ?? firstPalette?.colors?.[2]?.hex;
+
             return (
               <>
                 {seasonPicks.length > 0 && (
@@ -214,7 +221,11 @@ export function DashboardShell({
                         Picked for your vibe, budget, and the time of year you&apos;re actually celebrating.
                       </p>
                     </div>
-                    <DestinationGlobe destinations={sections.destinations!} />
+                    <DestinationGlobe
+                      destinations={sections.destinations!}
+                      seasonColor={seasonHex}
+                      dreamColor={dreamHex}
+                    />
                     <div className="space-y-3">
                       {seasonPicks.map((dest, i) => (
                         <DestinationCard key={dest.city} dest={dest} index={i} />
@@ -362,9 +373,18 @@ export function DashboardShell({
                         Your chart lights up in
                       </p>
                       {sections.cosmicProfile.astrocartographyHighlights.map((h, idx) => (
-                        <p key={idx} className="text-sm text-foreground/80 pl-4 border-l border-plum/20">
-                          {h}
-                        </p>
+                        <div key={idx} className="pl-4 border-l border-plum/20 space-y-0.5">
+                          {typeof h === "string" ? (
+                            <p className="text-sm text-foreground/80">{h}</p>
+                          ) : (
+                            <>
+                              <p className="text-sm font-medium text-foreground/80">
+                                {h.city}, {h.country}
+                              </p>
+                              <p className="text-xs text-muted-foreground/60">{h.reason}</p>
+                            </>
+                          )}
+                        </div>
                       ))}
                     </div>
                   )}
