@@ -6,9 +6,6 @@
  *   import { IconStar } from "@/components/ui/icons";
  *   <IconStar size={16} weight="duotone" />
  *
- * Usage in Client Components:
- *   Same import — works with optimizePackageImports in next.config.ts
- *
  * Weight guide for this project:
  *   "duotone"  → hero moments, featured icons, zodiac
  *   "light"    → supporting UI, labels, metadata
@@ -100,4 +97,4 @@ export {
   Lock       as IconLock,
   SealCheck  as IconVerified,
   Info       as IconInfo,
-} from "@phosphor-icons/react";
+} from "@phosphor-icons/react/dist/ssr";

@@ -12,7 +12,7 @@ import {
   Wind,
   Drop,
   Fire,
-} from "@phosphor-icons/react";
+} from "@phosphor-icons/react/dist/ssr";
 
 const SIGNS: {
   name: string;
