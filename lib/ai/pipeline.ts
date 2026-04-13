@@ -44,7 +44,9 @@ export async function runBirthdayPipeline(
   generationId: string
 ) {
   const db = getDb();
+  console.log(JSON.stringify({ level: "info", msg: "pipeline:start", sessionId: session.id, generationId }));
   const input = normalizeInput(session);
+  console.log(JSON.stringify({ level: "info", msg: "pipeline:normalized", zodiac: input.zodiacSign, mode: input.mode }));
   let totalTokens: TokenUsage = {
     inputTokens: 0,
     outputTokens: 0,

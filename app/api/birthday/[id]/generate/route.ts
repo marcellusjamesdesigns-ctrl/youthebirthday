@@ -77,7 +77,17 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
   );
 
   // Fire the pipeline in the background — response returns immediately
-  waitUntil(runBirthdayPipeline(session, generationId));
+  waitUntil(
+    runBirthdayPipeline(session, generationId).catch((err) => {
+      console.error(JSON.stringify({
+        level: "error",
+        msg: "pipeline:crash",
+        generationId,
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      }));
+    })
+  );
 
   return NextResponse.json({ generationId, version });
 }
