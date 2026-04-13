@@ -50,7 +50,7 @@ CRITICAL DIFFERENTIATION RULES:
 - Do NOT default to the "luxury editorial" color family (champagne/mauve/navy) unless the user explicitly chose old-money or luxury aesthetics. Push beyond it.
 - Palette names must be hyper-specific to THIS person — reference their age, city, vibe, or cultural moment. Never use names like "Midnight Luxe", "Golden Hour", "Soft Bloom", or "Earth & Stone".
 - Each palette must feel like it was designed for a completely different shoot, mood board, or editorial — not variations of the same theme.`,
-    user: `Design 6 birthday color palettes for:
+    user: `Design 4 birthday color palettes for:
 
 ${vibeContext(input)}
 Birthday season: ${input.birthMonthName} (${seasonalDirection.season})
@@ -65,13 +65,11 @@ Each palette needs:
 - A 2-3 word mood descriptor
 - Exactly 5 colors with: valid hex code, color name, and role (primary/accent/neutral/background/statement)
 
-The 6 palettes MUST be structured as:
-1. SEASONAL SIGNATURE: Anchored to ${input.birthMonthName}. ${seasonalDirection.palette1Direction} — use the dominant color of this season.
-2. VIBE MATCH: Captures their "${input.celebrationVibe}" energy. ${getVibeMoodBoardDirection(input.celebrationVibe)} — name it after their specific celebration.
-3. AESTHETIC PULL: ${input.aestheticPreference ? `Inspired by "${input.aestheticPreference}" — translate this aesthetic into a color language.` : `Matches their ${input.zodiacSign} energy — use the planetary/elemental colors of this sign.`}
+The 4 palettes MUST be structured as (most personalized first):
+1. VIBE MATCH: Captures their "${input.celebrationVibe}" energy. ${getVibeMoodBoardDirection(input.celebrationVibe)} — the palette that feels most "them."
+2. ${input.aestheticPreference ? `AESTHETIC PULL: Inspired by "${input.aestheticPreference}" — translate this aesthetic into a color language.` : `ZODIAC ENERGY: Matches their ${input.zodiacSign} energy — use the planetary/elemental colors of this sign.`}
+3. SEASONAL SIGNATURE: Anchored to ${input.birthMonthName}. ${seasonalDirection.palette1Direction}
 4. UNEXPECTED CONTRAST: Completely different color temperature and mood. Not the obvious choice. Surprises but still cohesive.
-5. CITY COLOR: A palette that captures the color energy of ${input.celebrationCity} — think of it as a visual postcard of the city they're celebrating in.
-6. BOLD STATEMENT: The most saturated, high-contrast, "you cannot miss this" palette. Not subtle. Not muted. Maximum impact.
 
 FORBIDDEN DEFAULTS (never generate these):
 - Champagne + mauve + navy + gold (wedding palette trap)

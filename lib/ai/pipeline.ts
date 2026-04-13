@@ -10,7 +10,7 @@ import {
 import { eq } from "drizzle-orm";
 import { createId } from "@/lib/utils/id";
 import { estimateCostCents } from "@/lib/utils/cost";
-import { DEFAULT_MODEL, DEFAULT_MODEL_ID } from "./client";
+import { DEFAULT_MODEL, DEFAULT_MODEL_ID, FAST_MODEL, FAST_MODEL_ID } from "./client";
 import { normalizeInput, inputToCacheKey, type NormalizedInput } from "./normalize-input";
 import { getStepCache, setStepCache } from "./cache";
 import {
@@ -110,6 +110,9 @@ export async function runBirthdayPipeline(
     );
   }
 
+  // Steps that use the cheaper/faster Haiku model (factual lookup, not creative)
+  const FAST_STEPS: Set<keyof StepStatusMap> = new Set(["restaurants", "activities", "destinations"]);
+
   async function runAIStep<T>(
     stepName: keyof StepStatusMap,
     schema: z.ZodType<T>,
@@ -117,6 +120,7 @@ export async function runBirthdayPipeline(
   ): Promise<T | null> {
     await updateStepStatus(stepName, "running");
     const startTime = Date.now();
+    const useFastModel = FAST_STEPS.has(stepName);
 
     // Check cache
     const cacheKeyInputs = inputToCacheKey(input, stepName, PROMPT_VERSION);
@@ -131,7 +135,7 @@ export async function runBirthdayPipeline(
     try {
       const prompt = promptBuilder(input);
       const result = await generateText({
-        model: DEFAULT_MODEL,
+        model: useFastModel ? FAST_MODEL : DEFAULT_MODEL,
         system: prompt.system,
         prompt: prompt.user,
         output: Output.object({ schema }),

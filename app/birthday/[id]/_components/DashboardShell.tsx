@@ -138,14 +138,7 @@ export function DashboardShell({
         <div className="mt-12 space-y-10">
           {/* ─── Color Palettes ─────────────────────────────────────────── */}
           {sections?.palettes && sections.palettes.length > 0 && (
-            <section className="animate-fade-rise space-y-5">
-              <SectionLabel>Your Color Story</SectionLabel>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {sections.palettes.map((palette, i) => (
-                  <PaletteCard key={palette.name} palette={palette} index={i} />
-                ))}
-              </div>
-            </section>
+            <PaletteSection palettes={sections.palettes} sessionId={sessionId} />
           )}
 
           {/* ─── Captions ──────────────────────────────────────────────── */}
@@ -579,6 +572,58 @@ function Big3SignCard({
         <p className={`text-sm sm:text-base font-medium ${valueClass} leading-tight`}>{value}</p>
       </div>
     </div>
+  );
+}
+
+function PaletteSection({ palettes, sessionId }: { palettes: ColorPalette[]; sessionId: string }) {
+  const [showAll, setShowAll] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [extraPalettes, setExtraPalettes] = useState<ColorPalette[]>([]);
+
+  const visiblePalettes = showAll ? [...palettes, ...extraPalettes] : palettes.slice(0, 4);
+  const hasMore = !showAll && (palettes.length > 4 || extraPalettes.length === 0);
+
+  async function handleSeeMore() {
+    if (palettes.length > 4) {
+      setShowAll(true);
+      return;
+    }
+    setLoadingMore(true);
+    try {
+      const res = await fetch(`/api/birthday/${sessionId}/palettes`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.palettes) {
+          setExtraPalettes(data.palettes);
+          setShowAll(true);
+        }
+      }
+    } catch {
+      // Silently fail — user can try again
+    }
+    setLoadingMore(false);
+  }
+
+  return (
+    <section className="animate-fade-rise space-y-5">
+      <SectionLabel>Your Color Story</SectionLabel>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {visiblePalettes.map((palette, i) => (
+          <PaletteCard key={palette.name} palette={palette} index={i} />
+        ))}
+      </div>
+      {hasMore && (
+        <div className="text-center pt-2">
+          <button
+            onClick={handleSeeMore}
+            disabled={loadingMore}
+            className="text-[12px] uppercase tracking-[0.2em] text-champagne/50 hover:text-champagne/80 transition-colors disabled:opacity-30"
+          >
+            {loadingMore ? "Generating..." : "See more palettes"}
+          </button>
+        </div>
+      )}
+    </section>
   );
 }
 
