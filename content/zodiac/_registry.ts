@@ -259,6 +259,12 @@ function createZodiacPage(sign: ZodiacSign): ContentPage {
       { type: "paragraph", heading: `${label} Birthday Trip Style`, body: data.tripStyle },
       { type: "paragraph", body: `If you're just browsing, use this as your ${label} birthday moodboard. If you want everything personalized — captions, palettes, destinations, and celebration style — the generator builds it all based on your exact age, city, and vibe.` },
       { type: "cta", headline: `Get a personalized ${label} birthday experience`, subheadline: `Our generator uses your exact birth date, location, and vibe to build a birthday dashboard made just for you.`, buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+      {
+        type: "element-signs",
+        element: zodiacElements[sign],
+        signs: zodiacElementGroups[zodiacElements[sign]].filter((s) => s.toLowerCase() !== sign.toLowerCase()),
+        currentSign: label,
+      },
       { type: "related-content" },
     ],
   };

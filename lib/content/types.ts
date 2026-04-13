@@ -49,7 +49,8 @@ export type ContentSection =
   | FAQSection
   | RelatedContentSection
   | CTASection
-  | InlineCTASection;
+  | InlineCTASection
+  | ElementSignsSection;
 
 export interface HeroSection {
   type: "hero";
@@ -140,4 +141,11 @@ export interface InlineCTASection {
   type: "inline-cta";
   text: string;
   href?: string;
+}
+
+export interface ElementSignsSection {
+  type: "element-signs";
+  element: string;       // "Fire", "Earth", "Air", "Water"
+  signs: string[];       // fellow element signs (excluding current)
+  currentSign: string;   // display label of the current sign
 }

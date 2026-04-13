@@ -10,6 +10,7 @@ import { FAQSection } from "./sections/FAQSection";
 import { RelatedContentBlock } from "./sections/RelatedContentBlock";
 import { CTABlock } from "./sections/CTABlock";
 import { InlineCTA } from "./sections/InlineCTA";
+import { ElementSignsBlock } from "./sections/ElementSignsBlock";
 import type { ContentPage } from "@/lib/content/types";
 
 interface SectionRendererProps {
@@ -44,6 +45,8 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
             return <CTABlock key={i} {...section} />;
           case "inline-cta":
             return <InlineCTA key={i} {...section} />;
+          case "element-signs":
+            return <ElementSignsBlock key={i} {...section} />;
           default:
             return null;
         }
