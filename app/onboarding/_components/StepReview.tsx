@@ -8,6 +8,19 @@ interface StepReviewProps {
   error?: string | null;
 }
 
+const BUDGET_LABELS: Record<string, string> = {
+  budget: "Budget-friendly",
+  mid: "Moderate",
+  luxury: "Go all out",
+};
+
+const GROUP_LABELS: Record<string, string> = {
+  solo: "Just me",
+  partner: "Me + one",
+  small: "Small group",
+  large: "Big celebration",
+};
+
 export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
   const store = useOnboardingStore();
   const ageTurning = store.birthYear
@@ -21,22 +34,26 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
           Ready to go
         </h1>
         <p className="text-sm text-muted-foreground">
-          Here&apos;s what we&apos;re working with.
+          Here&apos;s everything we&apos;re working with.
         </p>
       </div>
 
       <div className="luxury-card p-6 space-y-4">
+
+        {/* — Core — */}
         <ReviewRow label="Name" value={store.name} />
-        <div className="h-px bg-border/50" />
+        <Divider />
         <ReviewRow label="Birthday" value={`${store.birthdate} · turning ${ageTurning}`} />
-        <div className="h-px bg-border/50" />
+        <Divider />
         <ReviewRow label="City" value={store.currentCity} />
-        <div className="h-px bg-border/50" />
+        <Divider />
         <ReviewRow label="Vibe" value={store.celebrationVibe} />
-        <div className="h-px bg-border/50" />
+        <Divider />
+
+        {/* Goals chips */}
         <div className="flex justify-between items-start">
-          <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">Goals</span>
-          <div className="flex flex-wrap gap-1.5 justify-end max-w-[60%]">
+          <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70 shrink-0">Goals</span>
+          <div className="flex flex-wrap gap-1.5 justify-end max-w-[62%]">
             {store.birthdayGoals.map((goal) => (
               <span
                 key={goal}
@@ -47,22 +64,58 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
             ))}
           </div>
         </div>
-        <div className="h-px bg-border/50" />
-        <ReviewRow
-          label="Mode"
-          value={store.mode === "cosmic" ? "Cosmic" : "Quick"}
-          accent={store.mode === "cosmic"}
-        />
+
+        {/* — Preferences (only shown if set) — */}
         {store.pronoun && (
           <>
-            <div className="h-px bg-border/50" />
+            <Divider />
             <ReviewRow label="Pronouns" value={store.pronoun} />
           </>
         )}
         {store.budget && (
           <>
-            <div className="h-px bg-border/50" />
-            <ReviewRow label="Budget" value={store.budget} />
+            <Divider />
+            <ReviewRow label="Budget" value={BUDGET_LABELS[store.budget] ?? store.budget} />
+          </>
+        )}
+        {store.groupSize && (
+          <>
+            <Divider />
+            <ReviewRow label="Group size" value={GROUP_LABELS[store.groupSize] ?? store.groupSize} />
+          </>
+        )}
+        {store.foodVibe && (
+          <>
+            <Divider />
+            <ReviewRow label="Food vibe" value={store.foodVibe} />
+          </>
+        )}
+        {store.aestheticPreference && (
+          <>
+            <Divider />
+            <ReviewRow label="Aesthetic" value={store.aestheticPreference} />
+          </>
+        )}
+
+        {/* — Mode — */}
+        <Divider />
+        <ReviewRow
+          label="Mode"
+          value={store.mode === "cosmic" ? "✦ Cosmic" : "Quick"}
+          accent={store.mode === "cosmic"}
+        />
+
+        {/* — Cosmic fields (only if cosmic mode) — */}
+        {store.mode === "cosmic" && store.birthTime && (
+          <>
+            <Divider />
+            <ReviewRow label="Birth time" value={store.birthTime} accent />
+          </>
+        )}
+        {store.mode === "cosmic" && store.birthCity && (
+          <>
+            <Divider />
+            <ReviewRow label="Birth city" value={store.birthCity} accent />
           </>
         )}
       </div>
@@ -91,11 +144,25 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
   );
 }
 
-function ReviewRow({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+function Divider() {
+  return <div className="h-px bg-border/50" />;
+}
+
+function ReviewRow({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+}) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">{label}</span>
-      <span className={`text-sm font-medium ${accent ? "text-plum" : "text-foreground"}`}>
+    <div className="flex justify-between items-center gap-4">
+      <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70 shrink-0">
+        {label}
+      </span>
+      <span className={`text-sm font-medium text-right ${accent ? "text-champagne" : "text-foreground"}`}>
         {value}
       </span>
     </div>
