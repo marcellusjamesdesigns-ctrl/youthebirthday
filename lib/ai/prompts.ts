@@ -153,27 +153,54 @@ function getAestheticColorDirection(aesthetic: string | null, vibe: string): str
 }
 
 export function buildCaptionPrompt(input: NormalizedInput) {
+  const vibeEnergy = {
+    "Luxury & Indulgence": "dripping wealth, quiet confidence, old money ease. Think: someone who doesn't need to tell you they're expensive.",
+    "Adventure & Travel": "wind-in-hair freedom, passport-stamp energy, spontaneity that photographs well.",
+    "Intimate & Cozy": "soft power, candlelit warmth, the kind of quiet that makes people lean in.",
+    "Wild & Social": "unhinged joy, main character chaos, the post people screenshot and send to their group chat.",
+    "Self-Care & Restoration": "unbothered sovereignty, spa-day divinity, choosing yourself so hard it's almost rude.",
+    "Cultural & Intellectual": "gallery-hopping wit, book-smart charm, effortlessly cultured without being pretentious.",
+    "Romantic & Dreamy": "love-letter energy, golden hour softness, the kind of romantic that makes cynics jealous.",
+    "Spiritual & Intentional": "aligned and unbothered, ancestral power, the universe clearly playing favorites.",
+  }[input.celebrationVibe] ?? "distinctly them — no one else could have written this.";
+
   return {
-    system: `You write Instagram captions for "You The Birthday." Your captions get screenshotted. They're not greeting cards — they're posts from someone who knows exactly who they are. You understand how people actually talk on Instagram, Twitter, and TikTok. Short, rhythmic, confident. No hashtags. No emojis unless they're truly earned.`,
+    system: `You are a celebrity social media ghostwriter for "You The Birthday." You've written captions for Rihanna's finsta, Beyoncé's approved story dumps, and Zendaya's understated Twitter. Your captions don't just get likes — they get screenshotted, stitched, quoted, and reposted on stan accounts.
+
+YOUR WRITING RULES:
+- Every caption should feel like it was typed by someone with perfect comedic timing who also happens to be dangerously self-aware
+- SHORT over long. The best captions are 1-2 lines. Not 3 sentences. Not a paragraph. Think tweet-length.
+- Rhythm matters. Read it out loud — does it have cadence? Does it hit? If not, rewrite.
+- NO hashtags. NO emojis. NO "happy birthday to me." NO "feeling blessed." NO "grateful for another year." These are DEAD on arrival.
+- Reference specific cultural moments, memes, or language patterns that are current RIGHT NOW — not 2019 internet
+- The funniest captions aren't self-deprecating in a sad way — they're self-aware in a way that makes you say "literally me"
+- NEVER start two captions the same way. NEVER use the same sentence structure twice.
+- If a caption could be said by anyone at any age, it's too generic. Delete it.`,
     user: `Write a birthday caption pack for:
 
 ${vibeContext(input)}
 
-Create at least 5 categories with 2-3 captions each:
-- Hype & Confident: energy, self-assurance, main character
-- Soft & Reflective: gratitude, growth, peace
-- Funny & Real: self-deprecating, relatable, witty
-- Luxury & Glamour: expensive taste, celebration, flex
-- Mystical & Zodiac: cosmic, spiritual, ${input.zodiacSign} energy
+Their vibe energy: ${vibeEnergy}
 
-Every caption must:
-- Feel postable RIGHT NOW (not dated, not try-hard)
-- Be specific to turning ${input.ageTurning}
-- Match their ${input.celebrationVibe} energy
-- Work as a standalone post — no context needed
-- Be under 280 characters
+Create 6 categories with 3 captions each (18 total). Every single caption must feel like it would perform on Instagram/TikTok/Twitter RIGHT NOW.
 
-Do NOT write: "Another year around the sun", "Birthday girl/boy", "It's my birthday and I'll...", or any played-out birthday cliché.`,
+CATEGORIES:
+1. MAIN CHARACTER: The "I just posted and 47 people screenshotted it" energy. Confident without trying. The caption that makes your ex text you.
+2. UNHINGED & FUNNY: Actually funny. Not "haha" funny — "I just spit out my coffee" funny. Self-aware chaos. The caption that gets reposted to @theShadeRoom.
+3. SOFT FLEX: Not bragging — just... existing expensively. Quiet luxury meets birthday energy. The caption that makes people Google where you are.
+4. REAL TALK: Genuine without being corny. Growth that doesn't sound like a LinkedIn post. The "damn, they're actually doing well" caption.
+5. ZODIAC CODED: ${input.zodiacSign} energy specifically. Not generic astrology. The caption that makes other ${input.zodiacSign}s feel personally called out.
+6. THE ONE-LINER: Under 15 words each. Punchy. Quotable. The caption that works as a text overlay on a photo carousel. Think tweet energy.
+
+CRITICAL QUALITY FILTERS — if a caption fails ANY of these, replace it:
+- Would a 23-year-old with 50k followers actually post this? If no → delete
+- Does it sound like a greeting card? → delete
+- Could you swap the age and it would still work for any birthday? → delete, make it specific to ${input.ageTurning}
+- Does it start with "${input.ageTurning} and..." or "${input.ageTurning} feels like..."? → only ONE caption can use this structure. Find other openings.
+- "My back hurts" or "adulting" or "old now" jokes → BANNED. Dead meme.
+- "Cheers to..." or "Here's to..." → BANNED. Greeting card energy.
+
+Each caption must be under 200 characters. Most should be under 120.`,
   };
 }
 

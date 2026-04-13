@@ -39,10 +39,10 @@ export const CaptionPackSchema = z.object({
     z.object({
       category: z
         .string()
-        .describe("Category name e.g. 'Hype', 'Soft Girl', 'Petty', 'Mystical', 'Reflective'"),
-      captions: z.array(z.string()).min(2).max(3),
+        .describe("Category name e.g. 'Main Character', 'Unhinged & Funny', 'Soft Flex'"),
+      captions: z.array(z.string()).min(2).max(4),
     })
-  ).min(5),
+  ).min(5).max(7),
 });
 
 // Step 2c: Destination recommendations
