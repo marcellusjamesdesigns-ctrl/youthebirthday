@@ -126,12 +126,14 @@ function getAscendant(jd: number, latitude: number, longitude: number): number {
   const obliquity = 23.4393 - 0.013 * T;
   const oblRad = obliquity * Math.PI / 180;
 
+  // Standard ascendant formula (Meeus, Astronomical Algorithms)
+  // atan2(-cos(RAMC), sin(ε)·tan(φ) + cos(ε)·sin(RAMC)) gives the Descendant.
+  // The Ascendant is 180° opposite.
   const y = -Math.cos(LSTrad);
   const x = Math.sin(oblRad) * Math.tan(latRad) + Math.cos(oblRad) * Math.sin(LSTrad);
-  let asc = Math.atan2(y, x) * 180 / Math.PI;
+  let asc = Math.atan2(y, x) * 180 / Math.PI + 180;
 
-  asc = asc % 360;
-  if (asc < 0) asc += 360;
+  asc = ((asc % 360) + 360) % 360;
 
   return asc;
 }
