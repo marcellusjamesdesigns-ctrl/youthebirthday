@@ -42,65 +42,46 @@ export function normalizeInput(session: Session): NormalizedInput {
     const birthLat = session.birthLat ? parseFloat(session.birthLat) : undefined;
     const birthLng = session.birthLng ? parseFloat(session.birthLng) : undefined;
 
-    let utYear = session.birthYear;
-    let utMonth = month;
-    let utDay = day;
-    let utHour: number | undefined;
-    let utMinute: number | undefined;
+    let birthHour: number | undefined;
+    let birthMinute: number | undefined;
+    let timezoneOffset: number | undefined;
 
     if (session.birthTime) {
-      const localHour = parseInt(session.birthTime.split(":")[0]);
-      const localMinute = parseInt(session.birthTime.split(":")[1]);
+      birthHour = parseInt(session.birthTime.split(":")[0]);
+      birthMinute = parseInt(session.birthTime.split(":")[1]);
 
+      // Determine timezone offset from birth city coordinates
       if (birthLat !== undefined && birthLng !== undefined) {
-        // Convert local birth time → UTC using the birth city's timezone
         const tzNames = findTimezone(birthLat, birthLng);
         if (tzNames.length > 0) {
-          const localDate = new Date(
-            Date.UTC(session.birthYear, month - 1, day, localHour, localMinute)
-          );
-          // Create a formatter to find the UTC offset for this timezone at this date
+          // Get the UTC offset for this timezone at the actual birth date
+          const localDate = new Date(session.birthYear, month - 1, day, birthHour, birthMinute);
           const formatter = new Intl.DateTimeFormat("en-US", {
             timeZone: tzNames[0],
             timeZoneName: "shortOffset",
           });
           const parts = formatter.formatToParts(localDate);
           const offsetPart = parts.find((p) => p.type === "timeZoneName")?.value ?? "";
-          // Parse offset like "GMT-5" or "GMT+5:30"
           const offsetMatch = offsetPart.match(/GMT([+-]?)(\d{1,2})(?::(\d{2}))?/);
           if (offsetMatch) {
             const sign = offsetMatch[1] === "-" ? -1 : 1;
-            const offsetHours = parseInt(offsetMatch[2]) * sign;
-            const offsetMinutes = (parseInt(offsetMatch[3] || "0")) * sign;
-            // UTC = local time - offset
-            const utcDate = new Date(localDate.getTime() - (offsetHours * 60 + offsetMinutes) * 60 * 1000);
-            utYear = utcDate.getUTCFullYear();
-            utMonth = utcDate.getUTCMonth() + 1;
-            utDay = utcDate.getUTCDate();
-            utHour = utcDate.getUTCHours();
-            utMinute = utcDate.getUTCMinutes();
-          } else {
-            utHour = localHour;
-            utMinute = localMinute;
+            const hrs = parseInt(offsetMatch[2]) * sign;
+            const mins = parseInt(offsetMatch[3] || "0") * sign;
+            timezoneOffset = hrs + mins / 60;
           }
-        } else {
-          utHour = localHour;
-          utMinute = localMinute;
         }
-      } else {
-        utHour = localHour;
-        utMinute = localMinute;
       }
     }
 
     chart = calculateChart({
-      year: utYear,
-      month: utMonth,
-      day: utDay,
-      hour: utHour,
-      minute: utMinute,
+      year: session.birthYear,
+      month,
+      day,
+      hour: birthHour,
+      minute: birthMinute,
       latitude: birthLat,
       longitude: birthLng,
+      timezoneOffset,
     });
   } else {
     // Even in quick mode, compute sun + moon (moon only needs date)
