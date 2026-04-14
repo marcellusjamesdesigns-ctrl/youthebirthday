@@ -8,9 +8,9 @@ import { Reveal } from "@/components/ui/reveal";
 import { HeroSection } from "@/components/home/HeroSection";
 
 export const metadata: Metadata = {
-  title: "You The Birthday — Personalized Birthday Titles, Captions, Palettes & Trip Ideas",
+  title: "You The Birthday — Personalized Birthday Captions, Ideas & Color Palettes",
   description:
-    "Generate a personalized birthday dashboard with titles, Instagram captions, color palettes, travel destinations, and celebration plans — curated for your vibe, zodiac sign, and style. Free, no account needed.",
+    "Create a personalized birthday experience — Instagram captions, color palettes, trip destinations, celebration plans, and more. Curated by vibe, age, and zodiac sign. Free.",
   alternates: {
     canonical: "https://youthebirthday.app",
   },

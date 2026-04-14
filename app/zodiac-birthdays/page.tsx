@@ -3,8 +3,8 @@ import { getContentPagesByCategory } from "@/lib/content/render";
 import { HubPage } from "@/components/content/HubPage";
 
 export const metadata: Metadata = {
-  title: "Birthday Ideas by Zodiac Sign (2026) | You The Birthday",
-  description: "Birthday ideas, destinations, captions, and celebration styles for every zodiac sign. Find what matches your sign's energy.",
+  title: "Zodiac Birthday Ideas — How to Celebrate Your Sign (2026)",
+  description: "Birthday ideas for every zodiac sign — Aries through Pisces. Destinations, captions, party themes, and celebration styles matched to your sign's energy.",
   alternates: { canonical: "/zodiac-birthdays" },
 };
 

@@ -3,8 +3,8 @@ import { getContentPagesByCategory } from "@/lib/content/render";
 import { HubPage } from "@/components/content/HubPage";
 
 export const metadata: Metadata = {
-  title: "Birthday Ideas (2026) — How to Celebrate by Vibe & Age | You The Birthday",
-  description: "Birthday ideas for every vibe — luxury, soft life, adventure, intimate, solo, and more. Find the right celebration for your age and energy.",
+  title: "Birthday Ideas for Adults (2026) — Dinner, Trips & Party Ideas",
+  description: "Birthday ideas for every budget and vibe — dinner ideas, trip ideas, party themes, solo celebrations, and romantic plans. Ideas for your 21st through 50th.",
   alternates: { canonical: "/birthday-ideas" },
 };
 
@@ -13,7 +13,7 @@ export default function IdeasHub() {
   return (
     <HubPage
       title="Birthday Ideas"
-      description="Find your perfect birthday celebration by age, vibe, or style."
+      description="Birthday ideas for adults — dinner ideas, trip plans, party themes, solo celebrations, and romantic plans for every age and budget."
       pages={pages}
       category="ideas"
     />

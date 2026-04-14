@@ -3,8 +3,8 @@ import { getContentPagesByCategory } from "@/lib/content/render";
 import { HubPage } from "@/components/content/HubPage";
 
 export const metadata: Metadata = {
-  title: "Birthday Theme Ideas (2026) — Full Theme Guides | You The Birthday",
-  description: "Birthday theme guides by vibe — soft life, luxury, turn up, intimate, and more. Colors, food, outfits, and activities all planned out.",
+  title: "Birthday Party Themes for Adults (2026) — Complete Guides",
+  description: "Birthday party theme ideas for adults — soft life, dark feminine, old money, Y2K, and maximalist. Full guides with colors, food, outfits, and decorations.",
   alternates: { canonical: "/birthday-themes" },
 };
 

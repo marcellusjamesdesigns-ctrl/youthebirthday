@@ -3,8 +3,8 @@ import { getContentPagesByCategory } from "@/lib/content/render";
 import { HubPage } from "@/components/content/HubPage";
 
 export const metadata: Metadata = {
-  title: "Birthday Color Palettes (2026) — Colors & Hex Codes | You The Birthday",
-  description: "Birthday color palette inspiration with hex codes. Luxury, soft, bold, earthy, and seasonal palettes for decorations, outfits, and themes.",
+  title: "Birthday Party Color Schemes & Palettes (2026) — Hex Codes",
+  description: "Birthday color palettes with hex codes for decorations, outfits, and invitations. Luxury gold, soft pastels, bold neon, earthy tones, and seasonal palettes.",
   alternates: { canonical: "/birthday-palettes" },
 };
 

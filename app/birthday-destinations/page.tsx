@@ -3,8 +3,8 @@ import { getContentPagesByCategory } from "@/lib/content/render";
 import { HubPage } from "@/components/content/HubPage";
 
 export const metadata: Metadata = {
-  title: "Birthday Trip Destinations (2026) — Where to Celebrate | You The Birthday",
-  description: "The best birthday trip destinations worldwide by vibe, season, and budget. Luxury, solo, group, tropical, and city birthday destinations.",
+  title: "Best Birthday Trip Ideas & Destinations (2026)",
+  description: "Where to go for your birthday — luxury getaways, solo trips, beach escapes, and budget-friendly destinations. Birthday trip ideas by vibe, season, and budget.",
   alternates: { canonical: "/birthday-destinations" },
 };
 
