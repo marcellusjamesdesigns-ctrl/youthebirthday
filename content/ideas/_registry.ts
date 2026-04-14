@@ -104,6 +104,7 @@ const ideaPages: ContentPage[] = [
           { title: "Don't split the bill publicly", body: "Either you're hosting (say so upfront) or someone else is. The check conversation kills the mood." },
         ],
       },
+      { type: "inline-cta", text: "What to wear to your birthday dinner — outfit ideas by vibe →", href: "/blog/what-to-wear-birthday-dinner-outfit-ideas" },
       {
         type: "amazon-shop",
         title: "Birthday Table Picks",

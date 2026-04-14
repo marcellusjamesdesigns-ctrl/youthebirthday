@@ -1,31 +1,22 @@
 import type { ContentSection } from "@/lib/content/types";
-import { HeroSection } from "./sections/HeroSection";
-import { CaptionListSection } from "./sections/CaptionListSection";
-import { IdeaListSection } from "./sections/IdeaListSection";
-import { DestinationListSection } from "./sections/DestinationListSection";
-import { PaletteShowcaseSection } from "./sections/PaletteShowcaseSection";
-import { ParagraphSection } from "./sections/ParagraphSection";
-import { TipListSection } from "./sections/TipListSection";
-import { FAQSection } from "./sections/FAQSection";
-import { RelatedContentBlock } from "./sections/RelatedContentBlock";
-import { CTABlock } from "./sections/CTABlock";
-import { InlineCTA } from "./sections/InlineCTA";
-import { ElementSignsBlock } from "./sections/ElementSignsBlock";
-import { Reveal } from "@/components/ui/reveal";
-import AdUnit from "@/components/AdUnit";
+import { HeroSection } from "@/components/content/sections/HeroSection";
+import { CaptionListSection } from "@/components/content/sections/CaptionListSection";
+import { IdeaListSection } from "@/components/content/sections/IdeaListSection";
+import { DestinationListSection } from "@/components/content/sections/DestinationListSection";
+import { PaletteShowcaseSection } from "@/components/content/sections/PaletteShowcaseSection";
+import { ParagraphSection } from "@/components/content/sections/ParagraphSection";
+import { TipListSection } from "@/components/content/sections/TipListSection";
+import { FAQSection } from "@/components/content/sections/FAQSection";
+import { CTABlock } from "@/components/content/sections/CTABlock";
+import { InlineCTA } from "@/components/content/sections/InlineCTA";
 import { AmazonShopModule } from "@/components/affiliate/AmazonShopModule";
-import { ImageBlock } from "./sections/ImageBlock";
-import { PullQuoteBlock } from "./sections/PullQuoteBlock";
-import type { ContentPage } from "@/lib/content/types";
+import { ImageBlock } from "@/components/content/sections/ImageBlock";
+import { PullQuoteBlock } from "@/components/content/sections/PullQuoteBlock";
+import { Reveal } from "@/components/ui/reveal";
 
-interface SectionRendererProps {
-  sections: ContentSection[];
-  page: ContentPage; // for related content resolution
-}
-
-export function SectionRenderer({ sections, page }: SectionRendererProps) {
+export function BlogSectionRenderer({ sections }: { sections: ContentSection[] }) {
   return (
-    <div className="space-y-12">
+    <div className="space-y-10">
       {sections.map((section, i) => {
         const content = (() => {
           switch (section.type) {
@@ -45,14 +36,10 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
               return <TipListSection key={i} {...section} />;
             case "faq":
               return <FAQSection key={i} {...section} />;
-            case "related-content":
-              return <RelatedContentBlock key={i} page={page} />;
             case "cta":
               return <CTABlock key={i} {...section} />;
             case "inline-cta":
               return <InlineCTA key={i} {...section} />;
-            case "element-signs":
-              return <ElementSignsBlock key={i} {...section} />;
             case "amazon-shop":
               return (
                 <AmazonShopModule
@@ -83,20 +70,9 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
           }
         })();
 
-        // Hero renders immediately, everything else reveals on scroll
-        if (section.type === "hero" || !content) return content;
+        if (section.type === "hero" || section.type === "image" || !content) return content;
 
-        // Insert a mid-content ad after the 3rd section
-        const showMidAd = i === 3 && sections.length > 5;
-
-        return (
-          <Reveal key={i} delay={i > 2 ? 0 : i * 80}>
-            {showMidAd && (
-              <AdUnit slot="3782501964" format="auto" className="mb-12" />
-            )}
-            {content}
-          </Reveal>
-        );
+        return <Reveal key={i}>{content}</Reveal>;
       })}
     </div>
   );

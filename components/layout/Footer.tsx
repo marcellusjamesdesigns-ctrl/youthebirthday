@@ -33,6 +33,7 @@ export function Footer() {
             <div className="flex flex-col gap-1.5">
               <FooterLink href="/birthday-themes">Themes</FooterLink>
               <FooterLink href="/zodiac-birthdays">Zodiac Birthdays</FooterLink>
+              <FooterLink href="/blog">The Journal</FooterLink>
               <FooterLink href="/onboarding">Generate My Birthday</FooterLink>
             </div>
           </div>
@@ -52,6 +53,7 @@ export function Footer() {
           <MobileFooterGroup title="More">
             <FooterLink href="/birthday-themes">Themes</FooterLink>
             <FooterLink href="/zodiac-birthdays">Zodiac</FooterLink>
+            <FooterLink href="/blog">Journal</FooterLink>
             <FooterLink href="/onboarding">Generate</FooterLink>
           </MobileFooterGroup>
         </div>

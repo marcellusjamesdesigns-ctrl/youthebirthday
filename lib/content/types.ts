@@ -35,6 +35,64 @@ export interface ContentPage {
   updatedAt?: string;
 }
 
+// ─── Blog Post Definition ────────────────────────────────────────────────────
+// Blog posts are a separate surface from evergreen content pages.
+// They live at /blog/[slug] and build topical authority over time.
+
+export type BlogCategory =
+  | "planning"       // how-to, checklists, decoration, logistics
+  | "style"          // outfits, aesthetics, decor aesthetics
+  | "seasonal"       // month-based, zodiac season, seasonal ideas
+  | "gifts"          // gift guides
+  | "milestones";    // age-specific editorial
+
+export interface BlogPost {
+  slug: string;
+  category: BlogCategory;
+  title: string;
+  description: string;            // meta description
+  headline: string;               // H1
+  subheadline?: string;
+  excerpt: string;                // 1-2 sentence hook for hub cards
+
+  // Hero / social image
+  heroImage: {
+    src: string;
+    alt: string;
+    credit?: string;
+    creditUrl?: string;
+  };
+  ogImage?: string;               // falls back to heroImage.src
+
+  // Reading experience
+  readingTimeMinutes: number;
+
+  // Topical tags (used for related-post surfacing)
+  tags: {
+    vibe?: string;
+    season?: string;
+    zodiac?: string;
+    age?: number;
+    theme?: string;
+  };
+
+  // Content
+  sections: ContentSection[];
+
+  // SEO
+  canonicalPath: string;
+  schemaType?: "Article" | "BlogPosting";
+  publishStatus: "draft" | "published";
+  publishedAt: string;            // ISO
+  updatedAt?: string;
+
+  // Optional author
+  author?: {
+    name: string;
+    bio?: string;
+  };
+}
+
 // ─── Content Sections ────────────────────────────────────────────────────────
 // Reusable section types that the page renderer knows how to display.
 
@@ -51,7 +109,9 @@ export type ContentSection =
   | CTASection
   | InlineCTASection
   | ElementSignsSection
-  | AmazonShopSection;
+  | AmazonShopSection
+  | ImageSection
+  | PullQuoteSection;
 
 export interface HeroSection {
   type: "hero";
@@ -163,4 +223,20 @@ export interface AmazonShopSection {
     description?: string;
     icon?: string;
   }[];
+}
+
+export interface ImageSection {
+  type: "image";
+  src: string;                // full URL (Unsplash, AI-generated, own)
+  alt: string;                // required for a11y + SEO
+  caption?: string;           // visible below image
+  credit?: string;            // attribution (e.g. "Photo by X on Unsplash")
+  creditUrl?: string;         // link for the credit
+  ratio?: "hero" | "wide" | "square" | "portrait"; // aspect ratio preset
+}
+
+export interface PullQuoteSection {
+  type: "pull-quote";
+  quote: string;
+  attribution?: string;
 }

@@ -35,6 +35,7 @@ const themePages: ContentPage[] = [
           { title: "Activities", description: "No games. No itinerary. Maybe a group toast, a few photos, and the kind of conversation you can't have in a loud bar.", vibeTag: "soft-life" },
         ],
       },
+      { type: "inline-cta", text: "Full decoration breakdown in our Journal →", href: "/blog/best-birthday-decorations-soft-life-party" },
       {
         type: "amazon-shop",
         title: "Set the Soft Life Mood",

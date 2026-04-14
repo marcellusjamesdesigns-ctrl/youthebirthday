@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: "/birthday-captions", label: "Captions" },
   { href: "/birthday-ideas", label: "Ideas" },
   { href: "/zodiac-birthdays", label: "Zodiac" },
+  { href: "/blog", label: "Journal" },
 ];
 
 export function Navbar() {
