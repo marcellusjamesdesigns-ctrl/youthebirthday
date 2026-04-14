@@ -108,6 +108,22 @@ export function DashboardShell({
     }
   }, [sessionId, status]);
 
+  // If status is already complete but we have no sections, fetch them
+  useEffect(() => {
+    if (status === "complete" && !sections) {
+      (async () => {
+        try {
+          const res = await fetch(`/api/birthday/${sessionId}/status`);
+          const data: StatusResponse = await res.json();
+          if (data.sections) setSections(data.sections);
+          if (data.stepStatus) setStepStatus(data.stepStatus);
+        } catch {
+          // retry on next mount
+        }
+      })();
+    }
+  }, [status, sections, sessionId]);
+
   useEffect(() => {
     if (status === "pending" && !sections) {
       triggerGeneration();
@@ -196,7 +212,7 @@ export function DashboardShell({
                 {hasMore && (
                   <PremiumTeaser
                     label={`${sections.captions.length - 2} more caption categories locked`}
-                    description="Unlock all 18 captions — main character, unhinged, zodiac coded, screenshot-worthy one-liners, and more."
+                    description="Unlock all 18 captions \u2014 main character, unhinged, zodiac coded, screenshot-worthy one-liners, and more."
                     sessionId={sessionId}
                   />
                 )}
@@ -209,25 +225,27 @@ export function DashboardShell({
           {/* ─── Celebration Style ─────────────────────────────────────── */}
           {sections?.celebrationStyle && (
             <section className="animate-fade-rise">
-              <div className="luxury-card p-6 sm:p-8 space-y-4 glow-champagne">
-                <SectionLabel>Your Celebration</SectionLabel>
-                <h3 className="heading-editorial text-xl sm:text-2xl">
-                  {sections.celebrationStyle.primaryStyle}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
-                  {sections.celebrationStyle.description}
-                </p>
-                <div className="space-y-1.5 pt-1">
-                  {sections.celebrationStyle.rituals.slice(0, 4).map((ritual, i) => (
-                    <p key={i} className="text-[13px] text-foreground/70 pl-3 border-l border-champagne/20 leading-relaxed">
-                      {ritual}
-                    </p>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-2 pt-3">
-                  <StyleTag>{sections.celebrationStyle.aesthetic}</StyleTag>
-                  <StyleTag>{sections.celebrationStyle.outfit}</StyleTag>
-                  <StyleTag>{sections.celebrationStyle.playlist}</StyleTag>
+              <div className="animated-border-card glow-champagne">
+                <div className="p-6 sm:p-8 space-y-4">
+                  <SectionLabel>Your Celebration</SectionLabel>
+                  <h3 className="heading-editorial text-xl sm:text-2xl">
+                    {sections.celebrationStyle.primaryStyle}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                    {sections.celebrationStyle.description}
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    {sections.celebrationStyle.rituals.slice(0, 4).map((ritual, i) => (
+                      <p key={i} className="text-[13px] text-foreground/70 pl-3 border-l border-champagne/20 leading-relaxed">
+                        {ritual}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-3">
+                    <StyleTag>{sections.celebrationStyle.aesthetic}</StyleTag>
+                    <StyleTag>{sections.celebrationStyle.outfit}</StyleTag>
+                    <StyleTag>{sections.celebrationStyle.playlist}</StyleTag>
+                  </div>
                 </div>
               </div>
             </section>
@@ -321,7 +339,7 @@ export function DashboardShell({
                 {sections.restaurants.map((r) => (
                   <div
                     key={r.name}
-                    className="luxury-card p-5 space-y-2.5"
+                    className="beam-card p-5 space-y-2.5"
                   >
                     <div className="flex justify-between items-start gap-3">
                       <div className="flex-1 min-w-0">
@@ -390,7 +408,7 @@ export function DashboardShell({
                     culture: "border-champagne/15 text-champagne/50 bg-champagne/3",
                   };
                   return (
-                    <div key={a.name} className="luxury-card p-5 space-y-2.5">
+                    <div key={a.name} className="lift-card p-5 space-y-2.5">
                       <div className="flex justify-between items-start gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -432,7 +450,7 @@ export function DashboardShell({
           )}
           {isPremium && sections?.cosmicProfile && (
             <section className="animate-fade-rise">
-              <div className="luxury-card overflow-hidden glow-plum">
+              <div className="animated-border-card glow-plum">
                 {/* Big 3 visual card */}
                 <div className="p-7 sm:p-8 space-y-6">
                   <SectionLabel>Your Cosmic Layer</SectionLabel>
@@ -522,7 +540,7 @@ export function DashboardShell({
         {/* Share */}
         {status === "complete" && sections?.identity && (
           <div className="mt-16 animate-fade-rise">
-            <div className="luxury-card p-6 sm:p-8 text-center space-y-4">
+            <div className="beam-card p-6 sm:p-8 text-center space-y-4">
               <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
                 Share your birthday experience
               </p>
@@ -719,7 +737,7 @@ function PaletteCard({ palette, index }: { palette: ColorPalette; index: number 
   }
 
   return (
-    <div className={`luxury-card overflow-hidden animate-fade-rise stagger-${index + 1}`}>
+    <div className={`lift-card overflow-hidden animate-fade-rise stagger-${index + 1}`}>
       {/* Swatch row with always-visible hex labels */}
       <div className="flex h-24">
         {palette.colors.map((c) => {
@@ -784,7 +802,7 @@ function DestinationCard({ dest, index }: { dest: Destination; index: number }) 
   };
 
   return (
-    <div className={`luxury-card p-5 sm:p-6 space-y-2.5 animate-fade-rise stagger-${Math.min(index + 1, 8)}`}>
+    <div className={`beam-card p-5 sm:p-6 space-y-2.5 animate-fade-rise stagger-${Math.min(index + 1, 8)}`}>
       <div className="flex items-baseline justify-between gap-3">
         <h3 className="font-editorial text-base sm:text-lg">
           {dest.city}, {dest.country}
@@ -839,11 +857,15 @@ function CopyableCaption({ caption }: { caption: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
-      className="w-full text-left luxury-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group"
+      className="w-full text-left lift-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group"
     >
       <span>{caption}</span>
-      <span className="ml-2 text-[10px] uppercase tracking-[0.1em] text-muted-foreground/30 opacity-0 group-hover:opacity-100 transition-opacity">
-        {copied ? "Copied" : "Copy"}
+      <span className={`ml-2 text-[10px] uppercase tracking-[0.1em] transition-all duration-300 ${
+        copied
+          ? "text-champagne/60 opacity-100"
+          : "text-muted-foreground/30 opacity-0 group-hover:opacity-100"
+      }`}>
+        {copied ? "Copied \u2713" : "Copy"}
       </span>
     </button>
   );

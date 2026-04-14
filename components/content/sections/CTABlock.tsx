@@ -14,7 +14,7 @@ export function CTABlock({
   buttonHref = "/onboarding",
 }: CTABlockProps) {
   return (
-    <section className="luxury-card p-8 sm:p-10 text-center space-y-5 glow-champagne">
+    <section className="animated-border-card p-8 sm:p-10 text-center space-y-5 glow-champagne">
       <h2 className="heading-editorial text-xl sm:text-2xl">{headline}</h2>
       <p className="mx-auto max-w-md text-sm text-muted-foreground leading-relaxed">
         {subheadline}

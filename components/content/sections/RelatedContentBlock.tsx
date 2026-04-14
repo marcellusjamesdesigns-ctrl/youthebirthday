@@ -22,7 +22,7 @@ export function RelatedContentBlock({ page }: RelatedContentBlockProps) {
           <Link
             key={r.canonicalPath}
             href={r.canonicalPath}
-            className="luxury-card p-5 space-y-2 hover:border-foreground/15 transition-all"
+            className="lift-card p-5 space-y-2"
           >
             <p className="text-sm font-medium text-foreground/80 leading-tight">
               {r.headline}

@@ -45,11 +45,15 @@ export function CaptionListSection({
                 <button
                   key={key}
                   onClick={() => handleCopy(caption, key)}
-                  className="w-full text-left luxury-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group"
+                  className="w-full text-left lift-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group"
                 >
                   <span>{caption}</span>
-                  <span className="ml-2 text-[10px] uppercase tracking-[0.1em] text-muted-foreground/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                    {copiedIndex === key ? "Copied" : "Copy"}
+                  <span className={`ml-2 text-[10px] uppercase tracking-[0.1em] transition-all duration-300 ${
+                    copiedIndex === key
+                      ? "text-champagne/60 opacity-100"
+                      : "text-muted-foreground/30 opacity-0 group-hover:opacity-100"
+                  }`}>
+                    {copiedIndex === key ? "Copied \u2713" : "Copy"}
                   </span>
                 </button>
               );

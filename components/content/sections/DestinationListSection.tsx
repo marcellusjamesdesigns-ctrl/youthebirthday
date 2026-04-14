@@ -26,7 +26,7 @@ export function DestinationListSection({
 
       <div className="space-y-4">
         {destinations.map((dest) => (
-          <div key={dest.city} className="luxury-card p-6 space-y-3">
+          <div key={dest.city} className="beam-card p-6 space-y-3">
             <div className="flex items-baseline justify-between">
               <h3 className="font-editorial text-lg text-foreground">
                 {dest.city}, {dest.country}

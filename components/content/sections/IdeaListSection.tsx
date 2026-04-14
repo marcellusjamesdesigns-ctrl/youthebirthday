@@ -25,7 +25,7 @@ export function IdeaListSection({
 
       <div className="grid gap-4 sm:grid-cols-2">
         {ideas.map((idea) => (
-          <div key={idea.title} className="luxury-card p-5 space-y-3">
+          <div key={idea.title} className="lift-card p-5 space-y-3">
             <h3 className="font-medium text-foreground">{idea.title}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {idea.description}

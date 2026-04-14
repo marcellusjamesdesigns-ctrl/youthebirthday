@@ -180,15 +180,123 @@
 /* ─── Luxury Card System ──────────────────────────────────────────────────── */
 
 .luxury-card {
+  position: relative;
   background: #1a1a1d;
-  border: 1px solid rgba(245, 240, 235, 0.12);
+  border: 1px solid rgba(245, 240, 235, 0.10);
   border-radius: var(--radius);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .luxury-card:hover {
-  border-color: rgba(245, 240, 235, 0.22);
-  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4);
+  border-color: rgba(245, 240, 235, 0.18);
+  box-shadow:
+    0 4px 24px -4px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(245, 240, 235, 0.04) inset;
+  transform: translateY(-2px);
+}
+
+/* ─── Beam Card — top-edge glow + hover lift ──────────────────────────────── */
+
+.beam-card {
+  position: relative;
+  background: #1a1a1d;
+  border: 1px solid rgba(245, 240, 235, 0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.beam-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.25), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.beam-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 50px;
+  background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.beam-card:hover::before {
+  opacity: 1;
+}
+
+.beam-card:hover::after {
+  opacity: 1;
+}
+
+.beam-card:hover {
+  border-color: rgba(212, 175, 55, 0.15);
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.5),
+    0 -1px 12px -2px rgba(212, 175, 55, 0.06);
+  transform: translateY(-2px);
+}
+
+/* ─── Lift Card — subtle 3D lift on hover ─────────────────────────────────── */
+
+.lift-card {
+  position: relative;
+  background: #1a1a1d;
+  border: 1px solid rgba(245, 240, 235, 0.10);
+  border-radius: var(--radius);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lift-card:hover {
+  border-color: rgba(245, 240, 235, 0.16);
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 8px -2px rgba(0, 0, 0, 0.3),
+    0 12px 40px -8px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(245, 240, 235, 0.04) inset;
+}
+
+/* ─── Animated Border Card — gradient border on hover ─────────────────────── */
+
+.animated-border-card {
+  position: relative;
+  background: #1a1a1d;
+  border: 1px solid rgba(245, 240, 235, 0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animated-border-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.3), rgba(155, 114, 207, 0.2), rgba(212, 160, 160, 0.25));
+  opacity: 0.4;
+  transition: opacity 0.4s ease;
+}
+
+.animated-border-card:hover::before {
+  opacity: 1;
+}
+
+.animated-border-card:hover {
+  border-color: rgba(212, 175, 55, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px -12px rgba(212, 175, 55, 0.1);
 }
 
 /* ─── Glow Effects ────────────────────────────────────────────────────────── */

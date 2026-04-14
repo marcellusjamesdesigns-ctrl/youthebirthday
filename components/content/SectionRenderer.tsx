@@ -11,6 +11,7 @@ import { RelatedContentBlock } from "./sections/RelatedContentBlock";
 import { CTABlock } from "./sections/CTABlock";
 import { InlineCTA } from "./sections/InlineCTA";
 import { ElementSignsBlock } from "./sections/ElementSignsBlock";
+import { Reveal } from "@/components/ui/reveal";
 import type { ContentPage } from "@/lib/content/types";
 
 interface SectionRendererProps {
@@ -22,34 +23,45 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
   return (
     <div className="space-y-12">
       {sections.map((section, i) => {
-        switch (section.type) {
-          case "hero":
-            return <HeroSection key={i} {...section} />;
-          case "caption-list":
-            return <CaptionListSection key={i} {...section} />;
-          case "idea-list":
-            return <IdeaListSection key={i} {...section} />;
-          case "destination-list":
-            return <DestinationListSection key={i} {...section} />;
-          case "palette-showcase":
-            return <PaletteShowcaseSection key={i} {...section} />;
-          case "paragraph":
-            return <ParagraphSection key={i} {...section} />;
-          case "tip-list":
-            return <TipListSection key={i} {...section} />;
-          case "faq":
-            return <FAQSection key={i} {...section} />;
-          case "related-content":
-            return <RelatedContentBlock key={i} page={page} />;
-          case "cta":
-            return <CTABlock key={i} {...section} />;
-          case "inline-cta":
-            return <InlineCTA key={i} {...section} />;
-          case "element-signs":
-            return <ElementSignsBlock key={i} {...section} />;
-          default:
-            return null;
-        }
+        const content = (() => {
+          switch (section.type) {
+            case "hero":
+              return <HeroSection key={i} {...section} />;
+            case "caption-list":
+              return <CaptionListSection key={i} {...section} />;
+            case "idea-list":
+              return <IdeaListSection key={i} {...section} />;
+            case "destination-list":
+              return <DestinationListSection key={i} {...section} />;
+            case "palette-showcase":
+              return <PaletteShowcaseSection key={i} {...section} />;
+            case "paragraph":
+              return <ParagraphSection key={i} {...section} />;
+            case "tip-list":
+              return <TipListSection key={i} {...section} />;
+            case "faq":
+              return <FAQSection key={i} {...section} />;
+            case "related-content":
+              return <RelatedContentBlock key={i} page={page} />;
+            case "cta":
+              return <CTABlock key={i} {...section} />;
+            case "inline-cta":
+              return <InlineCTA key={i} {...section} />;
+            case "element-signs":
+              return <ElementSignsBlock key={i} {...section} />;
+            default:
+              return null;
+          }
+        })();
+
+        // Hero renders immediately, everything else reveals on scroll
+        if (section.type === "hero" || !content) return content;
+
+        return (
+          <Reveal key={i} delay={i > 2 ? 0 : i * 80}>
+            {content}
+          </Reveal>
+        );
       })}
     </div>
   );

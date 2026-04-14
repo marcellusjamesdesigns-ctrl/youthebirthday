@@ -64,7 +64,7 @@ export function CyclingPreview() {
   return (
     <div
       key={key}
-      className="luxury-card glass-card preview-card-enter p-6 sm:p-8 space-y-8"
+      className="animated-border-card glass-card preview-card-enter p-6 sm:p-8 space-y-8"
       style={{ boxShadow: `0 0 80px -20px ${p.glow}` }}
     >
       {/* Identity */}
