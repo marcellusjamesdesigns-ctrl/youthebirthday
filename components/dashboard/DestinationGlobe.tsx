@@ -169,7 +169,7 @@ export function DestinationGlobe({ destinations, seasonColor, dreamColor }: Dest
 
       {hovered && (
         <div className="absolute z-20 pointer-events-none" style={{ left: hovered.x + 16, top: hovered.y - 8, maxWidth: 200 }}>
-          <div className="luxury-card p-3 space-y-1.5 shadow-xl">
+          <div className="lift-card p-3 space-y-1.5 shadow-xl">
             <p className="text-sm font-medium text-foreground leading-tight">{hovered.dest.city}</p>
             <p className="text-[11px] text-muted-foreground/60">{hovered.dest.country}</p>
             <span className={`inline-block text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 rounded-full border bg-transparent ${

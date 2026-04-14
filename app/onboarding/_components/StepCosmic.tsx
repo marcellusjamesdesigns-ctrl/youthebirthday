@@ -49,7 +49,7 @@ export function StepCosmic() {
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => setField("mode", "quick")}
-            className={`luxury-card p-5 text-left transition-all duration-200 ${
+            className={`lift-card p-5 text-left transition-all duration-200 ${
               mode === "quick"
                 ? "selection-active ring-1 ring-champagne/40"
                 : "opacity-60 hover:opacity-100"
@@ -62,7 +62,7 @@ export function StepCosmic() {
           </button>
           <button
             onClick={() => setField("mode", "cosmic")}
-            className={`luxury-card p-5 text-left transition-all duration-200 ${
+            className={`lift-card p-5 text-left transition-all duration-200 ${
               mode === "cosmic"
                 ? "selection-active-plum ring-1 ring-plum/40"
                 : "opacity-60 hover:opacity-100"

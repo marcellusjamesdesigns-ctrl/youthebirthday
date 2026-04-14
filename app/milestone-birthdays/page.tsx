@@ -129,7 +129,7 @@ function MilestoneCard({ age, label, tagline, captionHref, ideaHref }: {
   ideaHref: string | null;
 }) {
   return (
-    <div className="luxury-card p-6 space-y-3">
+    <div className="lift-card p-6 space-y-3">
       <div className="flex items-baseline justify-between">
         <h2 className="font-editorial text-lg">{label}</h2>
         <span className="text-2xl font-editorial text-champagne/30">{age}</span>

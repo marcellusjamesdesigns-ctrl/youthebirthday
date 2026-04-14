@@ -55,7 +55,7 @@ export function StepPreferences() {
               <button
                 key={opt}
                 onClick={() => setField("budget", budget === opt ? "" : opt)}
-                className={`luxury-card px-3 py-3 text-sm transition-all ${
+                className={`lift-card px-3 py-3 text-sm transition-all ${
                   budget === opt
                     ? "selection-active"
                     : "text-muted-foreground hover:text-foreground"
@@ -74,7 +74,7 @@ export function StepPreferences() {
               <button
                 key={opt}
                 onClick={() => setField("groupSize", groupSize === opt ? "" : opt)}
-                className={`luxury-card px-3 py-3 text-sm transition-all ${
+                className={`lift-card px-3 py-3 text-sm transition-all ${
                   groupSize === opt
                     ? "selection-active"
                     : "text-muted-foreground hover:text-foreground"

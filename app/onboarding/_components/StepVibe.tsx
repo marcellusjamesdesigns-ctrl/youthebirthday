@@ -47,7 +47,7 @@ export function StepVibe() {
               <button
                 key={vibe}
                 onClick={() => setField("celebrationVibe", vibe)}
-                className={`luxury-card px-4 py-3 text-sm text-left transition-all ${
+                className={`lift-card px-4 py-3 text-sm text-left transition-all ${
                   celebrationVibe === vibe
                     ? "selection-active"
                     : "text-muted-foreground hover:text-foreground"

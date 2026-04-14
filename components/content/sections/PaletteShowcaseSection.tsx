@@ -36,7 +36,7 @@ export function PaletteShowcaseSection({
 
       <div className="grid gap-4 sm:grid-cols-2">
         {palettes.map((palette) => (
-          <div key={palette.name} className="luxury-card overflow-hidden">
+          <div key={palette.name} className="lift-card overflow-hidden">
             <div className="flex h-24">
               {palette.colors.map((color) => (
                 <button

@@ -128,7 +128,7 @@ export function GenerationGate({ sessionId, onSuccess }: GenerationGateProps) {
           <button
             onClick={() => handlePremium("one_time")}
             disabled={!!loadingCheckout}
-            className="luxury-card p-4 text-center transition-all hover:border-champagne/30 disabled:opacity-40 space-y-1.5"
+            className="lift-card p-4 text-center transition-all hover:border-champagne/30 disabled:opacity-40 space-y-1.5"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/60">Birthday Pass</p>
             <p className="text-xl font-medium text-foreground">$2.99</p>
@@ -140,7 +140,7 @@ export function GenerationGate({ sessionId, onSuccess }: GenerationGateProps) {
           <button
             onClick={() => handlePremium("monthly")}
             disabled={!!loadingCheckout}
-            className="luxury-card p-4 text-center transition-all hover:border-plum/30 disabled:opacity-40 space-y-1.5"
+            className="lift-card p-4 text-center transition-all hover:border-plum/30 disabled:opacity-40 space-y-1.5"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-plum/60">Birthday Pro</p>
             <p className="text-xl font-medium text-foreground">$4.99</p>

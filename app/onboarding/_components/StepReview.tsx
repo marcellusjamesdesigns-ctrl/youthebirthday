@@ -38,7 +38,7 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
         </p>
       </div>
 
-      <div className="luxury-card p-6 space-y-4">
+      <div className="lift-card p-6 space-y-4">
 
         {/* — Core — */}
         <ReviewRow label="Name" value={store.name} />

@@ -13,7 +13,7 @@ export function FAQSection({ heading, questions }: FAQSectionProps) {
         {questions.map((faq) => (
           <details
             key={faq.question}
-            className="luxury-card p-5 group"
+            className="lift-card p-5 group"
           >
             <summary className="font-medium text-sm cursor-pointer list-none flex items-center justify-between text-foreground/80 hover:text-foreground transition-colors">
               {faq.question}
