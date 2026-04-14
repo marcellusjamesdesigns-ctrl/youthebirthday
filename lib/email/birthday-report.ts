@@ -13,6 +13,8 @@ interface ReportData {
   ageTurning: number;
   birthdayTitle: string;
   birthdayArchetype: string;
+  isSubscription?: boolean;
+  buyerEmail?: string;
   birthdayEra: string;
   celebrationNarrative: string;
   palettes: ColorPalette[];
@@ -148,6 +150,9 @@ export function buildReportEmailHtml(data: ReportData): string {
     <p style="font-size:10px;color:#555;text-align:center;margin:24px 0 0;">
       youthebirthday.app — Your personalized birthday experience
     </p>
+    ${data.isSubscription ? `<p style="font-size:10px;color:#555;text-align:center;margin:8px 0 0;">
+      <a href="https://youthebirthday.app/api/stripe/manage?email=${encodeURIComponent(data.buyerEmail ?? "")}" style="color:#d4af37;text-decoration:none;">Manage your subscription</a>
+    </p>` : ""}
   </div>
 </body>
 </html>`;

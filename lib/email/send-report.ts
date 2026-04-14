@@ -15,7 +15,8 @@ import type {
 
 export async function sendBirthdayReport(
   email: string,
-  sessionId: string
+  sessionId: string,
+  isSubscription: boolean = false
 ): Promise<boolean> {
   const db = getDb();
 
@@ -56,6 +57,8 @@ export async function sendBirthdayReport(
     activities: (generation.activities as Activity[]) ?? [],
     cosmicProfile: (generation.cosmicProfile as CosmicProfile) ?? null,
     dashboardUrl: `${siteUrl}/birthday/${sessionId}`,
+    isSubscription,
+    buyerEmail: email,
   });
 
   try {

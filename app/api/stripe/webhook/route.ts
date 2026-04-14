@@ -75,7 +75,8 @@ export async function POST(request: NextRequest) {
       // Send the birthday report via email
       const sessionId = session.metadata?.sessionId;
       if (email && sessionId && sessionId !== "") {
-        const sent = await sendBirthdayReport(email, sessionId);
+        const isSubscription = session.mode === "subscription";
+        const sent = await sendBirthdayReport(email, sessionId, isSubscription);
         console.log(JSON.stringify({
           level: "info",
           msg: sent ? "email:report_sent" : "email:report_failed",

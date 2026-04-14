@@ -63,12 +63,30 @@ export function ShareButtons({ sessionId, title, isPremium }: ShareButtonsProps)
       </button>
       {/* Download — premium only */}
       {isPremium && (
-        <button
-          onClick={() => window.open(`/birthday/${sessionId}/print`, "_blank")}
-          className="rounded-full border border-champagne/20 px-5 py-2.5 text-[13px] text-champagne/60 hover:text-champagne hover:border-champagne/40 transition-all"
-        >
-          Download Report
-        </button>
+        <>
+          <button
+            onClick={() => window.open(`/birthday/${sessionId}/print`, "_blank")}
+            className="rounded-full border border-champagne/20 px-5 py-2.5 text-[13px] text-champagne/60 hover:text-champagne hover:border-champagne/40 transition-all"
+          >
+            Download Report
+          </button>
+          <button
+            onClick={async () => {
+              const { getOrCreateDeviceToken } = await import("@/lib/limits/device-token");
+              const token = getOrCreateDeviceToken();
+              const res = await fetch("/api/stripe/portal", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ deviceToken: token }),
+              });
+              const data = await res.json();
+              if (data.url) window.location.href = data.url;
+            }}
+            className="rounded-full px-5 py-2.5 text-[13px] text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+          >
+            Manage Subscription
+          </button>
+        </>
       )}
     </div>
   );
