@@ -553,3 +553,44 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* ─── Prose inline links (used in blog paragraphs + inline CTAs) ─────────── */
+
+.prose-links a {
+  color: var(--champagne, #d4af37);
+  opacity: 0.85;
+  text-decoration: underline;
+  text-decoration-color: rgba(212, 175, 55, 0.3);
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.prose-links a:hover {
+  opacity: 1;
+  text-decoration-color: rgba(212, 175, 55, 0.7);
+}
+
+/* Also style strong + em in prose-links contexts */
+.prose-links strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.prose-links em {
+  font-style: italic;
+}
+
+/* Legal pages use the same prose treatment */
+.prose-luxury a {
+  color: var(--champagne, #d4af37);
+  opacity: 0.85;
+  text-decoration: underline;
+  text-decoration-color: rgba(212, 175, 55, 0.3);
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.prose-luxury a:hover {
+  opacity: 1;
+  text-decoration-color: rgba(212, 175, 55, 0.7);
+}

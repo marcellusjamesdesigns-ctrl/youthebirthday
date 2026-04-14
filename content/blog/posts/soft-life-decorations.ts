@@ -5,7 +5,7 @@ export const softLifeDecorationsPost: BlogPost = {
   category: "planning",
   title: "Best Birthday Decorations for a Soft Life Party (2026)",
   description:
-    "The soft life birthday aesthetic in 12 decor pieces — linen, dried florals, candles, and crystal. A complete, editorial decoration guide.",
+    "The soft life birthday aesthetic, mapped in 8 decor pieces across 6 zones — linen, dried florals, candles, crystal. A complete, editorial decoration guide.",
   headline: "Best Birthday Decorations for a Soft Life Party",
   subheadline: "Quiet luxury, without trying too hard.",
   excerpt:
@@ -17,8 +17,12 @@ export const softLifeDecorationsPost: BlogPost = {
     credit: "Unsplash",
     creditUrl: "https://unsplash.com",
   },
+  pinterestImage: {
+    src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1000&h=1500&fit=crop",
+    alt: "Soft life birthday decor — vertical pin",
+  },
 
-  readingTimeMinutes: 6,
+  author: { name: "The Journal" },
 
   tags: {
     vibe: "soft-life",
@@ -45,7 +49,7 @@ export const softLifeDecorationsPost: BlogPost = {
     {
       type: "paragraph",
       body:
-        "A soft life birthday doesn't need more stuff — it needs fewer, better things. The goal isn't to fill the room with color and balloons. The goal is for every object on the table to look like it belongs there. That's what makes the aesthetic hit: restraint on purpose. Below is the exact decoration playbook — twelve pieces, grouped into six zones — for a birthday that reads more dinner party than disco.",
+        "A soft life birthday doesn't need more stuff — it needs fewer, better things. The goal isn't to fill the room with color and balloons. The goal is for every object on the table to look like it belongs there. That's what makes the aesthetic hit: restraint on purpose. Below is the exact decoration playbook — eight pieces, grouped into six zones — for a birthday that reads more dinner party than disco. It pairs cleanly with our full <a href=\"/birthday-themes/soft-life-birthday-theme\">soft life birthday theme guide</a> if you want the full-day version.",
     },
 
     {
@@ -62,9 +66,19 @@ export const softLifeDecorationsPost: BlogPost = {
     },
 
     {
+      type: "image",
+      src: "https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?q=80&w=2400&auto=format&fit=crop",
+      alt: "Dried pampas grass arrangement in a ceramic vase on a linen runner",
+      credit: "Unsplash",
+      creditUrl: "https://unsplash.com",
+      ratio: "wide",
+      caption: "Keep centerpieces low — conversation beats spectacle.",
+    },
+
+    {
       type: "amazon-shop",
       title: "Shop the Soft Life Palette",
-      subtitle: "Twelve pieces that quietly do the work.",
+      subtitle: "Eight pieces that quietly do the work.",
       placement: "blog-soft-life-decorations",
       format: "grid",
       items: [
@@ -72,13 +86,9 @@ export const softLifeDecorationsPost: BlogPost = {
         { query: "brass taper candle holders set", label: "Brass Candle Holders", description: "Varying heights look best.", icon: "☾" },
         { query: "unscented taper candles ivory", label: "Unscented Tapers", description: "Burn slow. Let them dress the table.", icon: "✧" },
         { query: "dried pampas grass tall natural", label: "Dried Pampas", description: "The universal soft life flex.", icon: "❋" },
-        { query: "dried wheat stems bundle decor", label: "Dried Wheat Stems", description: "Pairs with the pampas.", icon: "❋" },
         { query: "crystal coupe glasses set of 4", label: "Crystal Coupes", description: "For the toast. Then everything after.", icon: "◈" },
         { query: "linen napkins set of 8 neutral", label: "Linen Napkins", description: "One small upgrade you feel all night.", icon: "✦" },
         { query: "ceramic diffuser minimalist", label: "Ceramic Diffuser", description: "Warm, quiet, barely there.", icon: "✧" },
-        { query: "vetiver reed diffuser fragrance", label: "Vetiver Diffuser", description: "Earthy. Adult. Not floral.", icon: "☾" },
-        { query: "ceramic bud vases small set", label: "Ceramic Bud Vases", description: "For a single stem or two, nothing more.", icon: "◈" },
-        { query: "coffee table book architecture design", label: "One Beautiful Book", description: "A prop and a conversation piece.", icon: "✦" },
         { query: "brass bowl small decorative catchall", label: "Brass Catchall Bowl", description: "For keys, olives, or candy.", icon: "☽" },
       ],
     },
@@ -87,12 +97,21 @@ export const softLifeDecorationsPost: BlogPost = {
       type: "paragraph",
       heading: "How to layer it",
       body:
-        "Start with the tablecloth. Add the candles before the florals — they set the height, and everything else plays with that line. Put the low dried arrangements between the candle clusters, not in front of them. Scatter the crystal glasses at each place setting, pour the wine before guests arrive, and let the table be half-set when people walk in. The half-finished look reads intentional — like you've been in the middle of enjoying yourself and they happen to be invited.",
+        "Start with the tablecloth. Add the candles before the florals — they set the height, and everything else plays with that line. Put the low dried arrangements between the candle clusters, not in front of them. Scatter the crystal glasses at each place setting, pour the wine before guests arrive, and let the table be half-set when people walk in. The half-finished look reads intentional — like you've been in the middle of enjoying yourself and they happen to be invited. If you want help picking colors to match, start with our <a href=\"/birthday-palettes/birthday-color-palette-inspiration\">birthday color palette guide</a>.",
     },
 
     {
       type: "pull-quote",
       quote: "Restraint is the aesthetic. Don't decorate the table — compose it.",
+    },
+
+    {
+      type: "mid-article-cta",
+      eyebrow: "Build yours",
+      headline: "Want the colors, captions, and full celebration plan to match?",
+      description: "Generate a personalized birthday dashboard — palettes, captions, destinations, and celebration style built around your exact vibe.",
+      buttonText: "Generate My Birthday",
+      buttonHref: "/onboarding",
     },
 
     {
@@ -107,15 +126,14 @@ export const softLifeDecorationsPost: BlogPost = {
 
     {
       type: "inline-cta",
-      text: "Want a full birthday plan built around this aesthetic — colors, captions, celebration style?",
-      href: "/onboarding",
+      text: "Planning the full evening? See our <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner ideas</a> guide.",
     },
 
     {
       type: "paragraph",
       heading: "What to skip",
       body:
-        "No foil balloons. No birthday banners. No scented candles on the dining table (they compete with food). No overhead lighting once guests arrive — dim or off, candles only. No birthday hats. This aesthetic is the opposite of the cliché birthday kit from the pharmacy. If you'd put it on a kid's birthday, it's probably wrong for this one.",
+        "No foil balloons. No birthday banners. No scented candles on the dining table (they compete with food). No overhead lighting once guests arrive — dim or off, candles only. No birthday hats. This aesthetic is the opposite of the cliché birthday kit from the pharmacy. If you'd put it on a kid's birthday, it's probably wrong for this one. For more aesthetic-specific guides, explore our <a href=\"/birthday-themes\">full themes library</a> or check the <a href=\"/birthday-ideas/soft-life-birthday-ideas\">soft life birthday ideas</a> page for activity pairings.",
     },
 
     {

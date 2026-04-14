@@ -63,9 +63,13 @@ export interface BlogPost {
     creditUrl?: string;
   };
   ogImage?: string;               // falls back to heroImage.src
+  pinterestImage?: {              // 2:3 vertical optimized for Pinterest
+    src: string;
+    alt: string;
+  };
 
-  // Reading experience
-  readingTimeMinutes: number;
+  // Reading experience — optional, computed at render if omitted
+  readingTimeMinutes?: number;
 
   // Topical tags (used for related-post surfacing)
   tags: {
@@ -108,6 +112,7 @@ export type ContentSection =
   | RelatedContentSection
   | CTASection
   | InlineCTASection
+  | MidArticleCTASection
   | ElementSignsSection
   | AmazonShopSection
   | ImageSection
@@ -202,6 +207,15 @@ export interface InlineCTASection {
   type: "inline-cta";
   text: string;
   href?: string;
+}
+
+export interface MidArticleCTASection {
+  type: "mid-article-cta";
+  eyebrow?: string;
+  headline: string;
+  description?: string;
+  buttonText?: string;
+  buttonHref?: string;
 }
 
 export interface ElementSignsSection {

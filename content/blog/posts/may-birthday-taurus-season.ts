@@ -17,8 +17,12 @@ export const mayBirthdayTaurusPost: BlogPost = {
     credit: "Unsplash",
     creditUrl: "https://unsplash.com",
   },
+  pinterestImage: {
+    src: "https://images.unsplash.com/photo-1464207687429-7505649dae38?q=80&w=1000&h=1500&fit=crop",
+    alt: "May birthday Taurus season ideas — vertical pin",
+  },
 
-  readingTimeMinutes: 6,
+  author: { name: "The Journal" },
 
   tags: {
     season: "spring",
@@ -45,14 +49,19 @@ export const mayBirthdayTaurusPost: BlogPost = {
     {
       type: "paragraph",
       body:
-        "Taurus season runs from April 20 to May 20, which makes May the most sensual birthday month of the year. This isn't the birthday for skydiving or a nightclub. Taurus rules Venus, and Venus wants texture, food, slow music, and real pleasure — not spectacle. If you're a May birthday, or planning for one, the mistake is over-planning. The goal is to build a celebration that feels indulgent rather than packed. Here's how.",
+        "Taurus season runs from April 20 to May 20, which makes May the most sensual birthday month of the year. This isn't the birthday for skydiving or a nightclub. Taurus rules Venus, and Venus wants texture, food, slow music, and real pleasure — not spectacle. If you're a May birthday, or planning for one, the mistake is over-planning. The goal is to build a celebration that feels indulgent rather than packed. For the sign-specific version, see our full <a href=\"/zodiac-birthdays/taurus-birthday-ideas\">Taurus birthday guide</a>. Here's how to celebrate the season itself.",
     },
 
     {
       type: "paragraph",
       heading: "What Taurus season actually wants",
       body:
-        "Taurus energy is grounded, patient, and a little stubborn about what it likes. It wants real butter, good bread, and a long lunch. It wants fresh flowers rather than balloons. It wants one beautiful thing, not five mediocre ones. Any celebration that respects those instincts will feel right. Any celebration that fights them — an overbooked day, a loud venue, a rushed dinner — will feel slightly off, even if you can't name why.",
+        "Taurus energy is grounded, patient, and a little stubborn about what it likes. It wants real butter, good bread, and a long lunch. It wants fresh flowers rather than balloons. It wants one beautiful thing, not five mediocre ones. Any celebration that respects those instincts will feel right. Any celebration that fights them — an overbooked day, a loud venue, a rushed dinner — will feel slightly off, even if you can't name why. For aesthetic inspiration, our <a href=\"/birthday-palettes/seasonal-birthday-color-palettes\">seasonal palette guide</a> leans into the same pacing.",
+    },
+
+    {
+      type: "pull-quote",
+      quote: "Taurus season isn't the birthday for spectacle. It's the birthday for pleasure.",
     },
 
     {
@@ -69,8 +78,13 @@ export const mayBirthdayTaurusPost: BlogPost = {
     },
 
     {
-      type: "pull-quote",
-      quote: "Taurus season isn't the birthday for spectacle. It's the birthday for pleasure.",
+      type: "image",
+      src: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?q=80&w=2400&auto=format&fit=crop",
+      alt: "A long garden table set for a slow lunch with wine and fresh bread",
+      credit: "Unsplash",
+      creditUrl: "https://unsplash.com",
+      ratio: "wide",
+      caption: "A long garden lunch is Taurus season's highest form.",
     },
 
     {
@@ -103,6 +117,20 @@ export const mayBirthdayTaurusPost: BlogPost = {
     },
 
     {
+      type: "pull-quote",
+      quote: "Respect the pace. The best gift you can give a Taurus is permission to not hurry.",
+    },
+
+    {
+      type: "mid-article-cta",
+      eyebrow: "Built for your sign",
+      headline: "Get a May birthday plan that honors your Taurus energy.",
+      description: "Our generator builds a personalized dashboard — Taurus-specific celebration style, palettes, destinations, and captions — in under two minutes.",
+      buttonText: "Generate My Birthday",
+      buttonHref: "/onboarding",
+    },
+
+    {
       type: "tip-list",
       heading: "Best Destinations for a May Birthday",
       tips: [
@@ -112,6 +140,11 @@ export const mayBirthdayTaurusPost: BlogPost = {
         { title: "Charleston, South Carolina", body: "Garden season. Courtyards. Low-country dinners. Warm without being oppressive." },
         { title: "Kyoto, Japan", body: "After cherry blossoms, before the summer heat. Moss gardens, tea houses, temple walks." },
       ],
+    },
+
+    {
+      type: "inline-cta",
+      text: "See more travel-friendly options on our <a href=\"/birthday-destinations/luxury-birthday-destinations\">luxury birthday destinations</a> guide.",
     },
 
     {
@@ -134,13 +167,7 @@ export const mayBirthdayTaurusPost: BlogPost = {
       type: "paragraph",
       heading: "If the birthday isn't yours",
       body:
-        "If you're planning for a May birthday Taurus in your life, the worst thing you can do is fill the day. Respect their pace. Book one beautiful meal, clear the rest of the day, and let them choose what to do with the unstructured time. The best gift you can give a Taurus is permission to not hurry.",
-    },
-
-    {
-      type: "inline-cta",
-      text: "Want a full May birthday plan built for your exact vibe and location?",
-      href: "/onboarding",
+        "If you're planning for a May birthday Taurus in your life, the worst thing you can do is fill the day. Respect their pace. Book one beautiful meal, clear the rest of the day, and let them choose what to do with the unstructured time. The best gift you can give a Taurus is permission to not hurry. Need caption ideas? Our <a href=\"/birthday-captions/30th-birthday-captions\">milestone captions library</a> has vibe-matched options.",
     },
 
     {

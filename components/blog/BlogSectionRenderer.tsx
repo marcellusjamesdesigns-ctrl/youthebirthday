@@ -12,6 +12,7 @@ import { InlineCTA } from "@/components/content/sections/InlineCTA";
 import { AmazonShopModule } from "@/components/affiliate/AmazonShopModule";
 import { ImageBlock } from "@/components/content/sections/ImageBlock";
 import { PullQuoteBlock } from "@/components/content/sections/PullQuoteBlock";
+import { MidArticleCTA } from "./MidArticleCTA";
 import { Reveal } from "@/components/ui/reveal";
 
 export function BlogSectionRenderer({ sections }: { sections: ContentSection[] }) {
@@ -40,6 +41,17 @@ export function BlogSectionRenderer({ sections }: { sections: ContentSection[] }
               return <CTABlock key={i} {...section} />;
             case "inline-cta":
               return <InlineCTA key={i} {...section} />;
+            case "mid-article-cta":
+              return (
+                <MidArticleCTA
+                  key={i}
+                  eyebrow={section.eyebrow}
+                  headline={section.headline}
+                  description={section.description}
+                  buttonText={section.buttonText}
+                  buttonHref={section.buttonHref}
+                />
+              );
             case "amazon-shop":
               return (
                 <AmazonShopModule

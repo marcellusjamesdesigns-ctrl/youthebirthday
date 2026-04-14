@@ -17,8 +17,12 @@ export const birthdayDinnerOutfitsPost: BlogPost = {
     credit: "Unsplash",
     creditUrl: "https://unsplash.com",
   },
+  pinterestImage: {
+    src: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000&h=1500&fit=crop",
+    alt: "Birthday dinner outfit ideas — vertical pin",
+  },
 
-  readingTimeMinutes: 7,
+  author: { name: "The Journal" },
 
   tags: {
     theme: "dinner",
@@ -44,7 +48,7 @@ export const birthdayDinnerOutfitsPost: BlogPost = {
     {
       type: "paragraph",
       body:
-        "The fastest way to ruin a birthday dinner is to dress for the restaurant instead of for yourself. Most people default to 'something dressy' and end up in an outfit that photographs as average and feels like an afterthought. The move is the opposite: pick your energy first, pick the outfit to match, pick the restaurant that supports both. Here's how to dress for six distinct birthday dinner vibes — and the styling details that make each one actually land.",
+        "The fastest way to ruin a birthday dinner is to dress for the restaurant instead of for yourself. Most people default to 'something dressy' and end up in an outfit that photographs as average and feels like an afterthought. The move is the opposite: pick your energy first, pick the outfit to match, pick the restaurant that supports both. If you haven't locked in the night yet, start with our <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner ideas</a> guide — then come back here to dress for it.",
     },
 
     {
@@ -58,17 +62,17 @@ export const birthdayDinnerOutfitsPost: BlogPost = {
       ideas: [
         {
           title: "Soft Life — Slip Dress + Gold",
-          description: "A cream, champagne, or sage slip dress. Bare shoulders. One piece of real gold — a thin chain, a cuff, or hoops. Minimal makeup, soft hair. The outfit should look like you haven't tried, which is the hardest thing to do on purpose.",
+          description: "A cream, champagne, or sage slip dress. Bare shoulders. One piece of real gold — a thin chain, a cuff, or hoops. Minimal makeup, soft hair. The outfit should look like you haven't tried, which is the hardest thing to do on purpose. Pairs with our <a href=\"/birthday-themes/soft-life-birthday-theme\">soft life theme</a>.",
           vibeTag: "soft-life",
         },
         {
           title: "Luxury — Tailored Black + One Bold Piece",
-          description: "A structured black dress, a tailored jumpsuit, or a sharp suit. Then one striking element: statement earrings, a single-color manicure, or an expensive fragrance. Monochrome reads expensive. Accessories do the editing.",
+          description: "A structured black dress, a tailored jumpsuit, or a sharp suit. Then one striking element: statement earrings, a single-color manicure, or an expensive fragrance. Monochrome reads expensive. Accessories do the editing. See also our <a href=\"/birthday-themes/old-money-birthday-theme\">old money birthday theme</a> for the full aesthetic.",
           vibeTag: "luxury",
         },
         {
           title: "Dark Feminine — Floor-Length + Structured",
-          description: "Deep red, oxblood, or midnight plum. Floor length or asymmetric. Structured shoulders. One real piece of jewelry — nothing costume. Dark lip, clean eye. You should look like the main character of a film nobody's made yet.",
+          description: "Deep red, oxblood, or midnight plum. Floor length or asymmetric. Structured shoulders. One real piece of jewelry — nothing costume. Dark lip, clean eye. You should look like the main character of a film nobody's made yet. The <a href=\"/birthday-themes/dark-feminine-birthday-theme\">dark feminine theme</a> covers the full evening.",
           vibeTag: "intimate",
         },
         {
@@ -83,10 +87,20 @@ export const birthdayDinnerOutfitsPost: BlogPost = {
         },
         {
           title: "Solo — Whatever Feels Like Winning",
-          description: "If you're dining alone, wear the outfit you'd normally save for a reason. Real jewelry. Perfume you only wear when you're going somewhere. The waiter will notice. The point is you notice first.",
+          description: "If you're dining alone, wear the outfit you'd normally save for a reason. Real jewelry. Perfume you only wear when you're going somewhere. The waiter will notice. The point is you notice first. More on the <a href=\"/birthday-ideas/solo-birthday-ideas\">solo birthday ideas</a> page.",
           vibeTag: "solo",
         },
       ],
+    },
+
+    {
+      type: "image",
+      src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2400&auto=format&fit=crop",
+      alt: "Close-up of gold jewelry on a neutral background",
+      credit: "Unsplash",
+      creditUrl: "https://unsplash.com",
+      ratio: "wide",
+      caption: "One hero accessory beats a full jewelry set every time.",
     },
 
     {
@@ -99,6 +113,15 @@ export const birthdayDinnerOutfitsPost: BlogPost = {
         { title: "Skip the new shoes", body: "Never wear unbroken-in shoes to your own birthday dinner. The worst photos from birthdays are the ones where someone is visibly in pain." },
         { title: "Bring one backup piece", body: "A wrap, a blazer, or a slip you can layer. Restaurants run cold, and the second half of the night often shifts somewhere else." },
       ],
+    },
+
+    {
+      type: "mid-article-cta",
+      eyebrow: "Pair the outfit with the plan",
+      headline: "Get a full birthday plan built around your exact vibe.",
+      description: "Restaurants, celebration style, captions, palettes — generated for your age, city, and energy in under two minutes.",
+      buttonText: "Generate My Birthday",
+      buttonHref: "/onboarding",
     },
 
     {
@@ -121,7 +144,7 @@ export const birthdayDinnerOutfitsPost: BlogPost = {
       type: "paragraph",
       heading: "What the outfit communicates",
       body:
-        "Guests read the host's outfit within thirty seconds of arriving. If you're dressed up, they relax into the occasion. If you're dressed down, they feel overdressed. The outfit isn't just yours — it sets the dress code for the night. This is also why sending one casual photo before the dinner ('wearing this') is the single most useful logistics text you can send.",
+        "Guests read the host's outfit within thirty seconds of arriving. If you're dressed up, they relax into the occasion. If you're dressed down, they feel overdressed. The outfit isn't just yours — it sets the dress code for the night. This is also why sending one casual photo before the dinner ('wearing this') is the single most useful logistics text you can send. For more on setting the tone, see our <a href=\"/birthday-captions\">birthday captions library</a> for post-dinner Instagram energy.",
     },
 
     {
