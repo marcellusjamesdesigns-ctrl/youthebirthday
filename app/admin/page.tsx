@@ -22,7 +22,14 @@ interface Stats {
     avgCostPerGenerationCents: number;
     totalCostCents: number;
     totalCostDollars: string;
+    cost24hCents: number;
+    cost24hDollars: string;
+    cost7dCents: number;
+    cost7dDollars: string;
+    projectedMonthlyCostDollars: string;
   };
+  services: { name: string; note: string; critical: boolean }[];
+  warnings: string[];
   recentSessions: {
     id: string;
     name: string;
@@ -138,6 +145,17 @@ export default function AdminDashboard() {
           <p className="text-sm text-muted-foreground mt-1">youthebirthday.app</p>
         </div>
 
+        {/* Warnings banner */}
+        {stats.warnings.length > 0 && (
+          <div className="space-y-2">
+            {stats.warnings.map((w, i) => (
+              <div key={i} className="rounded-xl bg-rose/10 border border-rose/20 px-5 py-3 text-sm text-rose">
+                {w}
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Overview metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <MetricCard label="Total Sessions" value={stats.overview.totalSessions} />
@@ -150,9 +168,35 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <MetricCard label="Premium Users" value={stats.users.premiumUsers} accent="champagne" />
           <MetricCard label="Free→Paid %" value={`${stats.users.conversionRate.toFixed(1)}%`} accent="champagne" />
-          <MetricCard label="Avg Cost/Gen" value={`${(stats.economics.avgCostPerGenerationCents / 100).toFixed(3)}¢`} />
+          <MetricCard label="Avg Cost/Gen" value={`$${(stats.economics.avgCostPerGenerationCents / 100).toFixed(2)}`} />
           <MetricCard label="Total AI Cost" value={`$${stats.economics.totalCostDollars}`} />
         </div>
+
+        {/* Spend breakdown */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <MetricCard label="AI Cost (24h)" value={`$${stats.economics.cost24hDollars}`} />
+          <MetricCard label="AI Cost (7d)" value={`$${stats.economics.cost7dDollars}`} />
+          <MetricCard label="Projected /mo" value={`$${stats.economics.projectedMonthlyCostDollars}`} accent={Number(stats.economics.projectedMonthlyCostDollars) > 50 ? "rose" : undefined} />
+          <MetricCard label="Cost per $1 Revenue" value="—" subtitle="needs Stripe data" />
+        </div>
+
+        {/* Services health */}
+        <section className="space-y-3">
+          <h2 className="text-sm font-medium text-foreground/80">Services &amp; Balances</h2>
+          <div className="grid sm:grid-cols-2 gap-2">
+            {stats.services.map((s) => (
+              <div key={s.name} className={`lift-card p-3 flex items-center justify-between ${s.critical ? "" : "opacity-70"}`}>
+                <div>
+                  <p className="text-sm text-foreground/80">{s.name}</p>
+                  <p className="text-[10px] text-muted-foreground/50 mt-0.5">{s.note}</p>
+                </div>
+                {s.critical && (
+                  <span className="text-[8px] uppercase tracking-wider text-champagne/60 bg-champagne/10 px-2 py-0.5 rounded-full">Critical</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Daily volume */}
         {stats.dailyVolume.length > 0 && (
