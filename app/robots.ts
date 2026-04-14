@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/birthday/", "/api/"],
+        disallow: ["/birthday/", "/api/", "/admin/"],
       },
     ],
     sitemap: "https://youthebirthday.app/sitemap.xml",

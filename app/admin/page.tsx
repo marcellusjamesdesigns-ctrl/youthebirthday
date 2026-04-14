@@ -1,0 +1,225 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+const ADMIN_SECRET = "ytb-admin-2026";
+
+interface Stats {
+  overview: {
+    totalSessions: number;
+    totalGenerations: number;
+    completedGenerations: number;
+    errorGenerations: number;
+    completionRate: number;
+  };
+  users: {
+    totalEmailCaptures: number;
+    premiumUsers: number;
+    conversionRate: number;
+  };
+  economics: {
+    avgCostPerGenerationCents: number;
+    totalCostCents: number;
+    totalCostDollars: string;
+  };
+  recentSessions: {
+    id: string;
+    name: string;
+    city: string;
+    vibe: string;
+    mode: string;
+    status: string;
+    createdAt: string;
+  }[];
+  dailyVolume: { day: string; sessions: number }[];
+  modeBreakdown: { mode: string; count: number }[];
+  vibeBreakdown: { vibe: string; count: number }[];
+}
+
+export default function AdminDashboard() {
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/stats", {
+      headers: { "x-admin-token": ADMIN_SECRET },
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error("Unauthorized");
+        return r.json();
+      })
+      .then(setStats)
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground animate-gentle-pulse">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-rose">{error ?? "Failed to load"}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-6xl px-6 py-10 space-y-10">
+        <div>
+          <h1 className="heading-editorial text-3xl">Economics Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">youthebirthday.app</p>
+        </div>
+
+        {/* Overview metrics */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <MetricCard label="Total Sessions" value={stats.overview.totalSessions} />
+          <MetricCard label="Generations" value={stats.overview.completedGenerations} subtitle={`${stats.overview.completionRate.toFixed(0)}% completion`} />
+          <MetricCard label="Errors" value={stats.overview.errorGenerations} accent="rose" />
+          <MetricCard label="Email Captures" value={stats.users.totalEmailCaptures} />
+        </div>
+
+        {/* Revenue & cost metrics */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <MetricCard label="Premium Users" value={stats.users.premiumUsers} accent="champagne" />
+          <MetricCard label="Free→Paid %" value={`${stats.users.conversionRate.toFixed(1)}%`} accent="champagne" />
+          <MetricCard label="Avg Cost/Gen" value={`${(stats.economics.avgCostPerGenerationCents / 100).toFixed(3)}¢`} />
+          <MetricCard label="Total AI Cost" value={`$${stats.economics.totalCostDollars}`} />
+        </div>
+
+        {/* Daily volume */}
+        {stats.dailyVolume.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-sm font-medium text-foreground/80">Daily Sessions (14d)</h2>
+            <div className="flex items-end gap-1 h-32">
+              {stats.dailyVolume
+                .slice()
+                .reverse()
+                .map((d: any) => {
+                  const max = Math.max(...stats.dailyVolume.map((v: any) => Number(v.sessions)));
+                  const h = max > 0 ? (Number(d.sessions) / max) * 100 : 0;
+                  return (
+                    <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
+                      <span className="text-[9px] text-muted-foreground/40">{Number(d.sessions)}</span>
+                      <div
+                        className="w-full rounded-t bg-champagne/30 min-h-[2px]"
+                        style={{ height: `${Math.max(h, 2)}%` }}
+                      />
+                      <span className="text-[8px] text-muted-foreground/30">
+                        {new Date(d.day).toLocaleDateString("en", { month: "short", day: "numeric" })}
+                      </span>
+                    </div>
+                  );
+                })}
+            </div>
+          </section>
+        )}
+
+        {/* Breakdowns */}
+        <div className="grid sm:grid-cols-2 gap-6">
+          {/* Mode breakdown */}
+          <section className="space-y-3">
+            <h2 className="text-sm font-medium text-foreground/80">Mode Breakdown</h2>
+            <div className="space-y-2">
+              {stats.modeBreakdown.map((m) => (
+                <div key={m.mode} className="flex justify-between items-center lift-card p-3">
+                  <span className="text-sm text-foreground/70 capitalize">{m.mode}</span>
+                  <span className="text-sm font-mono text-champagne/70">{m.count}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Top vibes */}
+          <section className="space-y-3">
+            <h2 className="text-sm font-medium text-foreground/80">Top Vibes</h2>
+            <div className="space-y-2">
+              {stats.vibeBreakdown.map((v) => (
+                <div key={v.vibe} className="flex justify-between items-center lift-card p-3">
+                  <span className="text-sm text-foreground/70">{v.vibe}</span>
+                  <span className="text-sm font-mono text-champagne/70">{v.count}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        {/* Recent sessions */}
+        <section className="space-y-3">
+          <h2 className="text-sm font-medium text-foreground/80">Recent Sessions</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border/20 text-left text-[10px] uppercase tracking-wider text-muted-foreground/50">
+                  <th className="pb-2 pr-4">Name</th>
+                  <th className="pb-2 pr-4">City</th>
+                  <th className="pb-2 pr-4">Vibe</th>
+                  <th className="pb-2 pr-4">Mode</th>
+                  <th className="pb-2 pr-4">Status</th>
+                  <th className="pb-2">Time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/10">
+                {stats.recentSessions.map((s) => (
+                  <tr key={s.id} className="text-foreground/70">
+                    <td className="py-2 pr-4">{s.name}</td>
+                    <td className="py-2 pr-4 text-muted-foreground/50">{s.city}</td>
+                    <td className="py-2 pr-4 text-muted-foreground/50">{s.vibe}</td>
+                    <td className="py-2 pr-4">
+                      <span className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                        s.mode === "cosmic" ? "text-plum/70 bg-plum/10" : "text-champagne/70 bg-champagne/10"
+                      }`}>
+                        {s.mode}
+                      </span>
+                    </td>
+                    <td className="py-2 pr-4">
+                      <span className={`text-[9px] uppercase tracking-wider ${
+                        s.status === "complete" ? "text-green-400/70" :
+                        s.status === "error" ? "text-rose" :
+                        "text-muted-foreground/50"
+                      }`}>
+                        {s.status}
+                      </span>
+                    </td>
+                    <td className="py-2 text-muted-foreground/40 text-xs">
+                      {new Date(s.createdAt).toLocaleString("en", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function MetricCard({
+  label,
+  value,
+  subtitle,
+  accent,
+}: {
+  label: string;
+  value: string | number;
+  subtitle?: string;
+  accent?: "champagne" | "rose";
+}) {
+  const valueColor = accent === "champagne" ? "text-champagne" : accent === "rose" ? "text-rose" : "text-foreground";
+
+  return (
+    <div className="lift-card p-4 space-y-1">
+      <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{label}</p>
+      <p className={`text-2xl font-medium ${valueColor}`}>{value}</p>
+      {subtitle && <p className="text-[11px] text-muted-foreground/40">{subtitle}</p>}
+    </div>
+  );
+}
