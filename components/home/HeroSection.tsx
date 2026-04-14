@@ -31,29 +31,29 @@ export function HeroSection() {
           </p>
 
           <h1
-            className="heading-editorial text-5xl sm:text-6xl lg:text-7xl xl:text-[90px] text-foreground"
+            className="heading-editorial text-5xl sm:text-6xl lg:text-7xl xl:text-[80px] text-foreground"
             style={{ textShadow: "0 0 40px rgba(10,10,11,0.8), 0 0 80px rgba(10,10,11,0.5)" }}
           >
-            Your birthday,
+            Titles. Captions.
             <br />
-            <span className="shimmer-gold italic">personalized</span>
+            Palettes. <span className="shimmer-gold italic">Destinations.</span>
             <br />
-            like an experience.
+            All yours.
           </h1>
         </div>
 
         <p className="mx-auto max-w-lg text-base text-muted-foreground leading-relaxed animate-fade-rise stagger-2">
-          Birthday titles, captions, color palettes, destinations,
-          and celebration style — curated for you, powered by your
-          vibe and your story.
+          Enter your birthday, vibe, and city — get a personalized dashboard
+          with Instagram captions, color palettes, trip destinations,
+          restaurant picks, and a complete celebration plan. In 2 minutes.
         </p>
 
         <div className="space-y-4 animate-fade-rise stagger-3">
           <Link href="/onboarding" className="glow-btn">
-            Start Your Birthday
+            Generate My Birthday
           </Link>
           <p className="text-xs text-muted-foreground/60 tracking-wide">
-            No account needed. Takes 2 minutes.
+            Free to start. No account needed.
           </p>
         </div>
       </div>

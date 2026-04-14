@@ -191,35 +191,24 @@ export function DashboardShell({
             <PaletteSection palettes={sections.palettes} sessionId={sessionId} isPremium={isPremium} />
           )}
 
-          {/* ─── Captions ──────────────────────────────────────────────── */}
-          {sections?.captions && sections.captions.length > 0 && (() => {
-            const visibleCaptions = isPremium ? sections.captions : sections.captions.slice(0, 2);
-            const hasMore = !isPremium && sections.captions.length > 2;
-            return (
-              <section className="animate-fade-rise space-y-5">
-                <SectionLabel>Your Caption Pack</SectionLabel>
-                <div className="space-y-6">
-                  {visibleCaptions.map((cat) => (
-                    <div key={cat.category} className="space-y-2">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
-                        {cat.category}
-                      </p>
-                      {cat.captions.map((caption, j) => (
-                        <CopyableCaption key={j} caption={caption} />
-                      ))}
-                    </div>
-                  ))}
-                </div>
-                {hasMore && (
-                  <PremiumTeaser
-                    label={`${sections.captions.length - 2} more caption categories locked`}
-                    description="Unlock all 18 captions \u2014 main character, unhinged, zodiac coded, screenshot-worthy one-liners, and more."
-                    sessionId={sessionId}
-                  />
-                )}
-              </section>
-            );
-          })()}
+          {/* ─── Captions (all visible for free — proves value) ────── */}
+          {sections?.captions && sections.captions.length > 0 && (
+            <section className="animate-fade-rise space-y-5">
+              <SectionLabel>Your Caption Pack</SectionLabel>
+              <div className="space-y-6">
+                {sections.captions.map((cat) => (
+                  <div key={cat.category} className="space-y-2">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
+                      {cat.category}
+                    </p>
+                    {cat.captions.map((caption, j) => (
+                      <CopyableCaption key={j} caption={caption} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* ─── Ad: after captions (moved spacing for editorial flow) ── */}
 
@@ -257,13 +246,24 @@ export function DashboardShell({
             <AdUnit slot="3782501964" format="auto" className="my-10" />
           )}
 
-          {/* ─── Destinations: Season Picks ──────────────────────────── */}
+          {/* ─── Destinations: Show 1 free as proof, lock the rest ──── */}
           {!isPremium && sections?.destinations && sections.destinations.length > 0 && (
-            <PremiumTeaser
-              label="Birthday Destinations"
-              description="Your personalized destination picks — season-matched travel recommendations, an interactive globe, and dream picks for your birthday year."
-              sessionId={sessionId}
-            />
+            <section className="animate-fade-rise space-y-5">
+              <div>
+                <SectionLabel>Best for Your Birthday Season</SectionLabel>
+                <p className="text-[12px] text-muted-foreground/65 mt-1.5">
+                  Here&apos;s a taste of your personalized destination picks.
+                </p>
+              </div>
+              {/* Show first destination as proof */}
+              <DestinationCard dest={sections.destinations[0]} index={0} />
+              {/* Lock the rest */}
+              <PremiumTeaser
+                label={`${sections.destinations.length - 1} more destinations + interactive globe`}
+                description="Unlock all your personalized destination picks, the 3D destination globe, restaurant recommendations, activities, and your full cosmic profile."
+                sessionId={sessionId}
+              />
+            </section>
           )}
           {isPremium && sections?.destinations && sections.destinations.length > 0 && (() => {
             const seasonPicks = sections.destinations.filter((d) => d.section === "season" || !d.section);
@@ -325,14 +325,7 @@ export function DashboardShell({
             <AdUnit slot="7641823095" format="horizontal" className="my-10" />
           )}
 
-          {/* ─── Restaurants & Venues ───────────────────────────────────── */}
-          {!isPremium && sections?.restaurants && sections.restaurants.length > 0 && (
-            <PremiumTeaser
-              label="Where to Eat & Drink"
-              description="Real restaurant and nightlife picks in your celebration city — dinner spots, cocktail bars, and hidden gems curated for your vibe."
-              sessionId={sessionId}
-            />
-          )}
+          {/* ─── Restaurants & Venues (premium only — no separate teaser) ── */}
           {isPremium && sections?.restaurants && sections.restaurants.length > 0 && (
             <section className="animate-fade-rise space-y-5">
               <SectionLabel>Where to Go</SectionLabel>
@@ -382,14 +375,7 @@ export function DashboardShell({
             </section>
           )}
 
-          {/* ─── Activities: What to Do ─────────────────────────────────── */}
-          {!isPremium && sections?.activities && sections.activities.length > 0 && (
-            <PremiumTeaser
-              label="What to Do"
-              description="Personalized activities and experiences in your celebration city — signature experiences, wellness, nightlife, and culture picks."
-              sessionId={sessionId}
-            />
-          )}
+          {/* ─── Activities (premium only — no separate teaser) ──────────── */}
           {isPremium && sections?.activities && sections.activities.length > 0 && (
             <section className="animate-fade-rise space-y-5">
               <div>
@@ -441,14 +427,7 @@ export function DashboardShell({
             </section>
           )}
 
-          {/* ─── Cosmic Profile ─────────────────────────────────────────── */}
-          {!isPremium && sections?.cosmicProfile && (
-            <PremiumTeaser
-              label="Your Cosmic Layer"
-              description="Your Sun, Moon, and Rising signs — plus a personalized cosmic birthday message and astrocartography highlights."
-              sessionId={sessionId}
-            />
-          )}
+          {/* ─── Cosmic Profile (premium only — no separate teaser) ────── */}
           {isPremium && sections?.cosmicProfile && (
             <section className="animate-fade-rise">
               <div className="animated-border-card glow-plum">
@@ -672,8 +651,8 @@ function PaletteSection({ palettes, sessionId, isPremium }: { palettes: ColorPal
   const [loadingMore, setLoadingMore] = useState(false);
   const [extraPalettes, setExtraPalettes] = useState<ColorPalette[]>([]);
 
-  // Free users see 2 palettes, premium sees all
-  const basePalettes = isPremium ? palettes : palettes.slice(0, 2);
+  // All palettes visible for free users (proves value before paywall)
+  const basePalettes = palettes;
   const visiblePalettes = showAll ? [...palettes, ...extraPalettes] : basePalettes;
   const hasMore = !showAll && (palettes.length > 4 || extraPalettes.length === 0);
 
@@ -706,14 +685,7 @@ function PaletteSection({ palettes, sessionId, isPremium }: { palettes: ColorPal
           <PaletteCard key={palette.name} palette={palette} index={i} />
         ))}
       </div>
-      {!isPremium && palettes.length > 2 && (
-        <PremiumTeaser
-          label={`${palettes.length - 2} more palettes locked`}
-          description="Unlock your full color story — plus generate bonus palettes like Night Mode, City Color, and Bold Statement."
-          sessionId={sessionId}
-        />
-      )}
-      {isPremium && hasMore && (
+      {hasMore && (
         <div className="text-center pt-2">
           <button
             onClick={handleSeeMore}
