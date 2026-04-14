@@ -56,10 +56,18 @@ export function Footer() {
           </MobileFooterGroup>
         </div>
 
-        <div className="mt-6 pt-4 border-t border-border/10 text-center">
+        <div className="mt-6 pt-4 border-t border-border/10 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-[10px] text-muted-foreground/25 tracking-wide">
             &copy; {new Date().getFullYear()} You the Birthday
           </p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="text-[10px] text-muted-foreground/25 hover:text-muted-foreground/50 transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="text-[10px] text-muted-foreground/25 hover:text-muted-foreground/50 transition-colors">
+              Terms
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

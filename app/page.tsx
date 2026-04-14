@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { BirthdayTicker } from "@/components/home/BirthdayTicker";
 import { CyclingPreview } from "@/components/home/CyclingPreview";
+import { StaticPreview } from "@/components/home/StaticPreview";
 import { ZodiacBar } from "@/components/home/ZodiacBar";
 import { FeatureCards } from "@/components/home/FeatureCards";
 import { Reveal } from "@/components/ui/reveal";
@@ -109,26 +110,29 @@ export default function Home() {
 
       {/* ── PRODUCT PREVIEW ───────────────────────────────────────────── */}
       <section className="py-24 px-6 border-t border-border/20">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-2xl">
           <Reveal>
             <div className="text-center mb-12 space-y-3">
               <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground/50">
-                What it looks like
+                What you get
               </p>
               <h2 className="heading-editorial text-2xl sm:text-3xl">
                 A real birthday, personalized
               </h2>
+              <p className="text-sm text-muted-foreground/60 max-w-md mx-auto">
+                Here&apos;s what a generated birthday dashboard looks like — yours will be tailored to your age, city, vibe, and zodiac sign.
+              </p>
             </div>
           </Reveal>
 
           <Reveal delay={150}>
-            <CyclingPreview />
+            <StaticPreview />
           </Reveal>
 
           <Reveal delay={300}>
             <div className="text-center mt-10">
               <Link href="/onboarding" className="glow-btn">
-                Get Yours
+                Generate Mine
               </Link>
             </div>
           </Reveal>
