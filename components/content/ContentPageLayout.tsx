@@ -3,6 +3,7 @@ import { SectionRenderer } from "./SectionRenderer";
 import { generateSchemaMarkup, generateFAQSchema } from "@/lib/content/render";
 import { Breadcrumbs, breadcrumbsForPage, generateBreadcrumbSchema } from "./Breadcrumbs";
 import AdUnit from "@/components/AdUnit";
+import { TrackContentPage } from "@/components/analytics/TrackPageView";
 
 interface ContentPageLayoutProps {
   page: ContentPage;
@@ -16,6 +17,7 @@ export function ContentPageLayout({ page }: ContentPageLayoutProps) {
 
   return (
     <article className="min-h-screen bg-gradient-luxury">
+      <TrackContentPage path={page.canonicalPath} category={page.category} />
       <div className="mx-auto max-w-3xl px-6 py-8 pb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <SectionRenderer sections={page.sections} page={page} />

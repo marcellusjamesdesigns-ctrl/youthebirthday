@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getOrCreateDeviceToken } from "@/lib/limits/device-token";
 import { analytics } from "@/lib/analytics/events";
 
+
 interface GenerationGateProps {
   sessionId: string;
   onSuccess: () => void;
@@ -47,6 +48,7 @@ export function GenerationGate({ sessionId, onSuccess }: GenerationGateProps) {
 
   async function handlePremium(plan: "one_time" | "monthly") {
     setLoadingCheckout(plan);
+    analytics.premiumCheckoutStarted({ plan, session_id: sessionId });
     try {
       const deviceToken = getOrCreateDeviceToken();
       const res = await fetch("/api/stripe/checkout", {

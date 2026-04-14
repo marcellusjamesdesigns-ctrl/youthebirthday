@@ -33,4 +33,14 @@ export const analytics = {
 
   emailCaptured: () =>
     posthog.capture("email_captured"),
+
+  // ── Funnel events (Phase 3) ─────────────────────────────────────
+  contentPageViewed: (props: { path: string; category: string }) =>
+    posthog.capture("content_page_viewed", props),
+
+  ctaClicked: (props: { source: string; destination: string }) =>
+    posthog.capture("cta_clicked", props),
+
+  premiumCheckoutStarted: (props: { plan: string; session_id?: string }) =>
+    posthog.capture("premium_checkout_started", props),
 };

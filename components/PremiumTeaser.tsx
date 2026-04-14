@@ -2,6 +2,7 @@
 
 import { getOrCreateDeviceToken } from "@/lib/limits/device-token";
 import { useState } from "react";
+import { analytics } from "@/lib/analytics/events";
 
 interface PremiumTeaserProps {
   label: string;
@@ -14,6 +15,7 @@ export function PremiumTeaser({ label, description, sessionId }: PremiumTeaserPr
 
   async function handleUpgrade(plan: "one_time" | "monthly") {
     setLoading(plan);
+    analytics.premiumCheckoutStarted({ plan, session_id: sessionId });
     try {
       const deviceToken = getOrCreateDeviceToken();
       const res = await fetch("/api/stripe/checkout", {
