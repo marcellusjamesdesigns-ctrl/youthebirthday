@@ -14,10 +14,11 @@ import {
   Fire,
 } from "@phosphor-icons/react/dist/ssr";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const SIGNS: {
   name: string;
   slug: string;
-  Icon: React.ElementType;
+  Icon: any;
   dates: string;
 }[] = [
   { name: "Aries",       slug: "aries",       Icon: Fire,             dates: "Mar 21 – Apr 19" },
