@@ -133,6 +133,38 @@ export const userWaitlist = pgTable("user_waitlist", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// ─── Blog Agent Drafts ──────────────────────────────────────────────────────
+
+export const blogDrafts = pgTable("blog_drafts", {
+  id: text("id").primaryKey(),
+  // Lifecycle
+  status: text("status").notNull().default("draft"), // "draft" | "approved" | "rejected" | "published"
+  // Topic research
+  topicSeedId: text("topic_seed_id"),
+  topicTitle: text("topic_title").notNull(),
+  topicScore: jsonb("topic_score"), // { total, searchOpportunity, clusterFit, affiliateFit, freshness, dedupRisk }
+  topicReason: text("topic_reason"), // why this topic was chosen
+  // Draft content (full BlogPost object)
+  postData: jsonb("post_data").notNull(),
+  // QA
+  qualityGates: jsonb("quality_gates"), // { [gateName]: { passed, details } }
+  gatesPassed: integer("gates_passed").notNull().default(0),
+  gatesTotal: integer("gates_total").notNull().default(12),
+  // Generation metadata
+  model: text("model"),
+  tokenUsage: jsonb("token_usage"),
+  estimatedCostCents: integer("estimated_cost_cents"),
+  durationMs: integer("duration_ms"),
+  // Review
+  reviewNotes: text("review_notes"),
+  reviewedBy: text("reviewed_by"),
+  reviewedAt: timestamp("reviewed_at"),
+  publishedAt: timestamp("published_at"),
+  // Timestamps
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // ─── JSON Column Types ───────────────────────────────────────────────────────
 
 export type StepStatus = "queued" | "running" | "complete" | "error" | "skipped";

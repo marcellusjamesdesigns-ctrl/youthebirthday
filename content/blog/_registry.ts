@@ -3,27 +3,43 @@ import { softLifeDecorationsPost } from "./posts/soft-life-decorations";
 import { birthdayDinnerOutfitsPost } from "./posts/birthday-dinner-outfits";
 import { mayBirthdayTaurusPost } from "./posts/may-birthday-taurus-season";
 
-export const blogPosts: BlogPost[] = [
+/**
+ * Static, canonical blog posts. These are the "golden example" posts
+ * written manually and locked in as the voice + structure reference.
+ *
+ * Agent-generated posts live in the database (`blog_drafts` with
+ * status = "published") and are merged at render time via functions
+ * in `/lib/blog-db.ts`.
+ */
+export const staticBlogPosts: BlogPost[] = [
   softLifeDecorationsPost,
   birthdayDinnerOutfitsPost,
   mayBirthdayTaurusPost,
 ];
 
-export function getBlogPost(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug && p.publishStatus === "published");
+/** Synchronous lookup against ONLY the static registry. */
+export function getStaticBlogPost(slug: string): BlogPost | undefined {
+  return staticBlogPosts.find(
+    (p) => p.slug === slug && p.publishStatus === "published",
+  );
 }
 
-export function getPublishedBlogPosts(): BlogPost[] {
-  return blogPosts
+export function getStaticBlogPosts(): BlogPost[] {
+  return staticBlogPosts
     .filter((p) => p.publishStatus === "published")
     .sort((a, b) => (b.publishedAt > a.publishedAt ? 1 : -1));
 }
 
-export function getRelatedBlogPosts(currentSlug: string, limit = 3): BlogPost[] {
-  const current = blogPosts.find((p) => p.slug === currentSlug);
+// ─── Back-compat: these async helpers merge TS + DB posts ──────────────
+// Async versions live in `/lib/blog-db.ts` so importing this registry
+// from server components stays fast. The sync helpers below are kept
+// for components that don't need DB posts (admin UI, tests).
+
+export function getRelatedStaticBlogPosts(currentSlug: string, limit = 3): BlogPost[] {
+  const current = staticBlogPosts.find((p) => p.slug === currentSlug);
   if (!current) return [];
 
-  return blogPosts
+  return staticBlogPosts
     .filter((p) => p.slug !== currentSlug && p.publishStatus === "published")
     .map((p) => {
       let score = 0;
@@ -38,3 +54,10 @@ export function getRelatedBlogPosts(currentSlug: string, limit = 3): BlogPost[] 
     .slice(0, limit)
     .map(({ post }) => post);
 }
+
+// ─── Back-compat aliases for existing imports ───────────────────────────
+
+export const blogPosts = staticBlogPosts;
+export const getBlogPost = getStaticBlogPost;
+export const getPublishedBlogPosts = getStaticBlogPosts;
+export const getRelatedBlogPosts = getRelatedStaticBlogPosts;

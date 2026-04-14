@@ -140,9 +140,17 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-6xl px-6 py-10 space-y-10">
-        <div>
-          <h1 className="heading-editorial text-3xl">Economics Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-1">youthebirthday.app</p>
+        <div className="flex items-baseline justify-between gap-4">
+          <div>
+            <h1 className="heading-editorial text-3xl">Economics Dashboard</h1>
+            <p className="text-sm text-muted-foreground mt-1">youthebirthday.app</p>
+          </div>
+          <a
+            href="/admin/blog"
+            className="text-[11px] uppercase tracking-[0.25em] text-champagne/70 hover:text-champagne transition-colors self-center"
+          >
+            Blog Queue →
+          </a>
         </div>
 
         {/* Warnings banner */}

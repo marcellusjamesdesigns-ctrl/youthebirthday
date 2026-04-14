@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getPublishedBlogPosts } from "@/content/blog/_registry";
+import { getAllPublishedBlogPosts } from "@/lib/blog-db";
 import { BlogHubPage } from "@/components/blog/BlogHubPage";
 
 export const metadata: Metadata = {
@@ -16,7 +16,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogHub() {
-  const posts = getPublishedBlogPosts();
+// Revalidate every 10 minutes so new DB-published posts show up without a rebuild.
+export const revalidate = 600;
+
+export default async function BlogHub() {
+  const posts = await getAllPublishedBlogPosts();
   return <BlogHubPage posts={posts} />;
 }

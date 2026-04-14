@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  getBlogPost,
-  getPublishedBlogPosts,
-  getRelatedBlogPosts,
-} from "@/content/blog/_registry";
+import { getStaticBlogPosts } from "@/content/blog/_registry";
+import { getBlogPostBySlug, getRelatedBlogPostsAsync } from "@/lib/blog-db";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
+// Static-generate golden examples at build. DB-backed posts resolve at runtime.
 export async function generateStaticParams() {
-  return getPublishedBlogPosts().map((p) => ({ slug: p.slug }));
+  return getStaticBlogPosts().map((p) => ({ slug: p.slug }));
 }
+
+// Allow DB-backed posts (slugs unknown at build time) to render on demand.
+export const dynamicParams = true;
+export const revalidate = 600;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Not Found" };
 
   return {
@@ -42,9 +44,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) notFound();
 
-  const related = getRelatedBlogPosts(slug, 2);
+  const related = await getRelatedBlogPostsAsync(slug, 2);
   return <BlogPostLayout post={post} related={related} />;
 }
