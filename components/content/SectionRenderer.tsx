@@ -12,6 +12,7 @@ import { CTABlock } from "./sections/CTABlock";
 import { InlineCTA } from "./sections/InlineCTA";
 import { ElementSignsBlock } from "./sections/ElementSignsBlock";
 import { Reveal } from "@/components/ui/reveal";
+import AdUnit from "@/components/AdUnit";
 import type { ContentPage } from "@/lib/content/types";
 
 interface SectionRendererProps {
@@ -57,8 +58,14 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
         // Hero renders immediately, everything else reveals on scroll
         if (section.type === "hero" || !content) return content;
 
+        // Insert a mid-content ad after the 3rd section
+        const showMidAd = i === 3 && sections.length > 5;
+
         return (
           <Reveal key={i} delay={i > 2 ? 0 : i * 80}>
+            {showMidAd && (
+              <AdUnit slot="3782501964" format="auto" className="mb-12" />
+            )}
             {content}
           </Reveal>
         );

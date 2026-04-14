@@ -3,6 +3,7 @@ import { CTABlock } from "./sections/CTABlock";
 import { Breadcrumbs, breadcrumbsForHub, generateBreadcrumbSchema } from "./Breadcrumbs";
 import type { ContentPage } from "@/lib/content/types";
 import { HubCards } from "./HubCards";
+import AdUnit from "@/components/AdUnit";
 
 interface HubPageProps {
   title: string;
@@ -32,6 +33,9 @@ export function HubPage({ title, description, pages, category }: HubPageProps) {
         </div>
 
         <HubCards pages={pages} />
+
+        {/* Ad: between content cards and CTA */}
+        <AdUnit slot="2856419037" format="auto" className="my-6" />
 
         <CTABlock />
       </div>

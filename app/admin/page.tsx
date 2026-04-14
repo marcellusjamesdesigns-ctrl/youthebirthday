@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 const ADMIN_SECRET = "ytb-admin-2026";
+const ADMIN_PASSCODE = "062093";
 
 interface Stats {
   overview: {
@@ -37,11 +38,24 @@ interface Stats {
 }
 
 export default function AdminDashboard() {
+  const [authed, setAuthed] = useState(false);
+  const [passcode, setPasscode] = useState("");
+  const [passcodeError, setPasscodeError] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
+  // Check if already authed via sessionStorage
   useEffect(() => {
+    if (sessionStorage.getItem("ytb-admin") === "1") {
+      setAuthed(true);
+    }
+  }, []);
+
+  // Fetch stats once authed
+  useEffect(() => {
+    if (!authed) return;
+    setLoading(true);
     fetch("/api/admin/stats", {
       headers: { "x-admin-token": ADMIN_SECRET },
     })
@@ -52,7 +66,53 @@ export default function AdminDashboard() {
       .then(setStats)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [authed]);
+
+  function handlePasscode(e: React.FormEvent) {
+    e.preventDefault();
+    if (passcode === ADMIN_PASSCODE) {
+      sessionStorage.setItem("ytb-admin", "1");
+      setAuthed(true);
+      setPasscodeError(false);
+    } else {
+      setPasscodeError(true);
+      setPasscode("");
+    }
+  }
+
+  // Passcode gate
+  if (!authed) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <form onSubmit={handlePasscode} className="text-center space-y-6 max-w-xs">
+          <div className="space-y-2">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">Admin</p>
+            <h1 className="heading-editorial text-2xl">Enter Passcode</h1>
+          </div>
+          <input
+            type="password"
+            inputMode="numeric"
+            maxLength={6}
+            value={passcode}
+            onChange={(e) => setPasscode(e.target.value.replace(/\D/g, ""))}
+            placeholder="••••••"
+            autoFocus
+            className="luxury-input w-full px-4 py-3.5 text-2xl text-center tracking-[0.5em] font-mono"
+          />
+          {passcodeError && (
+            <p className="text-[12px] text-rose">Incorrect passcode</p>
+          )}
+          <button
+            type="submit"
+            disabled={passcode.length !== 6}
+            className="w-full rounded-full bg-foreground py-3 text-sm font-medium text-background tracking-wide transition-all hover:bg-foreground/90 disabled:opacity-30"
+          >
+            Enter
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
