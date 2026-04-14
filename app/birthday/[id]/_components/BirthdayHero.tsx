@@ -7,6 +7,7 @@ interface BirthdayHeroProps {
   archetype?: string | null;
   era?: string | null;
   narrative?: string | null;
+  isGated?: boolean;
 }
 
 export function BirthdayHero({
@@ -16,7 +17,11 @@ export function BirthdayHero({
   archetype,
   era,
   narrative,
+  isGated,
 }: BirthdayHeroProps) {
+  // When gated, show a clean hero without misleading skeleton loaders
+  const showSkeletons = !isGated;
+
   return (
     <div className="text-center space-y-5 py-16 sm:py-20 relative">
       {/* Reveal glow behind title */}
@@ -32,6 +37,10 @@ export function BirthdayHero({
         <h1 className="heading-editorial text-4xl sm:text-5xl lg:text-6xl xl:text-7xl animate-fade-rise stagger-1 relative">
           {title}
         </h1>
+      ) : isGated ? (
+        <h1 className="heading-editorial text-4xl sm:text-5xl lg:text-6xl animate-fade-rise stagger-1 relative">
+          {name}&apos;s Birthday
+        </h1>
       ) : (
         <div className="flex flex-col items-center gap-3">
           <div className="skeleton-luxury h-12 w-72 sm:w-96" />
@@ -39,22 +48,24 @@ export function BirthdayHero({
         </div>
       )}
 
-      <div className="flex items-center justify-center gap-3 animate-fade-rise stagger-2 relative">
-        {archetype ? (
-          <span className="text-[11px] uppercase tracking-[0.15em] px-4 py-1.5 rounded-full border border-champagne/25 text-champagne/70 bg-champagne/5">
-            {archetype}
-          </span>
-        ) : (
-          <div className="skeleton-luxury h-7 w-36" />
-        )}
-        {era ? (
-          <span className="text-[11px] uppercase tracking-[0.15em] px-4 py-1.5 rounded-full border border-border/60 text-muted-foreground/60">
-            {era}
-          </span>
-        ) : (
-          <div className="skeleton-luxury h-7 w-40" />
-        )}
-      </div>
+      {!isGated && (
+        <div className="flex items-center justify-center gap-3 animate-fade-rise stagger-2 relative">
+          {archetype ? (
+            <span className="text-[11px] uppercase tracking-[0.15em] px-4 py-1.5 rounded-full border border-champagne/25 text-champagne/70 bg-champagne/5">
+              {archetype}
+            </span>
+          ) : showSkeletons ? (
+            <div className="skeleton-luxury h-7 w-36" />
+          ) : null}
+          {era ? (
+            <span className="text-[11px] uppercase tracking-[0.15em] px-4 py-1.5 rounded-full border border-border/60 text-muted-foreground/60">
+              {era}
+            </span>
+          ) : showSkeletons ? (
+            <div className="skeleton-luxury h-7 w-40" />
+          ) : null}
+        </div>
+      )}
 
       <p className="text-[13px] text-muted-foreground/65 tracking-wide animate-fade-rise stagger-3 relative">
         {name} · turning {ageTurning}
@@ -64,13 +75,13 @@ export function BirthdayHero({
         <p className="mx-auto max-w-xl text-[15px] text-muted-foreground/70 leading-relaxed animate-fade-rise stagger-4 relative font-editorial italic">
           {narrative}
         </p>
-      ) : (
+      ) : showSkeletons ? (
         <div className="mx-auto max-w-xl space-y-2.5 flex flex-col items-center">
           <div className="skeleton-luxury h-4 w-full max-w-md" />
           <div className="skeleton-luxury h-4 w-full max-w-sm" />
           <div className="skeleton-luxury h-4 w-full max-w-xs" />
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -171,6 +171,7 @@ export function DashboardShell({
           archetype={sections?.identity?.birthdayArchetype}
           era={sections?.identity?.birthdayEra}
           narrative={sections?.identity?.celebrationNarrative}
+          isGated={isGated}
         />
 
         {isGated && (
