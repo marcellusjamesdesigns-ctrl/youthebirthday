@@ -1,19 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createHash } from "crypto";
 import { waitUntil } from "@vercel/functions";
 import { getDb } from "@/lib/db";
 import { birthdaySessions, birthdayGenerations } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { createId } from "@/lib/utils/id";
 import { runBirthdayPipeline } from "@/lib/ai/pipeline";
+import { checkGenerationLimit, incrementGenerationCount } from "@/lib/limits/generation-limits";
 import type { StepStatusMap } from "@/lib/db/schema";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
 };
 
-export async function POST(_request: NextRequest, { params }: RouteContext) {
+export async function POST(request: NextRequest, { params }: RouteContext) {
   const { id } = await params;
   const db = getDb();
+
+  // Rate limiting — extract IP and device token
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim()
+    ?? request.headers.get("x-real-ip")
+    ?? "unknown";
+  const ipHash = createHash("sha256").update(ip).digest("hex");
+  const deviceToken = request.headers.get("x-device-token") ?? null;
 
   const session = await db
     .select()
@@ -28,6 +37,15 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
 
   if (session.status !== "pending" && session.status !== "error") {
     return NextResponse.json({ error: "Already generating" }, { status: 409 });
+  }
+
+  // Check generation limit
+  const limitResult = await checkGenerationLimit(ipHash, deviceToken);
+  if (!limitResult.allowed) {
+    return NextResponse.json(
+      { gated: true, reason: limitResult.reason, remaining: 0 },
+      { status: 403 }
+    );
   }
 
   // Determine version (increment if regenerating after error)
@@ -76,6 +94,9 @@ export async function POST(_request: NextRequest, { params }: RouteContext) {
       version,
     })
   );
+
+  // Increment generation count BEFORE the pipeline runs (count the attempt, not the success)
+  await incrementGenerationCount(ipHash, deviceToken);
 
   // Fire the pipeline in the background — response returns immediately
   waitUntil(

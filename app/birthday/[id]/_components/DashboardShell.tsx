@@ -19,6 +19,9 @@ import { StreamingStatus } from "./StreamingStatus";
 import { ShareButtons } from "./ShareButtons";
 import AdUnit from "@/components/AdUnit";
 import { DestinationGlobe } from "@/components/dashboard/DestinationGlobe";
+import { GenerationGate } from "@/components/GenerationGate";
+import { getOrCreateDeviceToken, incrementLocalCount } from "@/lib/limits/device-token";
+import { analytics } from "@/lib/analytics/events";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -66,19 +69,36 @@ export function DashboardShell({
   const [sections, setSections] = useState<Sections | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGated, setIsGated] = useState(false);
 
   const triggerGeneration = useCallback(async () => {
     if (status !== "pending" && status !== "error") return;
     setIsGenerating(true);
     setErrorMsg(null);
+    setIsGated(false);
     try {
+      const deviceToken = getOrCreateDeviceToken();
       const res = await fetch(`/api/birthday/${sessionId}/generate`, {
         method: "POST",
+        headers: { "X-Device-Token": deviceToken },
       });
+
+      if (res.status === 403) {
+        const data = await res.json();
+        if (data.gated) {
+          setIsGated(true);
+          setIsGenerating(false);
+          analytics.generationGated({ session_id: sessionId, reason: data.reason });
+          return;
+        }
+      }
+
       if (!res.ok) {
         setIsGenerating(false);
         return;
       }
+
+      incrementLocalCount();
       setStatus("processing");
     } catch {
       setIsGenerating(false);
@@ -108,6 +128,9 @@ export function DashboardShell({
         if (data.status === "complete" || data.status === "error") {
           setIsGenerating(false);
           if (data.error) setErrorMsg(data.error);
+          if (data.status === "complete") {
+            analytics.generationCompleted({ session_id: sessionId });
+          }
         }
       } catch {
         // silently retry
@@ -131,7 +154,14 @@ export function DashboardShell({
           narrative={sections?.identity?.celebrationNarrative}
         />
 
-        {(status === "processing" || isGenerating) && (
+        {isGated && (
+          <GenerationGate
+            sessionId={sessionId}
+            onSuccess={() => { setIsGated(false); triggerGeneration(); }}
+          />
+        )}
+
+        {!isGated && (status === "processing" || isGenerating) && (
           <StreamingStatus sessionId={sessionId} stepStatus={stepStatus} />
         )}
 

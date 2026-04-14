@@ -7,7 +7,8 @@ import { StepVibe } from "./_components/StepVibe";
 import { StepPreferences } from "./_components/StepPreferences";
 import { StepCosmic } from "./_components/StepCosmic";
 import { StepReview } from "./_components/StepReview";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { analytics } from "@/lib/analytics/events";
 
 const TOTAL_STEPS = 5;
 
@@ -18,6 +19,12 @@ export default function OnboardingPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const store = useOnboardingStore();
+
+  useEffect(() => {
+    if (step === 1 && !store.name) {
+      analytics.onboardingStarted();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubmit() {
     setIsSubmitting(true);
@@ -56,6 +63,7 @@ export default function OnboardingPage() {
       }
 
       const { redirectUrl } = await res.json();
+      analytics.onboardingCompleted({ mode: store.mode });
       store.reset();
       router.push(redirectUrl);
     } catch {

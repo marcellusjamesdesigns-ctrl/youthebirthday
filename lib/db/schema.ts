@@ -121,6 +121,18 @@ export const shareEvents = pgTable("share_events", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// ─── User / Waitlist ────────────────────────────────────────────────────────
+
+export const userWaitlist = pgTable("user_waitlist", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  ipHash: text("ip_hash"),
+  deviceToken: text("device_token"),
+  tier: text("tier").notNull().default("free"), // "free" | "premium"
+  stripeCustomerId: text("stripe_customer_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // ─── JSON Column Types ───────────────────────────────────────────────────────
 
 export type StepStatus = "queued" | "running" | "complete" | "error" | "skipped";

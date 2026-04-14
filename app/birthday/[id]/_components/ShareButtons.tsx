@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { analytics } from "@/lib/analytics/events";
 
 interface ShareButtonsProps {
   sessionId: string;
@@ -20,13 +21,15 @@ export function ShareButtons({ sessionId, title }: ShareButtonsProps) {
     navigator.clipboard.writeText(dashboardUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    analytics.shareClicked({ session_id: sessionId, method: "copy_link" });
   }
 
   function handleShare() {
+    analytics.shareClicked({ session_id: sessionId, method: "native_share" });
     if (navigator.share) {
       navigator.share({
         title: title ?? "My Birthday Experience",
-        text: "Check out my personalized birthday dashboard on You The Birthday",
+        text: "Check out my personalized birthday dashboard on You the Birthday",
         url: shareUrl,
       });
     } else {
@@ -52,7 +55,7 @@ export function ShareButtons({ sessionId, title }: ShareButtonsProps) {
       </button>
       {/* Tertiary */}
       <button
-        onClick={() => window.open(`/birthday/card/${sessionId}`, "_blank")}
+        onClick={() => { analytics.shareClicked({ session_id: sessionId, method: "view_card" }); window.open(`/birthday/card/${sessionId}`, "_blank"); }}
         className="rounded-full px-5 py-2.5 text-[13px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
       >
         View Card
