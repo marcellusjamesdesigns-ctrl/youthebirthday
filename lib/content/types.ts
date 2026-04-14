@@ -50,7 +50,8 @@ export type ContentSection =
   | RelatedContentSection
   | CTASection
   | InlineCTASection
-  | ElementSignsSection;
+  | ElementSignsSection
+  | AmazonShopSection;
 
 export interface HeroSection {
   type: "hero";
@@ -148,4 +149,18 @@ export interface ElementSignsSection {
   element: string;       // "Fire", "Earth", "Air", "Water"
   signs: string[];       // fellow element signs (excluding current)
   currentSign: string;   // display label of the current sign
+}
+
+export interface AmazonShopSection {
+  type: "amazon-shop";
+  title: string;              // "Set the Soft Life Mood"
+  subtitle?: string;          // optional editorial context
+  placement: string;          // analytics tag, e.g. "soft-life-theme"
+  format?: "grid" | "list" | "checklist";
+  items: {
+    query: string;            // Amazon search term
+    label: string;            // display name
+    description?: string;
+    icon?: string;
+  }[];
 }

@@ -13,6 +13,7 @@ import { InlineCTA } from "./sections/InlineCTA";
 import { ElementSignsBlock } from "./sections/ElementSignsBlock";
 import { Reveal } from "@/components/ui/reveal";
 import AdUnit from "@/components/AdUnit";
+import { AmazonShopModule } from "@/components/affiliate/AmazonShopModule";
 import type { ContentPage } from "@/lib/content/types";
 
 interface SectionRendererProps {
@@ -50,6 +51,17 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
               return <InlineCTA key={i} {...section} />;
             case "element-signs":
               return <ElementSignsBlock key={i} {...section} />;
+            case "amazon-shop":
+              return (
+                <AmazonShopModule
+                  key={i}
+                  title={section.title}
+                  subtitle={section.subtitle}
+                  placement={section.placement}
+                  format={section.format}
+                  items={section.items}
+                />
+              );
             default:
               return null;
           }

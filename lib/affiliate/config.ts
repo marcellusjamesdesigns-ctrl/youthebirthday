@@ -119,5 +119,5 @@ export const affiliateUrls = {
   opentable: (restaurant: string, city: string) =>
     `https://www.opentable.com/s?term=${encodeURIComponent(restaurant)}&queryUnderstandingType=spell&quickSearchValue=${encodeURIComponent(city)}`,
   amazon: (query: string) =>
-    `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=YOUR_AMAZON_TAG`,
+    `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=youthebirthda-20`,
 };
