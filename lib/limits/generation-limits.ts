@@ -17,6 +17,16 @@ export async function checkGenerationLimit(
   if (tierLimit === Infinity) return { allowed: true, remaining: Infinity };
 
   const redis = getRedis();
+
+  // Check if this device has premium status (set by Stripe webhook)
+  if (deviceToken) {
+    const premiumKey = `gen:device:${deviceToken}:premium`;
+    const isPremium = await redis.get<string>(premiumKey);
+    if (isPremium === "true") {
+      return { allowed: true, remaining: Infinity };
+    }
+  }
+
   const ipKey = `gen:ip:${ipHash}:count`;
   const bonusKey = `gen:ip:${ipHash}:bonus`;
 
