@@ -529,6 +529,7 @@ export function DashboardShell({
               <ShareButtons
                 sessionId={sessionId}
                 title={sections.identity.birthdayTitle}
+                isPremium={isPremium}
               />
             </div>
           </div>

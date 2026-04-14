@@ -5,6 +5,7 @@ import { userWaitlist } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { createId } from "@/lib/utils/id";
 import { getRedis } from "@/lib/cache/redis";
+import { sendBirthdayReport } from "@/lib/email/send-report";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -69,6 +70,18 @@ export async function POST(request: NextRequest) {
           const bonusKey = `gen:email:${email}:premium`;
           await redis.set(bonusKey, "true");
         }
+      }
+
+      // Send the birthday report via email
+      const sessionId = session.metadata?.sessionId;
+      if (email && sessionId && sessionId !== "") {
+        const sent = await sendBirthdayReport(email, sessionId);
+        console.log(JSON.stringify({
+          level: "info",
+          msg: sent ? "email:report_sent" : "email:report_failed",
+          email,
+          sessionId,
+        }));
       }
 
       console.log(JSON.stringify({

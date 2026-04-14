@@ -6,9 +6,10 @@ import { analytics } from "@/lib/analytics/events";
 interface ShareButtonsProps {
   sessionId: string;
   title?: string;
+  isPremium?: boolean;
 }
 
-export function ShareButtons({ sessionId, title }: ShareButtonsProps) {
+export function ShareButtons({ sessionId, title, isPremium }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   const getUrl = (path: string) =>
@@ -60,6 +61,15 @@ export function ShareButtons({ sessionId, title }: ShareButtonsProps) {
       >
         View Card
       </button>
+      {/* Download — premium only */}
+      {isPremium && (
+        <button
+          onClick={() => window.open(`/birthday/${sessionId}/print`, "_blank")}
+          className="rounded-full border border-champagne/20 px-5 py-2.5 text-[13px] text-champagne/60 hover:text-champagne hover:border-champagne/40 transition-all"
+        >
+          Download Report
+        </button>
+      )}
     </div>
   );
 }
