@@ -20,7 +20,9 @@ import { ShareButtons } from "./ShareButtons";
 import AdUnit from "@/components/AdUnit";
 import { DestinationGlobe } from "@/components/dashboard/DestinationGlobe";
 import { GenerationGate } from "@/components/GenerationGate";
+import { PremiumTeaser } from "@/components/PremiumTeaser";
 import { getOrCreateDeviceToken, incrementLocalCount } from "@/lib/limits/device-token";
+import { useIsPremium } from "@/lib/limits/use-premium";
 import { analytics } from "@/lib/analytics/events";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
@@ -60,6 +62,7 @@ export function DashboardShell({
   initialGeneration,
   sessionId,
 }: DashboardShellProps) {
+  const isPremium = useIsPremium();
   const [status, setStatus] = useState(
     initialGeneration?.status ?? session.status
   );
@@ -168,27 +171,38 @@ export function DashboardShell({
         <div className="mt-12 space-y-10">
           {/* ─── Color Palettes ─────────────────────────────────────────── */}
           {sections?.palettes && sections.palettes.length > 0 && (
-            <PaletteSection palettes={sections.palettes} sessionId={sessionId} />
+            <PaletteSection palettes={sections.palettes} sessionId={sessionId} isPremium={isPremium} />
           )}
 
           {/* ─── Captions ──────────────────────────────────────────────── */}
-          {sections?.captions && sections.captions.length > 0 && (
-            <section className="animate-fade-rise space-y-5">
-              <SectionLabel>Your Caption Pack</SectionLabel>
-              <div className="space-y-6">
-                {sections.captions.map((cat) => (
-                  <div key={cat.category} className="space-y-2">
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
-                      {cat.category}
-                    </p>
-                    {cat.captions.map((caption, j) => (
-                      <CopyableCaption key={j} caption={caption} />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+          {sections?.captions && sections.captions.length > 0 && (() => {
+            const visibleCaptions = isPremium ? sections.captions : sections.captions.slice(0, 2);
+            const hasMore = !isPremium && sections.captions.length > 2;
+            return (
+              <section className="animate-fade-rise space-y-5">
+                <SectionLabel>Your Caption Pack</SectionLabel>
+                <div className="space-y-6">
+                  {visibleCaptions.map((cat) => (
+                    <div key={cat.category} className="space-y-2">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
+                        {cat.category}
+                      </p>
+                      {cat.captions.map((caption, j) => (
+                        <CopyableCaption key={j} caption={caption} />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                {hasMore && (
+                  <PremiumTeaser
+                    label={`${sections.captions.length - 2} more caption categories locked`}
+                    description="Unlock all 18 captions — main character, unhinged, zodiac coded, screenshot-worthy one-liners, and more."
+                    sessionId={sessionId}
+                  />
+                )}
+              </section>
+            );
+          })()}
 
           {/* ─── Ad: after captions (moved spacing for editorial flow) ── */}
 
@@ -225,7 +239,14 @@ export function DashboardShell({
           )}
 
           {/* ─── Destinations: Season Picks ──────────────────────────── */}
-          {sections?.destinations && sections.destinations.length > 0 && (() => {
+          {!isPremium && sections?.destinations && sections.destinations.length > 0 && (
+            <PremiumTeaser
+              label="Birthday Destinations"
+              description="Your personalized destination picks — season-matched travel recommendations, an interactive globe, and dream picks for your birthday year."
+              sessionId={sessionId}
+            />
+          )}
+          {isPremium && sections?.destinations && sections.destinations.length > 0 && (() => {
             const seasonPicks = sections.destinations.filter((d) => d.section === "season" || !d.section);
             const dreamPicks = sections.destinations.filter((d) => d.section === "dream");
             // Fallback: if no section field (old generations), show all as season
@@ -286,7 +307,14 @@ export function DashboardShell({
           )}
 
           {/* ─── Restaurants & Venues ───────────────────────────────────── */}
-          {sections?.restaurants && sections.restaurants.length > 0 && (
+          {!isPremium && sections?.restaurants && sections.restaurants.length > 0 && (
+            <PremiumTeaser
+              label="Where to Eat & Drink"
+              description="Real restaurant and nightlife picks in your celebration city — dinner spots, cocktail bars, and hidden gems curated for your vibe."
+              sessionId={sessionId}
+            />
+          )}
+          {isPremium && sections?.restaurants && sections.restaurants.length > 0 && (
             <section className="animate-fade-rise space-y-5">
               <SectionLabel>Where to Go</SectionLabel>
               <div className="space-y-3">
@@ -336,7 +364,14 @@ export function DashboardShell({
           )}
 
           {/* ─── Activities: What to Do ─────────────────────────────────── */}
-          {sections?.activities && sections.activities.length > 0 && (
+          {!isPremium && sections?.activities && sections.activities.length > 0 && (
+            <PremiumTeaser
+              label="What to Do"
+              description="Personalized activities and experiences in your celebration city — signature experiences, wellness, nightlife, and culture picks."
+              sessionId={sessionId}
+            />
+          )}
+          {isPremium && sections?.activities && sections.activities.length > 0 && (
             <section className="animate-fade-rise space-y-5">
               <div>
                 <SectionLabel>What to Do</SectionLabel>
@@ -388,7 +423,14 @@ export function DashboardShell({
           )}
 
           {/* ─── Cosmic Profile ─────────────────────────────────────────── */}
-          {sections?.cosmicProfile && (
+          {!isPremium && sections?.cosmicProfile && (
+            <PremiumTeaser
+              label="Your Cosmic Layer"
+              description="Your Sun, Moon, and Rising signs — plus a personalized cosmic birthday message and astrocartography highlights."
+              sessionId={sessionId}
+            />
+          )}
+          {isPremium && sections?.cosmicProfile && (
             <section className="animate-fade-rise">
               <div className="luxury-card overflow-hidden glow-plum">
                 {/* Big 3 visual card */}
@@ -605,12 +647,14 @@ function Big3SignCard({
   );
 }
 
-function PaletteSection({ palettes, sessionId }: { palettes: ColorPalette[]; sessionId: string }) {
+function PaletteSection({ palettes, sessionId, isPremium }: { palettes: ColorPalette[]; sessionId: string; isPremium: boolean }) {
   const [showAll, setShowAll] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [extraPalettes, setExtraPalettes] = useState<ColorPalette[]>([]);
 
-  const visiblePalettes = showAll ? [...palettes, ...extraPalettes] : palettes.slice(0, 4);
+  // Free users see 2 palettes, premium sees all
+  const basePalettes = isPremium ? palettes : palettes.slice(0, 2);
+  const visiblePalettes = showAll ? [...palettes, ...extraPalettes] : basePalettes;
   const hasMore = !showAll && (palettes.length > 4 || extraPalettes.length === 0);
 
   async function handleSeeMore() {
@@ -642,7 +686,14 @@ function PaletteSection({ palettes, sessionId }: { palettes: ColorPalette[]; ses
           <PaletteCard key={palette.name} palette={palette} index={i} />
         ))}
       </div>
-      {hasMore && (
+      {!isPremium && palettes.length > 2 && (
+        <PremiumTeaser
+          label={`${palettes.length - 2} more palettes locked`}
+          description="Unlock your full color story — plus generate bonus palettes like Night Mode, City Color, and Bold Statement."
+          sessionId={sessionId}
+        />
+      )}
+      {isPremium && hasMore && (
         <div className="text-center pt-2">
           <button
             onClick={handleSeeMore}
