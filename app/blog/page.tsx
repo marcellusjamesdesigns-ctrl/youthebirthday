@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
-// Revalidate every 10 minutes so new DB-published posts show up without a rebuild.
-export const revalidate = 600;
+// Revalidate every 60 seconds so newly published posts appear quickly.
+export const revalidate = 60;
 
 export default async function BlogHub() {
   const posts = await getAllPublishedBlogPosts();

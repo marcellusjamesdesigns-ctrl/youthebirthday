@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 
 // Allow DB-backed posts (slugs unknown at build time) to render on demand.
 export const dynamicParams = true;
-export const revalidate = 600;
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
