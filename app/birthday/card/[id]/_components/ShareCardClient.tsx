@@ -41,6 +41,7 @@ export function ShareCardClient({
       {/* The card — capture target for PNG export */}
       <div
         ref={cardRef}
+        data-card
         className="w-full max-w-[440px] relative overflow-hidden rounded-2xl border border-border/30"
         style={{ backgroundColor: "#0a0a0b" }}
       >

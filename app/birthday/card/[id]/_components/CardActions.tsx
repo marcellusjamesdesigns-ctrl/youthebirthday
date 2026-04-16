@@ -45,11 +45,29 @@ export function CardActions({ sessionId, cardRef }: CardActionsProps) {
         scale: 2, // retina quality
         useCORS: true,
         logging: false,
+        // Fix for fonts / custom properties not rendering
+        onclone: (doc: Document) => {
+          const el = doc.querySelector("[data-card]") as HTMLElement | null;
+          if (el) el.style.fontFamily = "Georgia, 'Times New Roman', serif";
+        },
+        allowTaint: true,
+        foreignObjectRendering: false,
       });
-      const link = document.createElement("a");
-      link.download = "my-birthday-card.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      // Use blob download — more reliable than dataURL on large canvases
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          alert("Download failed — try taking a screenshot instead.");
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = "my-birthday-card.png";
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, "image/png");
     } catch (err) {
       console.error("Download failed:", err);
       // Fallback: prompt user to screenshot
