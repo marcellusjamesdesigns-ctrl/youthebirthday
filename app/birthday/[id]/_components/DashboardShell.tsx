@@ -24,6 +24,7 @@ import { PremiumTeaser } from "@/components/PremiumTeaser";
 import { getOrCreateDeviceToken, incrementLocalCount } from "@/lib/limits/device-token";
 import { useIsPremium } from "@/lib/limits/use-premium";
 import { analytics } from "@/lib/analytics/events";
+import { ContentDiscovery } from "./ContentDiscovery";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -531,6 +532,15 @@ export function DashboardShell({
               />
             </div>
           </div>
+        )}
+
+        {/* ─── Content discovery — connects dashboard → content ecosystem ── */}
+        {status === "complete" && (
+          <ContentDiscovery
+            birthdate={session.birthdate}
+            ageTurning={ageTurning}
+            celebrationVibe={session.celebrationVibe}
+          />
         )}
 
         {/* ─── Ad: bottom of completed dashboard ─────────────────────── */}

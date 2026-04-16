@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { birthdaySessions, birthdayGenerations } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
@@ -158,10 +159,21 @@ export default async function ShareCardPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* CTA */}
-          <div className="pt-4 border-t border-border/15">
-            <p className="text-[10px] text-muted-foreground/30 uppercase tracking-[0.25em]">
-              youthebirthday.app
+          {/* CTA — the viral conversion point */}
+          <div className="pt-5 space-y-3 border-t border-border/15">
+            <Link
+              href="/onboarding"
+              className="inline-block rounded-full bg-foreground px-7 py-2.5 text-[13px] font-medium text-background tracking-wide transition-all hover:bg-foreground/90 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.25)]"
+            >
+              Create Your Own
+            </Link>
+            <p className="text-[10px] text-muted-foreground/30">
+              <Link
+                href="/"
+                className="uppercase tracking-[0.25em] hover:text-muted-foreground/60 transition-colors"
+              >
+                youthebirthday.app
+              </Link>
             </p>
           </div>
         </div>
