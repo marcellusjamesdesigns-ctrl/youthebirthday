@@ -31,11 +31,17 @@ export async function GET(request: NextRequest) {
 
   if (deviceToken) {
     const hit = await redis.get(`gen:device:${deviceToken}:premium`);
-    if (isPremiumFlag(hit)) return NextResponse.json({ tier: "premium" });
+    if (isPremiumFlag(hit)) {
+      const pt = await redis.get<string>(`gen:device:${deviceToken}:purchase_type`);
+      return NextResponse.json({ tier: "premium", purchaseType: pt ?? "unknown" });
+    }
   }
 
   const ipHit = await redis.get(`gen:ip:${ipHash}:premium`);
-  if (isPremiumFlag(ipHit)) return NextResponse.json({ tier: "premium" });
+  if (isPremiumFlag(ipHit)) {
+    const pt = await redis.get<string>(`gen:ip:${ipHash}:purchase_type`);
+    return NextResponse.json({ tier: "premium", purchaseType: pt ?? "unknown" });
+  }
 
   // DB fallback
   try {

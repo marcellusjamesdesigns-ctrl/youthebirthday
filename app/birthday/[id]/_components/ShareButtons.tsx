@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { analytics } from "@/lib/analytics/events";
+import type { PurchaseType } from "@/lib/limits/use-premium";
 
 interface ShareButtonsProps {
   sessionId: string;
   title?: string;
   isPremium?: boolean;
+  purchaseType?: PurchaseType;
 }
 
-export function ShareButtons({ sessionId, title, isPremium }: ShareButtonsProps) {
+export function ShareButtons({ sessionId, title, isPremium, purchaseType }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   const getUrl = (path: string) =>
@@ -70,8 +72,28 @@ export function ShareButtons({ sessionId, title, isPremium }: ShareButtonsProps)
           Download Report
         </button>
       )}
-      {/* Manage Billing — only renders if user has a Stripe customer with a portal */}
-      {isPremium && <ManageBillingButton />}
+      {/* Purchase-type-aware controls */}
+      {isPremium && purchaseType === "subscription" && <ManageBillingButton />}
+      {isPremium && purchaseType === "one_time" && (
+        <button
+          onClick={async () => {
+            const { getOrCreateDeviceToken } = await import("@/lib/limits/device-token");
+            const token = getOrCreateDeviceToken();
+            const res = await fetch("/api/stripe/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ plan: "monthly", deviceToken: token, sessionId }),
+            });
+            const data = await res.json();
+            if (data.url) window.location.href = data.url;
+          }}
+          className="rounded-full px-5 py-2.5 text-[13px] text-champagne/40 hover:text-champagne/60 transition-colors"
+        >
+          Upgrade to Unlimited
+        </button>
+      )}
+      {/* Fallback for unknown purchase type (admin/manual) — try billing portal */}
+      {isPremium && purchaseType === "unknown" && <ManageBillingButton />}
     </div>
   );
 }

@@ -1,8 +1,22 @@
 import { useEffect, useState } from "react";
 import { getOrCreateDeviceToken } from "./device-token";
 
+export type PurchaseType = "one_time" | "subscription" | "unknown";
+
+interface PremiumState {
+  isPremium: boolean;
+  purchaseType: PurchaseType;
+}
+
 export function useIsPremium(): boolean {
-  const [isPremium, setIsPremium] = useState(false);
+  return usePremiumState().isPremium;
+}
+
+export function usePremiumState(): PremiumState {
+  const [state, setState] = useState<PremiumState>({
+    isPremium: false,
+    purchaseType: "unknown",
+  });
 
   useEffect(() => {
     const token = getOrCreateDeviceToken();
@@ -10,9 +24,10 @@ export function useIsPremium(): boolean {
 
     // Check localStorage cache first
     const cached = localStorage.getItem("ytb-premium");
+    const cachedType = localStorage.getItem("ytb-purchase-type") as PurchaseType | null;
     if (cached === "true") {
-      setIsPremium(true);
-      return;
+      setState({ isPremium: true, purchaseType: cachedType ?? "unknown" });
+      // Still check server to refresh purchaseType
     }
 
     // Check server
@@ -22,12 +37,14 @@ export function useIsPremium(): boolean {
       .then((r) => r.json())
       .then((d) => {
         if (d.tier === "premium") {
-          setIsPremium(true);
+          const pt = d.purchaseType ?? "unknown";
+          setState({ isPremium: true, purchaseType: pt });
           localStorage.setItem("ytb-premium", "true");
+          localStorage.setItem("ytb-purchase-type", pt);
         }
       })
       .catch(() => {});
   }, []);
 
-  return isPremium;
+  return state;
 }

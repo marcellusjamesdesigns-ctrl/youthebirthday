@@ -75,9 +75,12 @@ export async function handleCheckoutCompleted(
     }
 
     const redis = getRedis();
+    const purchaseType = session.mode === "subscription" ? "subscription" : "one_time";
     await redis.set(`gen:device:${deviceToken}:premium`, "true");
+    await redis.set(`gen:device:${deviceToken}:purchase_type`, purchaseType);
     if (ipHash) {
       await redis.set(`gen:ip:${ipHash}:premium`, "true");
+      await redis.set(`gen:ip:${ipHash}:purchase_type`, purchaseType);
     }
   } else if (email) {
     // Edge case: checkout completed with email but no deviceToken

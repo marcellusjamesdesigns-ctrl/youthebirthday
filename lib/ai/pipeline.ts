@@ -36,6 +36,9 @@ import {
 } from "./schemas";
 import type { InferSelectModel } from "drizzle-orm";
 import type { z } from "zod";
+import { userWaitlist } from "@/lib/db/schema";
+import { or, eq as eqDrizzle } from "drizzle-orm";
+import { sendBirthdayReport } from "@/lib/email/send-report";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -324,6 +327,42 @@ export async function runBirthdayPipeline(
         estimatedCostCents: estimateCostCents(DEFAULT_MODEL_ID, totalTokens),
       })
     );
+
+    // ─── Auto-email report to premium/paid users ──────────────────────
+    // The Stripe webhook tries to send the email at checkout time, but
+    // the generation is usually still running. This is the reliable
+    // send point — generation is definitely complete.
+    try {
+      const ipHash = session.ipHash;
+      const clauses = [];
+      if (ipHash) clauses.push(eqDrizzle(userWaitlist.ipHash, ipHash));
+      if (clauses.length > 0) {
+        const user = await db
+          .select({ email: userWaitlist.email, tier: userWaitlist.tier })
+          .from(userWaitlist)
+          .where(or(...clauses))
+          .limit(1)
+          .then((r) => r[0] ?? null);
+
+        if (user?.tier === "premium" && user.email && !user.email.includes("@youthebirthday.app")) {
+          const sent = await sendBirthdayReport(user.email, session.id);
+          console.log(JSON.stringify({
+            level: "info",
+            msg: sent ? "pipeline:email_sent" : "pipeline:email_skipped",
+            email: user.email,
+            sessionId: session.id,
+          }));
+        }
+      }
+    } catch (emailErr) {
+      // Email failure should never crash the pipeline
+      console.error(JSON.stringify({
+        level: "warn",
+        msg: "pipeline:email_error",
+        error: emailErr instanceof Error ? emailErr.message : String(emailErr),
+      }));
+    }
+
   } catch (err) {
     const errorMessage =
       err instanceof Error ? err.message : String(err);

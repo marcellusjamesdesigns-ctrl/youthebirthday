@@ -22,7 +22,7 @@ import { DestinationGlobe } from "@/components/dashboard/DestinationGlobe";
 import { GenerationGate } from "@/components/GenerationGate";
 import { PremiumTeaser } from "@/components/PremiumTeaser";
 import { getOrCreateDeviceToken, incrementLocalCount } from "@/lib/limits/device-token";
-import { useIsPremium } from "@/lib/limits/use-premium";
+import { usePremiumState } from "@/lib/limits/use-premium";
 import { analytics } from "@/lib/analytics/events";
 import { ContentDiscovery } from "./ContentDiscovery";
 
@@ -63,7 +63,7 @@ export function DashboardShell({
   initialGeneration,
   sessionId,
 }: DashboardShellProps) {
-  const isPremium = useIsPremium();
+  const { isPremium, purchaseType } = usePremiumState();
   const [status, setStatus] = useState(
     initialGeneration?.status ?? session.status
   );
@@ -392,10 +392,15 @@ export function DashboardShell({
             <section className="animate-fade-rise space-y-5">
               <SectionLabel>Where to Go</SectionLabel>
               <div className="space-y-3">
-                {sections.restaurants.map((r) => (
-                  <div
+                {sections.restaurants.map((r) => {
+                  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${r.name} ${r.address ?? ""}`)}`;
+                  return (
+                  <a
                     key={r.name}
-                    className="beam-card p-5 space-y-2.5"
+                    href={mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block beam-card p-5 space-y-2.5 hover:border-champagne/15 transition-all"
                   >
                     <div className="flex justify-between items-start gap-3">
                       <div className="flex-1 min-w-0">
@@ -428,11 +433,15 @@ export function DashboardShell({
                         {r.whyItFitsYou}
                       </p>
                     )}
-                    <p className="text-[11px] text-muted-foreground/60">
-                      {r.address}
-                    </p>
-                  </div>
-                ))}
+                    <div className="flex items-center justify-between">
+                      <p className="text-[11px] text-muted-foreground/60">
+                        {r.address}
+                      </p>
+                      <span className="text-[10px] text-champagne/40 shrink-0 ml-2">View →</span>
+                    </div>
+                  </a>
+                  );
+                })}
               </div>
             </section>
           )}
@@ -456,8 +465,9 @@ export function DashboardShell({
                     wellness: "border-rose-400/15 text-rose-400/50 bg-rose-400/3",
                     culture: "border-champagne/15 text-champagne/50 bg-champagne/3",
                   };
+                  const activityUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${a.name} ${a.neighborhood ?? ""}`)}`;
                   return (
-                    <div key={a.name} className="lift-card p-5 space-y-2.5">
+                    <a key={a.name} href={activityUrl} target="_blank" rel="noopener noreferrer" className="block lift-card p-5 space-y-2.5 hover:border-champagne/15 transition-all">
                       <div className="flex justify-between items-start gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -477,12 +487,15 @@ export function DashboardShell({
                       <p className="text-[13px] text-foreground/75 leading-relaxed italic">
                         {a.whyItFitsYou}
                       </p>
-                      {a.bookingTip && (
-                        <p className="text-[11px] text-champagne/50">
-                          Tip — {a.bookingTip}
-                        </p>
-                      )}
-                    </div>
+                      <div className="flex items-center justify-between">
+                        {a.bookingTip && (
+                          <p className="text-[11px] text-champagne/50">
+                            Tip — {a.bookingTip}
+                          </p>
+                        )}
+                        <span className="text-[10px] text-champagne/40 shrink-0 ml-2">View →</span>
+                      </div>
+                    </a>
                   );
                 })}
               </div>
@@ -590,6 +603,7 @@ export function DashboardShell({
                 sessionId={sessionId}
                 title={sections.identity.birthdayTitle}
                 isPremium={isPremium}
+                purchaseType={purchaseType}
               />
             </div>
           </div>
