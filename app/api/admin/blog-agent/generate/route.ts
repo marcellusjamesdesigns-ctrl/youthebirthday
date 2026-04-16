@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Run quality gates
-  const gateReport = runQualityGates(result.draft, slugs, titles);
+  const gateReport = runQualityGates(result.draft, slugs, titles, selection.seed.titleHint);
 
   // Build the full BlogPost object (agent output → ready-to-render post)
   const postData: BlogPost = {

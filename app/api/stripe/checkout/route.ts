@@ -16,13 +16,21 @@ export async function POST(request: NextRequest) {
 
   const priceId = plan === "monthly" ? PRICES.monthly : PRICES.oneTime;
   const mode = plan === "monthly" ? "subscription" : "payment";
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://youthebirthday.app";
+
+  // Preserve the user's birthday session through the Stripe round-trip.
+  // Without this, `/premium/success` has no idea which paid session to
+  // send the user back to, and they end up at fresh onboarding.
+  const successUrl = sessionId
+    ? `${base}/premium/success?session_id={CHECKOUT_SESSION_ID}&birthday=${encodeURIComponent(sessionId)}`
+    : `${base}/premium/success?session_id={CHECKOUT_SESSION_ID}`;
 
   try {
     const checkoutSession = await getStripe().checkout.sessions.create({
       mode,
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://youthebirthday.app"}/premium/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://youthebirthday.app"}${sessionId ? `/birthday/${sessionId}` : "/onboarding"}`,
+      success_url: successUrl,
+      cancel_url: `${base}${sessionId ? `/birthday/${sessionId}` : "/onboarding"}`,
       customer_email: email || undefined,
       metadata: {
         deviceToken,

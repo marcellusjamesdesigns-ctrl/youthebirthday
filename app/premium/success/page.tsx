@@ -1,6 +1,16 @@
 import Link from "next/link";
 
-export default function PremiumSuccessPage() {
+interface PageProps {
+  searchParams: Promise<{ birthday?: string; session_id?: string }>;
+}
+
+export default async function PremiumSuccessPage({ searchParams }: PageProps) {
+  const { birthday } = await searchParams;
+  const resumeHref = birthday ? `/birthday/${birthday}` : "/onboarding";
+  const resumeLabel = birthday
+    ? "Go to Your Birthday"
+    : "Generate a Birthday";
+
   return (
     <div className="min-h-screen bg-gradient-luxury flex items-center justify-center px-6">
       <div className="text-center space-y-6 max-w-md animate-fade-rise">
@@ -11,15 +21,16 @@ export default function PremiumSuccessPage() {
           You&apos;re in
         </h1>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Unlimited birthday generations, extra palette packs, and priority
-          processing are now yours. Go make something beautiful.
+          {birthday
+            ? "Your report is unlocked. Pick up right where you left off."
+            : "Unlimited birthday generations, extra palette packs, and priority processing are now yours. Go make something beautiful."}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
           <Link
-            href="/onboarding"
+            href={resumeHref}
             className="glow-btn inline-flex justify-center"
           >
-            Generate a Birthday
+            {resumeLabel}
           </Link>
           <Link
             href="/"
