@@ -6,7 +6,10 @@ import { useRouter } from "next/navigation";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import type { BlogPost } from "@/lib/content/types";
 
-const ADMIN_SECRET = "ytb-admin-2026";
+function getAdminToken() {
+  if (typeof window === "undefined") return "";
+  return sessionStorage.getItem("ytb-admin-token") ?? "";
+}
 const ADMIN_PASSCODE = "062093";
 
 interface DraftDetail {
@@ -59,7 +62,7 @@ export default function DraftReview({ params }: { params: Promise<{ id: string }
   useEffect(() => {
     if (!authed) return;
     fetch(`/api/admin/blog-agent/drafts/${id}`, {
-      headers: { "x-admin-token": ADMIN_SECRET },
+      headers: { "x-admin-token": getAdminToken() },
     })
       .then((r) => r.json())
       .then((data) => {
@@ -76,7 +79,7 @@ export default function DraftReview({ params }: { params: Promise<{ id: string }
       const res = await fetch(`/api/admin/blog-agent/drafts/${id}`, {
         method: "PATCH",
         headers: {
-          "x-admin-token": ADMIN_SECRET,
+          "x-admin-token": getAdminToken(),
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ action, reviewNotes: notes }),

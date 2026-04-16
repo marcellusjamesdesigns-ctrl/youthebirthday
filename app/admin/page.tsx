@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-const ADMIN_SECRET = "ytb-admin-2026";
+// Admin token must match ADMIN_SECRET in Vercel env vars.
+// For client components, we prompt the user for the token after passcode.
 const ADMIN_PASSCODE = "062093";
 
 interface Stats {
@@ -46,6 +47,7 @@ interface Stats {
 
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
+  const [adminToken, setAdminToken] = useState("");
   const [passcode, setPasscode] = useState("");
   const [passcodeError, setPasscodeError] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
@@ -54,33 +56,47 @@ export default function AdminDashboard() {
 
   // Check if already authed via sessionStorage
   useEffect(() => {
-    if (sessionStorage.getItem("ytb-admin") === "1") {
+    const savedToken = sessionStorage.getItem("ytb-admin-token");
+    if (savedToken) {
+      setAdminToken(savedToken);
       setAuthed(true);
     }
   }, []);
 
   // Fetch stats once authed
   useEffect(() => {
-    if (!authed) return;
+    if (!authed || !adminToken) return;
     setLoading(true);
+    setError(null);
     fetch("/api/admin/stats", {
-      headers: { "x-admin-token": ADMIN_SECRET },
+      headers: { "x-admin-token": adminToken },
     })
       .then((r) => {
-        if (!r.ok) throw new Error("Unauthorized");
+        if (!r.ok) throw new Error("Unauthorized — check your admin token");
         return r.json();
       })
       .then(setStats)
-      .catch((e) => setError(e.message))
+      .catch((e) => {
+        setError(e.message);
+        // Clear bad token so they can re-enter
+        sessionStorage.removeItem("ytb-admin-token");
+        setAuthed(false);
+        setAdminToken("");
+      })
       .finally(() => setLoading(false));
-  }, [authed]);
+  }, [authed, adminToken]);
 
   function handlePasscode(e: React.FormEvent) {
     e.preventDefault();
     if (passcode === ADMIN_PASSCODE) {
-      sessionStorage.setItem("ytb-admin", "1");
-      setAuthed(true);
       setPasscodeError(false);
+      // Now prompt for admin token
+      const token = prompt("Enter your admin token (ADMIN_SECRET from Vercel):");
+      if (token && token.trim()) {
+        sessionStorage.setItem("ytb-admin-token", token.trim());
+        setAdminToken(token.trim());
+        setAuthed(true);
+      }
     } else {
       setPasscodeError(true);
       setPasscode("");

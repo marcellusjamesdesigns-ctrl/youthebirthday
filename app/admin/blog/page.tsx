@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const ADMIN_SECRET = "ytb-admin-2026";
+function getAdminToken() {
+  if (typeof window === "undefined") return "";
+  return sessionStorage.getItem("ytb-admin-token") ?? "";
+}
 const ADMIN_PASSCODE = "062093";
 
 interface DraftRow {
@@ -43,7 +46,7 @@ export default function BlogAdminQueue() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/blog-agent/drafts", {
-        headers: { "x-admin-token": ADMIN_SECRET },
+        headers: { "x-admin-token": getAdminToken() },
       });
       const data = await res.json();
       setDrafts(data.drafts ?? []);
@@ -61,7 +64,7 @@ export default function BlogAdminQueue() {
       const res = await fetch("/api/admin/blog-agent/generate", {
         method: "POST",
         headers: {
-          "x-admin-token": ADMIN_SECRET,
+          "x-admin-token": getAdminToken(),
           "Content-Type": "application/json",
         },
         body: JSON.stringify({}),
