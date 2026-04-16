@@ -172,7 +172,12 @@ THE SCIENCE OF WHY YOUR CAPTIONS GO VIRAL:
 4. CONTRARIAN ENERGY: Say the thing no one says out loud. "I don't want to be humble about this." The captions people screenshot are the ones that say what everyone thinks but won't post.
 5. SPECIFICITY IS VIRALITY: "Table for one at the omakase bar" hits harder than "birthday dinner." Specific details make universal feelings feel personal.
 6. THE 3-SECOND RULE: On a phone screen, people decide to read or scroll in 3 seconds. The first 5 words decide everything. Front-load the hook.
-7. LOWERCASE HITS DIFFERENT: For casual/funny/unhinged captions, lowercase signals confidence. You're not trying. It's effortless. Capital letters are for statements. Know which one you're making.
+7. CASING IS A DELIBERATE CHOICE — follow these rules exactly:
+   - UNHINGED & FUNNY: always lowercase. no capitals at all. this signals effortless confidence.
+   - SOFT FLEX: sentence case. Capitalize the first word only. Quiet, controlled.
+   - SCREENSHOT WORTHY: Title Case or ALL CAPS for maximum impact on overlays.
+   - MAIN CHARACTER, SEND TO A FRIEND, ZODIAC ENERGY: sentence case by default. Lowercase ONLY when the specific caption's tone is casual/cool enough to earn it.
+   - Never mix casing styles within a single caption. Pick one and commit.
 
 ABSOLUTE BANS — instant delete if you write any of these:
 - "happy birthday to me" / "feeling blessed" / "grateful for another year" / "cheers to" / "here's to"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { analytics } from "@/lib/analytics/events";
 
 interface ShareButtonsProps {
@@ -63,31 +63,55 @@ export function ShareButtons({ sessionId, title, isPremium }: ShareButtonsProps)
       </button>
       {/* Download — premium only */}
       {isPremium && (
-        <>
-          <button
-            onClick={() => window.open(`/birthday/${sessionId}/print`, "_blank")}
-            className="rounded-full border border-champagne/20 px-5 py-2.5 text-[13px] text-champagne/60 hover:text-champagne hover:border-champagne/40 transition-all"
-          >
-            Download Report
-          </button>
-          <button
-            onClick={async () => {
-              const { getOrCreateDeviceToken } = await import("@/lib/limits/device-token");
-              const token = getOrCreateDeviceToken();
-              const res = await fetch("/api/stripe/portal", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ deviceToken: token }),
-              });
-              const data = await res.json();
-              if (data.url) window.location.href = data.url;
-            }}
-            className="rounded-full px-5 py-2.5 text-[13px] text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-          >
-            Manage Subscription
-          </button>
-        </>
+        <button
+          onClick={() => window.open(`/birthday/${sessionId}/print`, "_blank")}
+          className="rounded-full border border-champagne/20 px-5 py-2.5 text-[13px] text-champagne/60 hover:text-champagne hover:border-champagne/40 transition-all"
+        >
+          Download Report
+        </button>
       )}
+      {/* Manage Billing — only renders if user has a Stripe customer with a portal */}
+      {isPremium && <ManageBillingButton />}
     </div>
+  );
+}
+
+/**
+ * Attempts to fetch a Stripe billing portal URL on mount.
+ * If the user has no stripeCustomerId (one-time purchase or manual repair),
+ * the API returns 404 and the button never renders — no dead button.
+ */
+function ManageBillingButton() {
+  const [portalUrl, setPortalUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { getOrCreateDeviceToken } = await import("@/lib/limits/device-token");
+        const token = getOrCreateDeviceToken();
+        const res = await fetch("/api/stripe/portal", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ deviceToken: token }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.url) setPortalUrl(data.url);
+        }
+      } catch {
+        // silently don't show the button
+      }
+    })();
+  }, []);
+
+  if (!portalUrl) return null;
+
+  return (
+    <button
+      onClick={() => { window.location.href = portalUrl; }}
+      className="rounded-full px-5 py-2.5 text-[13px] text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+    >
+      Manage Billing
+    </button>
   );
 }

@@ -840,16 +840,22 @@ function CopyableCaption({ caption }: { caption: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
-      className="w-full text-left lift-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group"
+      className="w-full text-left beam-card px-5 py-4 transition-all group"
     >
-      <span>{caption}</span>
-      <span className={`ml-2 text-[10px] uppercase tracking-[0.1em] transition-all duration-300 ${
-        copied
-          ? "text-champagne/60 opacity-100"
-          : "text-muted-foreground/30 opacity-0 group-hover:opacity-100"
-      }`}>
-        {copied ? "Copied \u2713" : "Copy"}
-      </span>
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-[14px] text-foreground/80 group-hover:text-foreground leading-relaxed transition-colors flex-1">
+          {caption}
+        </p>
+        <span
+          className={`shrink-0 text-[9px] uppercase tracking-[0.15em] rounded-full border px-2.5 py-1 transition-all duration-300 ${
+            copied
+              ? "text-champagne/70 border-champagne/30 bg-champagne/5 opacity-100"
+              : "text-muted-foreground/30 border-border/30 opacity-0 group-hover:opacity-100"
+          }`}
+        >
+          {copied ? "Copied" : "Copy"}
+        </span>
+      </div>
     </button>
   );
 }

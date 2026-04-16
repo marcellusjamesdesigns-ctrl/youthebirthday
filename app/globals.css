@@ -210,10 +210,10 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 24px;
-  right: 24px;
+  left: 15%;
+  right: 15%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.18), transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -221,14 +221,15 @@
 .beam-card::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 50px;
-  background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.05), transparent);
+  top: -20px;
+  left: -10%;
+  right: -10%;
+  height: 80px;
+  background: radial-gradient(ellipse at top center, rgba(212, 175, 55, 0.04), transparent 70%);
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+  filter: blur(8px);
 }
 
 .beam-card:hover::before {
@@ -281,10 +282,10 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 10%;
+  right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, rgba(212, 175, 55, 0.3), rgba(155, 114, 207, 0.2), rgba(212, 160, 160, 0.25));
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), rgba(155, 114, 207, 0.15), rgba(212, 160, 160, 0.18), transparent);
   opacity: 0.4;
   transition: opacity 0.4s ease;
 }
