@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 const NAV_LINKS = [
   { href: "/birthday-captions", label: "Captions" },
   { href: "/birthday-ideas", label: "Ideas" },
+  { href: "/birthday-themes", label: "Themes" },
+  { href: "/birthday-destinations", label: "Destinations" },
   { href: "/zodiac-birthdays", label: "Zodiac" },
   { href: "/blog", label: "Journal" },
 ];
