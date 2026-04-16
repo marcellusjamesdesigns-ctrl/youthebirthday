@@ -16,11 +16,35 @@ const groupLabels: Record<string, string> = {
   large: "Big celebration",
 };
 
+const RELATIONSHIP_OPTIONS = [
+  "best friend", "partner", "parent", "sibling", "child", "coworker", "friend", "other",
+];
+
+const GIFT_BUDGET_OPTIONS: { value: string; label: string }[] = [
+  { value: "under-50", label: "Under $50" },
+  { value: "50-150", label: "$50–$150" },
+  { value: "150-500", label: "$150–$500" },
+  { value: "500+", label: "$500+" },
+];
+
+const GIFT_INTEREST_OPTIONS = [
+  "wellness", "books", "home", "fashion", "travel", "tech", "experience", "food", "beauty",
+];
+
 export function StepPreferences() {
   const {
     pronoun, budget, groupSize, foodVibe, aestheticPreference,
+    birthdayFor, recipientRelationship, giftBudget, giftInterests,
     setField, nextStep, prevStep,
   } = useOnboardingStore();
+
+  function toggleInterest(interest: string) {
+    if (giftInterests.includes(interest)) {
+      setField("giftInterests", giftInterests.filter((i) => i !== interest));
+    } else {
+      setField("giftInterests", [...giftInterests, interest]);
+    }
+  }
 
   return (
     <div className="space-y-8 animate-fade-rise">
@@ -34,6 +58,77 @@ export function StepPreferences() {
       </div>
 
       <div className="space-y-5">
+        {/* Gift mode questions — only for "other" */}
+        {birthdayFor === "other" && (
+          <div className="space-y-5 pb-5 border-b border-border/20">
+            <div className="space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-champagne/60">
+                Your relationship to them
+              </p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {RELATIONSHIP_OPTIONS.map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => setField("recipientRelationship", recipientRelationship === opt ? "" : opt)}
+                    className={`lift-card px-3 py-2.5 text-sm transition-all ${
+                      recipientRelationship === opt
+                        ? "selection-active"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-champagne/60">
+                Gift budget
+              </p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {GIFT_BUDGET_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setField("giftBudget", giftBudget === opt.value ? "" : opt.value)}
+                    className={`lift-card px-3 py-2.5 text-sm transition-all ${
+                      giftBudget === opt.value
+                        ? "selection-active"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-champagne/60">
+                What they&apos;re into (pick any)
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {GIFT_INTEREST_OPTIONS.map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => toggleInterest(opt)}
+                    className={`rounded-full border px-3.5 py-1.5 text-[12px] capitalize transition-all ${
+                      giftInterests.includes(opt)
+                        ? "border-champagne/40 bg-champagne/10 text-champagne"
+                        : "border-border/50 text-muted-foreground hover:border-border"
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="space-y-2">
           <label htmlFor="pronoun" className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">
             Pronouns (optional)

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useOnboardingStore } from "@/stores/onboarding";
 
 export function StepBasics() {
-  const { name, birthdate, birthYear, currentCity, celebrationCity, setField, nextStep } =
+  const { name, birthdate, birthYear, currentCity, celebrationCity, birthdayFor, setField, nextStep } =
     useOnboardingStore();
   const [birthdateTouched, setBirthdateTouched] = useState(false);
   const birthdateValid = /^\d{2}-\d{2}$/.test(birthdate);
@@ -20,21 +20,49 @@ export function StepBasics() {
     <div className="space-y-8 animate-fade-rise">
       <div className="text-center space-y-3">
         <h1 className="heading-editorial text-3xl sm:text-4xl">
-          Let&apos;s start with the basics
+          Whose birthday is this?
         </h1>
         <p className="text-sm text-muted-foreground">
-          Tell us about you so we can build your birthday experience.
+          Are you celebrating yourself or planning for someone else?
         </p>
+      </div>
+
+      {/* Self vs Other toggle */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          type="button"
+          onClick={() => setField("birthdayFor", "self")}
+          className={`rounded-2xl border p-4 text-center transition-all ${
+            birthdayFor === "self"
+              ? "border-champagne/40 bg-champagne/5 text-foreground"
+              : "border-border/40 text-muted-foreground hover:border-border hover:text-foreground/80"
+          }`}
+        >
+          <p className="text-sm font-medium">It&apos;s mine</p>
+          <p className="text-[11px] text-muted-foreground/60 mt-1">Plan my celebration</p>
+        </button>
+        <button
+          type="button"
+          onClick={() => setField("birthdayFor", "other")}
+          className={`rounded-2xl border p-4 text-center transition-all ${
+            birthdayFor === "other"
+              ? "border-champagne/40 bg-champagne/5 text-foreground"
+              : "border-border/40 text-muted-foreground hover:border-border hover:text-foreground/80"
+          }`}
+        >
+          <p className="text-sm font-medium">Someone else&apos;s</p>
+          <p className="text-[11px] text-muted-foreground/60 mt-1">Find them gifts + ideas</p>
+        </button>
       </div>
 
       <div className="space-y-5">
         <div className="space-y-2">
           <label htmlFor="name" className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">
-            Name or nickname
+            {birthdayFor === "other" ? "Their name" : "Name or nickname"}
           </label>
           <input
             id="name"
-            placeholder="What should we call you?"
+            placeholder={birthdayFor === "other" ? "Who's the birthday person?" : "What should we call you?"}
             value={name}
             onChange={(e) => setField("name", e.target.value)}
             maxLength={50}

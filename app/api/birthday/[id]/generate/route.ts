@@ -69,6 +69,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     restaurants: "queued",
     activities: "queued",
     cosmic: session.mode === "cosmic" ? "queued" : "skipped",
+    gifts: session.birthdayFor === "other" ? "queued" : "skipped",
   };
 
   await db.insert(birthdayGenerations).values({

@@ -45,6 +45,11 @@ export const birthdaySessions = pgTable("birthday_sessions", {
   groupSize: text("group_size"), // "solo" | "partner" | "small" | "large"
   foodVibe: text("food_vibe"),
   aestheticPreference: text("aesthetic_preference"),
+  // Gift mode — when birthdayFor === "other"
+  birthdayFor: text("birthday_for").notNull().default("self"), // "self" | "other"
+  recipientRelationship: text("recipient_relationship"), // "best friend" | "partner" | "parent" | "sibling" | "coworker" | "other"
+  giftBudget: text("gift_budget"), // "under-50" | "50-150" | "150-500" | "500+"
+  giftInterests: jsonb("gift_interests").$type<string[]>(), // ["wellness", "books", "travel", ...]
   // Meta
   status: generationStatusEnum("status").notNull().default("pending"),
   ipHash: text("ip_hash"), // hashed IP for rate limiting, not PII
@@ -70,6 +75,8 @@ export const birthdayGenerations = pgTable("birthday_generations", {
   destinations: jsonb("destinations").$type<Destination[]>(),
   celebrationStyle: jsonb("celebration_style").$type<CelebrationStyle>(),
   cosmicProfile: jsonb("cosmic_profile").$type<CosmicProfile>(),
+  // Gift recommendations (only when birthdayFor === "other")
+  gifts: jsonb("gifts").$type<Gift[]>(),
   // External data (fetched, not AI-generated)
   restaurants: jsonb("restaurants").$type<Restaurant[]>(),
   activities: jsonb("activities").$type<Activity[]>(),
@@ -178,6 +185,7 @@ export type StepStatusMap = {
   restaurants: StepStatus;
   activities: StepStatus;
   cosmic: StepStatus;
+  gifts?: StepStatus;
 };
 
 export interface ColorPalette {
@@ -232,6 +240,15 @@ export interface CelebrationStyle {
   aesthetic: string;
   outfit: string;
   playlist: string;
+}
+
+export interface Gift {
+  label: string; // display name e.g. "A Cashmere Throw They Didn't Buy Themselves"
+  description: string; // 1-2 sentence why-this-fits explanation
+  amazonQuery: string; // search term to feed Amazon affiliate link
+  category: string; // "wellness" | "books" | "home" | "fashion" | "travel" | "tech" | "experience" | "food" | "beauty"
+  priceRange: "$" | "$$" | "$$$" | "$$$$";
+  whyThemSpecifically?: string; // optional extra "this is for THIS person" line
 }
 
 export interface AstrocartographyHighlight {

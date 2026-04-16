@@ -52,6 +52,12 @@ export const BirthdayInputSchema = z.object({
   birthCity: z.string().max(200).optional(),
   birthLat: z.string().optional(),
   birthLng: z.string().optional(),
+
+  // Gift mode (optional — set when birthdayFor === "other")
+  birthdayFor: z.enum(["self", "other"]).default("self"),
+  recipientRelationship: z.string().max(40).optional(),
+  giftBudget: z.enum(["under-50", "50-150", "150-500", "500+"]).optional(),
+  giftInterests: z.array(z.string()).max(10).optional(),
 });
 
 export type BirthdayInput = z.infer<typeof BirthdayInputSchema>;

@@ -23,6 +23,7 @@ import {
   buildRestaurantPrompt,
   buildActivityPrompt,
   buildCosmicPrompt,
+  buildGiftPrompt,
 } from "./prompts";
 import {
   BirthdayIdentitySchema,
@@ -33,6 +34,7 @@ import {
   RestaurantSchema,
   ActivitySchema,
   CosmicProfileSchema,
+  GiftSchema,
 } from "./schemas";
 import type { InferSelectModel } from "drizzle-orm";
 import type { z } from "zod";
@@ -300,6 +302,25 @@ export async function runBirthdayPipeline(
         .update(birthdayGenerations)
         .set({ activities: activityResult.activities })
         .where(eq(birthdayGenerations.id, generationId));
+    }
+
+    // ─── Step 5: Gifts (only when planning for someone else) ──────────
+    if (session.birthdayFor === "other") {
+      const giftResult = await runAIStep("gifts", GiftSchema, buildGiftPrompt);
+      if (giftResult) {
+        const gifts = giftResult.gifts.map((g) => ({
+          label: g.label,
+          description: g.description,
+          amazonQuery: g.amazonQuery,
+          category: g.category,
+          priceRange: g.priceRange as "$" | "$$" | "$$$" | "$$$$",
+          whyThemSpecifically: g.whyThemSpecifically ?? undefined,
+        }));
+        await db
+          .update(birthdayGenerations)
+          .set({ gifts })
+          .where(eq(birthdayGenerations.id, generationId));
+      }
     }
 
     // ─── Finalize ─────────────────────────────────────────────────────

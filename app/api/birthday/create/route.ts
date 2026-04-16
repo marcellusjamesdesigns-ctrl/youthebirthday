@@ -99,6 +99,10 @@ export async function POST(request: Request) {
     groupSize: input.groupSize || null,
     foodVibe: input.foodVibe || null,
     aestheticPreference: input.aestheticPreference || null,
+    birthdayFor: input.birthdayFor === "other" ? "other" : "self",
+    recipientRelationship: input.recipientRelationship || null,
+    giftBudget: input.giftBudget || null,
+    giftInterests: input.giftInterests && input.giftInterests.length > 0 ? input.giftInterests : null,
     status: "pending",
   });
 

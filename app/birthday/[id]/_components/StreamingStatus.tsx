@@ -11,6 +11,7 @@ const stepLabels: Record<keyof StepStatusMap, string> = {
   restaurants: "Looking for your dinner spots",
   activities: "Curating your birthday experiences",
   cosmic: "Reading the stars",
+  gifts: "Hand-picking gift ideas",
 };
 
 const stepOrder: (keyof StepStatusMap)[] = [
@@ -22,6 +23,7 @@ const stepOrder: (keyof StepStatusMap)[] = [
   "restaurants",
   "activities",
   "cosmic",
+  "gifts",
 ];
 
 interface StreamingStatusProps {

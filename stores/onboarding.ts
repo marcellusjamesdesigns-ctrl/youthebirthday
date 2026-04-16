@@ -28,6 +28,11 @@ export interface OnboardingState {
   birthCity: string;
   birthLat: string;
   birthLng: string;
+  // Gift mode (set on Step 1)
+  birthdayFor: "self" | "other";
+  recipientRelationship: string;
+  giftBudget: string;
+  giftInterests: string[];
 }
 
 interface OnboardingActions {
@@ -61,6 +66,10 @@ const initialState: OnboardingState = {
   birthCity: "",
   birthLat: "",
   birthLng: "",
+  birthdayFor: "self",
+  recipientRelationship: "",
+  giftBudget: "",
+  giftInterests: [],
 };
 
 export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(

@@ -12,6 +12,7 @@ import type {
   CosmicProfile,
   Restaurant,
   Activity,
+  Gift,
 } from "@/lib/db/schema";
 import type { InferSelectModel } from "drizzle-orm";
 import { BirthdayHero } from "./BirthdayHero";
@@ -42,6 +43,7 @@ interface Sections {
   restaurants: Restaurant[] | null;
   activities: Activity[] | null;
   cosmicProfile: CosmicProfile | null;
+  gifts: Gift[] | null;
 }
 
 interface StatusResponse {
@@ -499,6 +501,58 @@ export function DashboardShell({
                   );
                 })}
               </div>
+            </section>
+          )}
+
+          {/* ─── Gifts (only when birthdayFor === "other") ─────────────── */}
+          {sections?.gifts && sections.gifts.length > 0 && (
+            <section className="animate-fade-rise space-y-5">
+              <div>
+                <SectionLabel>Gift Ideas for {session.name}</SectionLabel>
+                <p className="text-[12px] text-muted-foreground/65 mt-1.5">
+                  Curated for who they actually are — not generic gift-guide noise. Every link opens Amazon for the right product category.
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {sections.gifts.map((gift, i) => {
+                  const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(gift.amazonQuery)}&tag=youthebirthda-20`;
+                  return (
+                    <a
+                      key={i}
+                      href={amazonUrl}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      className="block lift-card p-5 space-y-2.5 hover:border-champagne/15 transition-all"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-sm font-medium text-foreground leading-snug">
+                          {gift.label}
+                        </h3>
+                        <span className="text-[10px] text-champagne/60 shrink-0">
+                          {gift.priceRange}
+                        </span>
+                      </div>
+                      <p className="text-[13px] text-muted-foreground/70 leading-relaxed">
+                        {gift.description}
+                      </p>
+                      {gift.whyThemSpecifically && (
+                        <p className="text-[11px] text-champagne/50 italic">
+                          {gift.whyThemSpecifically}
+                        </p>
+                      )}
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/40 border border-border/30 rounded-full px-2 py-0.5">
+                          {gift.category}
+                        </span>
+                        <span className="text-[10px] text-champagne/40">View on Amazon →</span>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+              <p className="text-[10px] text-muted-foreground/40 text-center pt-2">
+                As an Amazon Associate, You The Birthday earns from qualifying purchases.
+              </p>
             </section>
           )}
 

@@ -62,6 +62,20 @@ export const DestinationSchema = z.object({
   ).min(3).max(7),
 });
 
+// Step 2d: Gift recommendations (only when birthdayFor === "other")
+export const GiftSchema = z.object({
+  gifts: z.array(
+    z.object({
+      label: z.string().describe("Display name, evocative not generic. E.g. 'A Cashmere Throw They Didn't Buy Themselves' not 'Throw Blanket'"),
+      description: z.string().describe("1-2 sentence why-this-fits explanation"),
+      amazonQuery: z.string().describe("Amazon search term, 4-8 words, specific enough to surface the right product category"),
+      category: z.string().describe("One of: wellness, books, home, fashion, travel, tech, experience, food, beauty"),
+      priceRange: z.enum(["$", "$$", "$$$", "$$$$"]),
+      whyThemSpecifically: z.string().nullable().optional().describe("Optional personalized line referencing their relationship/age/interests"),
+    })
+  ).min(6).max(8),
+});
+
 // Step 3: Celebration style
 export const CelebrationStyleSchema = z.object({
   primaryStyle: z.string().describe("e.g. 'Intimate Dinner Goddess'"),

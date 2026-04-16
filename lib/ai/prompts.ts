@@ -339,6 +339,56 @@ ${input.foodVibe ? `Their food vibe is "${input.foodVibe}" — let this shape th
   };
 }
 
+export function buildGiftPrompt(input: NormalizedInput) {
+  const relationship = input.recipientRelationship ?? "someone they care about";
+  const budgetDirection = input.giftBudget === "under-50"
+    ? "Budget is UNDER $50. Focus on $-$$ items. Personal touches over price tags."
+    : input.giftBudget === "50-150"
+    ? "Budget is $50-$150. Focus on $$-$$$ items. The sweet spot for thoughtful, considered gifts."
+    : input.giftBudget === "150-500"
+    ? "Budget is $150-$500. Focus on $$$ items. Quality, lasting, real-investment gifts."
+    : input.giftBudget === "500+"
+    ? "Budget is $500+. $$$$ items. Statement gifts that get remembered."
+    : "Mix of price ranges across $-$$$$. Cover the full spread.";
+
+  const interestsContext = input.giftInterests.length > 0
+    ? `Their interests/loves include: ${input.giftInterests.join(", ")}. Reflect these in at least 4 of the 6-8 picks.`
+    : "No specific interests provided. Default to broadly-appealing thoughtful gifts.";
+
+  return {
+    system: `You are a gift curator for "You The Birthday." You write gift recommendations like a witty, well-traveled friend who knows the recipient — not Amazon's recommendation algorithm. Every gift is specific, thoughtful, and avoids generic markers.
+
+ABSOLUTE BANS — never suggest these:
+- Anything labeled "for him/her" or gendered marketing
+- "Over the hill," "old," "vintage years" jokes
+- Generic mug, candle, photo book unless tied to a specific reason
+- Anything that feels like a Google search result for "gift ideas"
+
+What works:
+- Specific items with editorial framing ("A cashmere throw they didn't buy themselves")
+- Items that match an actual interest, lifestyle, or moment
+- Mix of practical, indulgent, and unexpected
+- Real Amazon-searchable categories (no obscure brands the user can't find)`,
+    user: `Generate 6-8 birthday gift ideas for ${input.name}, who is turning ${input.ageTurning}.
+
+The buyer is their ${relationship}.
+${budgetDirection}
+${interestsContext}
+
+For each gift, provide:
+- label: Editorial display name. NOT "Wireless Earbuds." YES "The Wireless Earbuds That Make Their Commute Bearable." Specific and evocative.
+- description: 1-2 sentences explaining why this gift specifically. Reference the relationship, age, or interest.
+- amazonQuery: 4-8 word Amazon search term that would surface the right product category. Real searchable terms — "cashmere throw blanket cream" not "luxurious lifestyle blanket experience."
+- category: ONE of: wellness, books, home, fashion, travel, tech, experience, food, beauty
+- priceRange: "$" "$$" "$$$" or "$$$$"
+- whyThemSpecifically: optional — only include if you can name a specific reason this fits THEIR life (not just their demographic)
+
+Mix categories. Don't suggest 6 home items or 6 wellness items. Spread across at least 4 categories.
+
+Make at least one pick a small "extra mile" gift under $30 that signals attention rather than spend.`,
+  };
+}
+
 export function buildRestaurantPrompt(input: NormalizedInput) {
   const budgetDirection = input.budget === "luxury"
     ? "Focus on upscale and fine dining. $$$-$$$$ range. Places with tasting menus, wine programs, or chef-driven concepts."

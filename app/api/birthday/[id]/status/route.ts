@@ -47,6 +47,7 @@ export async function GET(_request: NextRequest, { params }: RouteContext) {
     restaurants: generation.restaurants ?? null,
     activities: generation.activities ?? null,
     cosmicProfile: generation.cosmicProfile ?? null,
+    gifts: generation.gifts ?? null,
   };
 
   return NextResponse.json({

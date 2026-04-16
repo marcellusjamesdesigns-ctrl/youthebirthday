@@ -27,6 +27,11 @@ export interface NormalizedInput {
   birthCity: string | null;
   // Computed astro chart (when birth data is sufficient)
   chart: AstroChart | null;
+  // Gift mode (when planning a birthday for someone else)
+  birthdayFor: "self" | "other";
+  recipientRelationship: string | null;
+  giftBudget: string | null;
+  giftInterests: string[];
 }
 
 export function normalizeInput(session: Session): NormalizedInput {
@@ -91,6 +96,10 @@ export function normalizeInput(session: Session): NormalizedInput {
     birthTime: session.birthTime,
     birthCity: session.birthCity,
     chart,
+    birthdayFor: (session.birthdayFor === "other" ? "other" : "self") as "self" | "other",
+    recipientRelationship: session.recipientRelationship,
+    giftBudget: session.giftBudget,
+    giftInterests: (session.giftInterests as string[]) ?? [],
   };
 }
 

@@ -53,6 +53,10 @@ export default function OnboardingPage() {
           birthCity: store.birthCity || undefined,
           birthLat: store.birthLat || undefined,
           birthLng: store.birthLng || undefined,
+          birthdayFor: store.birthdayFor,
+          recipientRelationship: store.recipientRelationship || undefined,
+          giftBudget: store.giftBudget || undefined,
+          giftInterests: store.giftInterests.length > 0 ? store.giftInterests : undefined,
         }),
       });
 
