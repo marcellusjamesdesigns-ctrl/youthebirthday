@@ -264,11 +264,17 @@ Total: 3-4 destinations. The chosen city MUST be first.${astrocartographyCities.
     };
   }
 
-  // MODE A — no chosen city. Standard open recommendations.
+  // MODE A — no chosen city (or celebrating locally). Standard open recommendations.
+  const localContext = isLocal
+    ? `\n\nThis person is celebrating locally in ${input.celebrationCity}. They are NOT looking for flights. Include 1-2 nearby getaway options (day trips, weekend escapes from ${input.celebrationCity}) alongside broader destination inspiration. Frame local picks as "if you want to get away" not "you should leave."`
+    : "";
+
   return {
     system: `You are a birthday travel advisor for "You The Birthday." You recommend destinations like a well-traveled friend who knows the person — not a search engine. Your picks should feel curated, not algorithmic.
 
-CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. "Season" picks MUST be genuinely great to visit around their birthday month (${birthdayWindow}). "Dream" picks match their vibe but shine best in a different season.${astroSeedInstruction}
+CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. "Season" picks MUST be genuinely great to visit around their birthday month (${birthdayWindow}). "Dream" picks match their vibe but shine best in a different season.${localContext}${astroSeedInstruction}
+
+IMPORTANT: Use ONLY "season" or "dream" for the section field. Do NOT use "chosen" in this mode.
 
 This is a birthday product. Timing truth matters more than poetic matching.`,
     user: `Recommend 6-7 birthday destinations for:

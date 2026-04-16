@@ -193,7 +193,7 @@ export async function GET(
                     margin: 0,
                   }}
                 >
-                  &ldquo;{bestCaption}&rdquo;
+                  {`"${bestCaption}"`}
                 </p>
               </div>
             )}
@@ -281,7 +281,7 @@ export async function GET(
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: "auto",
+                marginTop: 20,
                 paddingTop: 16,
               }}
             >
