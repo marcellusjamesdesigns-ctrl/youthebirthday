@@ -21,9 +21,10 @@ export function FAQSection({ heading, questions }: FAQSectionProps) {
                 +
               </span>
             </summary>
-            <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-              {faq.answer}
-            </p>
+            <p
+              className="text-sm text-muted-foreground mt-3 leading-relaxed prose-links"
+              dangerouslySetInnerHTML={{ __html: faq.answer }}
+            />
           </details>
         ))}
       </div>

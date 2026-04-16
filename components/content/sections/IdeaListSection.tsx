@@ -27,9 +27,10 @@ export function IdeaListSection({
         {ideas.map((idea) => (
           <div key={idea.title} className="lift-card p-5 space-y-3">
             <h3 className="font-medium text-foreground">{idea.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {idea.description}
-            </p>
+            <p
+              className="text-sm text-muted-foreground leading-relaxed prose-links"
+              dangerouslySetInnerHTML={{ __html: idea.description }}
+            />
             <div className="flex gap-2">
               {idea.vibeTag && (
                 <span className="text-[10px] uppercase tracking-[0.1em] rounded-full border border-champagne/15 px-2.5 py-0.5 text-champagne/50">

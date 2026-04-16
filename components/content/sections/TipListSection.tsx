@@ -11,7 +11,10 @@ export function TipListSection({ heading, tips }: TipListSectionProps) {
         {tips.map((tip) => (
           <div key={tip.title} className="lift-card p-5">
             <h3 className="text-sm font-medium text-foreground">{tip.title}</h3>
-            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{tip.body}</p>
+            <p
+              className="text-sm text-muted-foreground mt-1.5 leading-relaxed prose-links"
+              dangerouslySetInnerHTML={{ __html: tip.body }}
+            />
           </div>
         ))}
       </div>

@@ -19,47 +19,70 @@ interface UnsplashResult {
   creditUrl: string;
 }
 
+/**
+ * Distill a long, descriptive query down to its strongest visual keywords.
+ * Unsplash works best with 2-4 concrete nouns, not full sentences.
+ */
+function shortenQuery(query: string): string {
+  return query
+    .toLowerCase()
+    // drop common filler words
+    .replace(/\b(a|an|the|of|with|and|or|on|in|at|for|to|from|including|featuring|that|this|some|any)\b/g, " ")
+    // drop punctuation
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 4)
+    .join(" ");
+}
+
+async function unsplashSearch(query: string, orientation: string, accessKey: string) {
+  const url = new URL("https://api.unsplash.com/search/photos");
+  url.searchParams.set("query", query);
+  url.searchParams.set("per_page", "1");
+  url.searchParams.set("orientation", orientation);
+  url.searchParams.set("content_filter", "high");
+  const res = await fetch(url.toString(), {
+    headers: { Authorization: `Client-ID ${accessKey}` },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data.results?.[0] ?? null;
+}
+
 export async function searchUnsplashImage(
   query: string,
   orientation: "landscape" | "portrait" | "squarish" = "landscape",
 ): Promise<UnsplashResult> {
   const accessKey = process.env.UNSPLASH_ACCESS_KEY;
   if (!accessKey) {
-    return {
-      src: FALLBACK_IMAGE,
-      alt: query,
-      credit: "Unsplash",
-      creditUrl: "https://unsplash.com",
-    };
+    return fallback(query);
   }
 
   try {
-    const url = new URL("https://api.unsplash.com/search/photos");
-    url.searchParams.set("query", query);
-    url.searchParams.set("per_page", "1");
-    url.searchParams.set("orientation", orientation);
-    url.searchParams.set("content_filter", "high"); // safe content only
+    // 1st attempt: exact query
+    let photo = await unsplashSearch(query, orientation, accessKey);
 
-    const res = await fetch(url.toString(), {
-      headers: {
-        Authorization: `Client-ID ${accessKey}`,
-      },
-    });
-
-    if (!res.ok) {
-      console.warn(`[unsplash] search failed (${res.status}): ${query}`);
-      return fallback(query);
+    // 2nd attempt: shortened keywords (drops filler, keeps top 4 nouns)
+    if (!photo) {
+      const short = shortenQuery(query);
+      if (short && short !== query.toLowerCase()) {
+        console.warn(`[unsplash] retrying with shortened query: "${short}"`);
+        photo = await unsplashSearch(short, orientation, accessKey);
+      }
     }
 
-    const data = await res.json();
-    const photo = data.results?.[0];
+    // 3rd attempt: very generic birthday fallback
+    if (!photo) {
+      console.warn(`[unsplash] retrying with generic fallback for: "${query}"`);
+      photo = await unsplashSearch("birthday celebration", orientation, accessKey);
+    }
 
     if (!photo) {
-      console.warn(`[unsplash] no results for: ${query}`);
+      console.warn(`[unsplash] all attempts failed for: ${query}`);
       return fallback(query);
     }
 
-    // Unsplash attribution: use utm_source=youthebirthday&utm_medium=referral
     const imgUrl = `${photo.urls.regular}&utm_source=youthebirthday&utm_medium=referral`;
     const credit = photo.user?.name ?? "Unsplash";
     const creditUrl = photo.user?.links?.html
