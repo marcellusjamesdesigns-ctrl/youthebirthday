@@ -13,6 +13,7 @@ import { createId } from "@/lib/utils/id";
 import { selectNextSeed, scoreSeeds } from "./scoring";
 import { findSeedById } from "./seeds";
 import { generateDraft } from "./generate";
+import { resolveImages } from "./unsplash";
 import { runQualityGates } from "./quality-gates";
 import { getAllBlogIdentifiers } from "@/lib/blog-db";
 import type { BlogPost } from "@/lib/content/types";
@@ -73,6 +74,15 @@ export async function runBlogGeneration(opts: {
   // ── Quality gates ───────────────────────────────────────────────────
   const gateReport = runQualityGates(result.draft, slugs, titles, selection.seed.titleHint);
 
+  // ── Resolve images from Unsplash ──────────────────────────────────
+  // Uses each section's suggestedSearchQuery to fetch a real photo.
+  // Falls back to a curated default if UNSPLASH_ACCESS_KEY is not set.
+  const images = await resolveImages({
+    heroImage: result.draft.heroImage,
+    pinterestImage: result.draft.pinterestImage,
+    sections: result.draft.sections as unknown as Array<Record<string, unknown>>,
+  });
+
   // ── Build BlogPost object ───────────────────────────────────────────
   const postData: BlogPost = {
     slug: result.draft.slug,
@@ -82,25 +92,15 @@ export async function runBlogGeneration(opts: {
     headline: result.draft.headline,
     subheadline: result.draft.subheadline,
     excerpt: result.draft.excerpt,
-    heroImage: {
-      src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=2400&auto=format&fit=crop",
-      alt: result.draft.heroImage.alt,
-      credit: "Unsplash",
-      creditUrl: "https://unsplash.com",
-    },
-    pinterestImage: result.draft.pinterestImage
-      ? {
-          src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1000&h=1500&fit=crop",
-          alt: result.draft.pinterestImage.alt,
-        }
-      : undefined,
+    heroImage: images.heroImage,
+    pinterestImage: images.pinterestImage,
     author: result.draft.author ?? { name: "The Journal" },
     tags: result.draft.tags,
     canonicalPath: `/blog/${result.draft.slug}`,
     schemaType: "BlogPosting",
     publishStatus: "draft",
     publishedAt: new Date().toISOString().split("T")[0],
-    sections: result.draft.sections,
+    sections: images.sections as unknown as BlogPost["sections"],
   };
 
   // ── Persist to review queue ─────────────────────────────────────────
