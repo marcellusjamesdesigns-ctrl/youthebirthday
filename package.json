@@ -27,7 +27,6 @@
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.2",
     "geo-tz": "^8.1.6",
-    "html2canvas": "^1.4.1",
     "lucide-react": "^1.8.0",
     "nanoid": "^5.1.7",
     "next": "16.2.3",

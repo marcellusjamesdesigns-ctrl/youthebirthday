@@ -1,108 +1,71 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 
 interface CardActionsProps {
   sessionId: string;
-  cardRef: React.RefObject<HTMLDivElement | null>;
 }
 
 /**
  * Export / share action bar for the birthday share card.
  *
- * Turns the card page from a passive poster into a social export studio:
- *   - Download PNG (html-to-canvas via the browser)
- *   - Native Share (with image on supported platforms)
- *   - Copy link
- *   - View full report
- *   - Create your own
+ * Download uses the server-side /api/og/{id} image endpoint (Satori)
+ * instead of html2canvas — much more reliable, no browser canvas issues.
  */
-export function CardActions({ sessionId, cardRef }: CardActionsProps) {
+export function CardActions({ sessionId }: CardActionsProps) {
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  const dashboardUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/birthday/${sessionId}`
-      : `/birthday/${sessionId}`;
 
   const cardUrl =
     typeof window !== "undefined"
       ? `${window.location.origin}/birthday/card/${sessionId}`
       : `/birthday/card/${sessionId}`;
 
-  // ── Download PNG ──────────────────────────────────────────────────
+  const ogImageUrl = `/api/og/${sessionId}`;
+
+  // ── Download PNG (server-rendered via /api/og) ────────────────────
   const handleDownload = useCallback(async () => {
-    if (!cardRef.current || downloading) return;
+    if (downloading) return;
     setDownloading(true);
 
     try {
-      // Dynamically import html2canvas to keep bundle small
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: "#0a0a0b",
-        scale: 2, // retina quality
-        useCORS: true,
-        logging: false,
-        // Fix for fonts / custom properties not rendering
-        onclone: (doc: Document) => {
-          const el = doc.querySelector("[data-card]") as HTMLElement | null;
-          if (el) el.style.fontFamily = "Georgia, 'Times New Roman', serif";
-        },
-        allowTaint: true,
-        foreignObjectRendering: false,
-      });
-      // Use blob download — more reliable than dataURL on large canvases
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          alert("Download failed — try taking a screenshot instead.");
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = "my-birthday-card.png";
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, "image/png");
+      const res = await fetch(ogImageUrl);
+      if (!res.ok) throw new Error("Image fetch failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = "my-birthday-card.png";
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
-      // Fallback: prompt user to screenshot
-      alert("Download failed — try taking a screenshot instead.");
+      // Fallback: open the image in a new tab so they can long-press / right-click save
+      window.open(ogImageUrl, "_blank");
     } finally {
       setDownloading(false);
     }
-  }, [cardRef, downloading]);
+  }, [ogImageUrl, downloading]);
 
   // ── Native Share ──────────────────────────────────────────────────
   const handleShare = useCallback(async () => {
-    // Try sharing with image (works on mobile Safari, Android)
-    if (cardRef.current && navigator.share && navigator.canShare) {
+    // Try sharing with the OG image as a file attachment
+    if (navigator.share) {
       try {
-        const html2canvas = (await import("html2canvas")).default;
-        const canvas = await html2canvas(cardRef.current, {
-          backgroundColor: "#0a0a0b",
-          scale: 2,
-          useCORS: true,
-          logging: false,
-        });
-        const blob = await new Promise<Blob | null>((resolve) =>
-          canvas.toBlob(resolve, "image/png"),
-        );
-        if (blob) {
-          const file = new File([blob], "birthday-card.png", {
-            type: "image/png",
-          });
+        const res = await fetch(ogImageUrl);
+        if (res.ok) {
+          const blob = await res.blob();
+          const file = new File([blob], "birthday-card.png", { type: "image/png" });
           const shareData = {
             title: "My Birthday Experience",
             text: "Check out my personalized birthday card",
             url: cardUrl,
             files: [file],
           };
-          if (navigator.canShare(shareData)) {
+          if (navigator.canShare?.(shareData)) {
             await navigator.share(shareData);
             return;
           }
@@ -110,10 +73,8 @@ export function CardActions({ sessionId, cardRef }: CardActionsProps) {
       } catch {
         // Fall through to text-only share
       }
-    }
 
-    // Fallback: text-only share
-    if (navigator.share) {
+      // Text-only share fallback
       try {
         await navigator.share({
           title: "My Birthday Experience",
@@ -122,13 +83,13 @@ export function CardActions({ sessionId, cardRef }: CardActionsProps) {
         });
         return;
       } catch {
-        // User cancelled — that's fine
+        // User cancelled
       }
     }
 
     // Final fallback: copy link
     handleCopyLink();
-  }, [cardRef, cardUrl]);
+  }, [ogImageUrl, cardUrl]);
 
   // ── Copy Link ─────────────────────────────────────────────────────
   const handleCopyLink = useCallback(() => {

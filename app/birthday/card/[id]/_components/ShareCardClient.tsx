@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import Link from "next/link";
 import { CardActions } from "./CardActions";
 import type { ColorPalette, CosmicProfile, CelebrationStyle, Destination } from "@/lib/db/schema";
@@ -34,14 +33,10 @@ export function ShareCardClient({
   bestCaption,
   accentHex,
 }: ShareCardClientProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 pb-12">
-      {/* The card — capture target for PNG export */}
+      {/* The card visual */}
       <div
-        ref={cardRef}
-        data-card
         className="w-full max-w-[440px] relative overflow-hidden rounded-2xl border border-border/30"
         style={{ backgroundColor: "#0a0a0b" }}
       >
@@ -176,8 +171,8 @@ export function ShareCardClient({
         </div>
       </div>
 
-      {/* Action bar — below the card (not captured in PNG) */}
-      <CardActions sessionId={sessionId} cardRef={cardRef} />
+      {/* Action bar — below the card */}
+      <CardActions sessionId={sessionId} />
     </div>
   );
 }
