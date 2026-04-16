@@ -200,7 +200,7 @@ export interface Destination {
   timingNote: string; // e.g. "Great around your birthday" or "Best as a birthday-year trip"
   vibeMatch: string[];
   estimatedBudget: "budget" | "mid" | "luxury";
-  section: "season" | "dream"; // which section this belongs in
+  section: "season" | "dream" | "chosen"; // "chosen" = user's pre-selected celebration city
 }
 
 export interface Restaurant {

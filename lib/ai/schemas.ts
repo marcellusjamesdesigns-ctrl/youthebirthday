@@ -57,9 +57,9 @@ export const DestinationSchema = z.object({
       timingNote: z.string().describe("Human-readable timing note, e.g. 'Great around your birthday' or 'Best as a birthday-year trip later on'"),
       vibeMatch: z.array(z.string()).min(2).max(4),
       estimatedBudget: z.enum(["budget", "mid", "luxury"]),
-      section: z.enum(["season", "dream"]).describe("'season' = fits their birthday window, 'dream' = great vibe match but better in another season"),
+      section: z.enum(["season", "dream", "chosen"]).describe("'chosen' = the user's pre-selected celebration city, 'season' = fits their birthday window, 'dream' = great vibe match but better in another season"),
     })
-  ).min(5).max(7),
+  ).min(3).max(7),
 });
 
 // Step 3: Celebration style

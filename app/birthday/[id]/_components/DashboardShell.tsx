@@ -248,16 +248,25 @@ export function DashboardShell({
           )}
 
           {/* ─── Destinations: Show 1 free as proof, lock the rest ──── */}
-          {!isPremium && sections?.destinations && sections.destinations.length > 0 && (
+          {!isPremium && sections?.destinations && sections.destinations.length > 0 && (() => {
+            const firstDest = sections.destinations[0];
+            const isChosenMode = firstDest.section === "chosen";
+            return (
             <section className="animate-fade-rise space-y-5">
               <div>
-                <SectionLabel>Best for Your Birthday Season</SectionLabel>
+                <SectionLabel>
+                  {isChosenMode
+                    ? `Why ${firstDest.city} Fits Your Birthday`
+                    : "Best for Your Birthday Season"}
+                </SectionLabel>
                 <p className="text-[12px] text-muted-foreground/65 mt-1.5">
-                  Here&apos;s a taste of your personalized destination picks.
+                  {isChosenMode
+                    ? "Here\u2019s a preview of why your chosen city works."
+                    : "Here\u2019s a taste of your personalized destination picks."}
                 </p>
               </div>
               {/* Show first destination as proof */}
-              <DestinationCard dest={sections.destinations[0]} index={0} />
+              <DestinationCard dest={firstDest} index={0} />
               {/* Lock the rest */}
               <PremiumTeaser
                 label={`${sections.destinations.length - 1} more destinations + interactive globe`}
@@ -265,12 +274,14 @@ export function DashboardShell({
                 sessionId={sessionId}
               />
             </section>
-          )}
+            );
+          })()}
           {isPremium && sections?.destinations && sections.destinations.length > 0 && (() => {
-            const seasonPicks = sections.destinations.filter((d) => d.section === "season" || !d.section);
+            const chosenPick = sections.destinations.find((d) => d.section === "chosen");
+            const seasonPicks = sections.destinations.filter((d) => d.section === "season" || (!d.section && d.section !== "chosen"));
             const dreamPicks = sections.destinations.filter((d) => d.section === "dream");
-            // Fallback: if no section field (old generations), show all as season
             const hasNewFormat = sections.destinations.some((d) => d.section);
+            const hasChosenCity = !!chosenPick;
 
             // Extract primary + accent colors from user's first palette for globe theming
             const firstPalette = sections?.palettes?.[0];
@@ -281,7 +292,50 @@ export function DashboardShell({
 
             return (
               <>
-                {seasonPicks.length > 0 && (
+                {/* ── Chosen City Mode: "Why [City] Fits Your Birthday" ──── */}
+                {hasChosenCity && chosenPick && (
+                  <section className="animate-fade-rise space-y-5">
+                    <div>
+                      <SectionLabel>Why {chosenPick.city} Fits Your Birthday</SectionLabel>
+                      <p className="text-[12px] text-muted-foreground/65 mt-1.5">
+                        You chose this city — here&apos;s why it&apos;s the right call.
+                      </p>
+                    </div>
+                    <DestinationGlobe
+                      destinations={sections.destinations!}
+                      seasonColor={seasonHex}
+                      dreamColor={dreamHex}
+                    />
+                    <div className="animated-border-card glow-champagne p-6 space-y-4">
+                      <div className="flex items-baseline justify-between">
+                        <h3 className="font-editorial text-xl text-foreground">
+                          {chosenPick.city}
+                        </h3>
+                        <span className="text-[10px] uppercase tracking-[0.15em] text-champagne/60 border border-champagne/20 rounded-full px-2.5 py-0.5">
+                          Your pick
+                        </span>
+                      </div>
+                      <p className="text-[14px] text-foreground/75 leading-relaxed">
+                        {chosenPick.whyItFitsYou}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {chosenPick.vibeMatch.map((v) => (
+                          <span key={v} className="text-[9px] uppercase tracking-[0.1em] border border-border/30 text-muted-foreground/50 rounded-full px-2 py-0.5">
+                            {v}
+                          </span>
+                        ))}
+                      </div>
+                      {chosenPick.timingNote && (
+                        <p className="text-[11px] text-champagne/50 italic">
+                          {chosenPick.timingNote}
+                        </p>
+                      )}
+                    </div>
+                  </section>
+                )}
+
+                {/* ── Standard Season Picks (Mode A — no chosen city) ────── */}
+                {!hasChosenCity && seasonPicks.length > 0 && (
                   <section className="animate-fade-rise space-y-5">
                     <div>
                       <SectionLabel>Best for Your Birthday Season</SectionLabel>
@@ -302,12 +356,19 @@ export function DashboardShell({
                   </section>
                 )}
 
+                {/* ── Dream picks (both modes) ─────────────────────────── */}
                 {hasNewFormat && dreamPicks.length > 0 && (
                   <section className="animate-fade-rise space-y-5">
                     <div>
-                      <SectionLabel>Dream Picks for Your Birthday Year</SectionLabel>
+                      <SectionLabel>
+                        {hasChosenCity
+                          ? "Dream Escapes for Your Birthday Year"
+                          : "Dream Picks for Your Birthday Year"}
+                      </SectionLabel>
                       <p className="text-[12px] text-muted-foreground/65 mt-1.5">
-                        These match your energy beautifully, even if they shine best in another season.
+                        {hasChosenCity
+                          ? "When you're ready for something different — these match your energy."
+                          : "These match your energy beautifully, even if they shine best in another season."}
                       </p>
                     </div>
                     <div className="space-y-3">

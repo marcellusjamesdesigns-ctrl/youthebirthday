@@ -221,21 +221,54 @@ export function buildDestinationPrompt(input: NormalizedInput, astrocartographyC
     ? `\n\nCOSMIC SEED: This person's astrocartography chart highlights these cities: ${astrocartographyCities.join(", ")}. If any of these fit the timing and vibe, include 1-2 as picks and note they're a "cosmic match" in whyItFitsYou. Don't force them if they don't fit.`
     : "";
 
-  const localInstruction = isLocal
-    ? `THIS PERSON IS CELEBRATING LOCALLY in ${input.celebrationCity}. They are NOT looking for flights — they want to be inspired by:
-- 1-2 "season" picks that are genuinely worth traveling to for a birthday trip (alternative destinations they could consider)
-- 1-2 "season" picks that are day trips, weekend getaways, or nearby escapes from ${input.celebrationCity} (driveable or short train/flight)
-- "dream" picks are bucket-list destinations they should plan for their birthday year
+  // ── Two modes: chosen city vs open recommendations ─────────────────
+  const hasChosenCity =
+    input.celebrationCity &&
+    input.celebrationCity.toLowerCase() !== input.currentCity.toLowerCase();
 
-Frame the local picks as "if you want to get away" not "you should leave" — respect that they chose to celebrate at home.`
-    : `This person is celebrating in ${input.celebrationCity} (traveling from ${input.currentCity}). They've already chosen their celebration city, so the destination section should inspire FUTURE birthday trips and alternatives. At least one "season" pick should be near or accessible from ${input.celebrationCity}.`;
+  if (hasChosenCity) {
+    // MODE B — user already picked a celebration city.
+    // Lead with WHY that city fits, then offer 2-3 dream alternatives.
+    return {
+      system: `You are a birthday travel advisor for "You The Birthday." This person has ALREADY CHOSEN to celebrate in ${input.celebrationCity}. Your job is to validate and enrich that choice — explain why it's a great birthday city for them specifically — then offer a few dream alternatives for their birthday year.
 
+You speak like a well-traveled friend who knows the person, not a search engine.${astroSeedInstruction}`,
+      user: `This person is celebrating their birthday in ${input.celebrationCity}.
+
+${vibeContext(input)}
+Birthday month: ${input.birthMonthName}
+Birthday window: ${birthdayWindow}
+
+Generate destinations in this exact structure:
+
+GROUP 1 — "chosen" (1 destination ONLY — this MUST be ${input.celebrationCity}):
+- city: "${input.celebrationCity.split(",")[0].trim()}"
+- country: the country ${input.celebrationCity} is in
+- section: "chosen"
+- whyItFitsYou: 3-4 sentences explaining why ${input.celebrationCity} is a GREAT birthday city for THIS person. Reference their vibe (${input.celebrationVibe}), age (turning ${input.ageTurning}), birthday month (${input.birthMonthName}), and what makes celebrating there special. This should feel like a friend saying "here's why you made the right call." Be specific — mention real neighborhoods, energy, what the city is like in ${input.birthMonthName}.
+- bestMonths: the best months to visit ${input.celebrationCity}
+- timingFit: how well ${input.birthMonthName} works for ${input.celebrationCity}
+- timingNote: honest timing context
+- vibeMatch: 2-4 vibe tags that match ${input.celebrationCity}
+- estimatedBudget: their budget tier
+
+GROUP 2 — "dream" picks (2-3 destinations):
+These are birthday-year escape alternatives. Cities that deeply match their vibe but are different from their chosen city. At least one outside the US/Europe.
+
+For dream picks:
+- section: "dream"
+- whyItFitsYou: 2-3 sentences. Reference their vibe and explain the match.
+- Frame these as "for your birthday year" not "instead of ${input.celebrationCity}"
+
+Total: 3-4 destinations. The chosen city MUST be first.${astrocartographyCities.length > 0 ? `\n\nCosmic match cities to consider for dream picks: ${astrocartographyCities.join(", ")}` : ""}`,
+    };
+  }
+
+  // MODE A — no chosen city. Standard open recommendations.
   return {
     system: `You are a birthday travel advisor for "You The Birthday." You recommend destinations like a well-traveled friend who knows the person — not a search engine. Your picks should feel curated, not algorithmic.
 
-CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. "Season" picks MUST be genuinely great to visit around their birthday month (${birthdayWindow}). "Dream" picks match their vibe but shine best in a different season.
-
-${localInstruction}${astroSeedInstruction}
+CRITICAL RANKING RULE: Timing fit is the #1 ranking factor. This person's birthday is in ${input.birthMonthName}. "Season" picks MUST be genuinely great to visit around their birthday month (${birthdayWindow}). "Dream" picks match their vibe but shine best in a different season.${astroSeedInstruction}
 
 This is a birthday product. Timing truth matters more than poetic matching.`,
     user: `Recommend 6-7 birthday destinations for:
