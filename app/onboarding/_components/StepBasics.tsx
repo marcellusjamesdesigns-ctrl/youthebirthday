@@ -73,16 +73,25 @@ export function StepBasics() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <label htmlFor="birthdate" className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">
-              Birthday (MM-DD)
+              Birthday (month + day)
             </label>
             <input
               id="birthdate"
-              placeholder="03-15"
+              placeholder="03 / 15"
               value={birthdate}
-              onChange={(e) => setField("birthdate", e.target.value)}
+              onChange={(e) => {
+                // Strip everything non-digit, auto-insert dash after 2 digits.
+                // This way any keyboard works — dash, slash, or just 4 digits.
+                const digits = e.target.value.replace(/\D/g, "").slice(0, 4);
+                const formatted = digits.length >= 2
+                  ? `${digits.slice(0, 2)}-${digits.slice(2)}`
+                  : digits;
+                setField("birthdate", formatted);
+              }}
               onBlur={() => setBirthdateTouched(true)}
               maxLength={5}
               inputMode="numeric"
+              autoComplete="off"
               className={`luxury-input w-full px-4 py-3.5 text-base ${
                 birthdateTouched && birthdate.length > 0 && !birthdateValid
                   ? "!border-rose/50"
@@ -90,7 +99,7 @@ export function StepBasics() {
               }`}
             />
             {birthdateTouched && birthdate.length > 0 && !birthdateValid && (
-              <p className="text-[11px] text-rose/70 mt-1">Format: MM-DD (e.g. 03-15)</p>
+              <p className="text-[11px] text-rose/70 mt-1">Enter month + day (e.g. 0315 for March 15)</p>
             )}
           </div>
           <div className="space-y-2">
