@@ -21,6 +21,7 @@ export interface ContentPage {
     destinationType?: string;
     paletteMood?: string;
     celebrationType?: string;
+    theme?: string; // theme-level grouping (e.g. "dark-feminine", "y2k")
   };
 
   // Structured content sections

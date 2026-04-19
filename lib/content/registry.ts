@@ -28,6 +28,13 @@ export function getRelatedPages(
   page: ContentPage,
   limit: number = 6
 ): ContentPage[] {
+  // THEME pages use a diversified mix: 2 sibling themes + 1 palette +
+  // 1 idea + optionally 1 destination/zodiac. This makes theme pages
+  // bridges into the broader ecosystem rather than dead-end islands.
+  if (page.category === "themes") {
+    return getThemeRelatedPages(page, limit);
+  }
+
   const related: { page: ContentPage; score: number }[] = [];
 
   for (const candidate of getAllPages()) {
@@ -57,6 +64,53 @@ export function getRelatedPages(
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
     .map((r) => r.page);
+}
+
+/**
+ * Theme pages need a diversified related mix so they function as
+ * cross-category bridges (theme → idea → palette → etc.) rather
+ * than theme-only islands. Picks top-scored within each category.
+ */
+function getThemeRelatedPages(page: ContentPage, limit: number): ContentPage[] {
+  const scored = getAllPages()
+    .filter((c) => c.canonicalPath !== page.canonicalPath)
+    .map((candidate) => {
+      let score = 0;
+      if (candidate.tags.vibe && candidate.tags.vibe === page.tags.vibe) score += 3;
+      if (candidate.tags.season && candidate.tags.season === page.tags.season) score += 2;
+      if (candidate.tags.zodiac && candidate.tags.zodiac === page.tags.zodiac) score += 2;
+      if (candidate.tags.age && candidate.tags.age === page.tags.age) score += 1;
+      if (candidate.tags.theme && candidate.tags.theme === page.tags.theme) score += 2;
+      if (candidate.category === "themes") score += 1;
+      return { page: candidate, score };
+    })
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  // Pick diversified set: 2 themes, 1 palette, 1 idea, fill remaining
+  const picked: ContentPage[] = [];
+  const pickByCategory = (cat: string, max: number) => {
+    for (const r of scored) {
+      if (picked.length >= limit) break;
+      if (r.page.category === cat && picked.filter((p) => p.category === cat).length < max) {
+        if (!picked.includes(r.page)) picked.push(r.page);
+      }
+    }
+  };
+  pickByCategory("themes", 2);
+  pickByCategory("palettes", 1);
+  pickByCategory("ideas", 1);
+  pickByCategory("captions", 1);
+  pickByCategory("zodiac", 1);
+  pickByCategory("destinations", 1);
+
+  // Fill any remaining slots with top-scored candidates
+  for (const r of scored) {
+    if (picked.length >= limit) break;
+    if (!picked.includes(r.page)) picked.push(r.page);
+  }
+
+  return picked.slice(0, limit);
 }
 
 // ─── Auto-register all content on import ─────────────────────────────────────

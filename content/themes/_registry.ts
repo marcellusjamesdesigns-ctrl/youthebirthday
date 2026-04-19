@@ -1,12 +1,30 @@
 import { registerPage } from "@/lib/content/registry";
 import type { ContentPage } from "@/lib/content/types";
 
+/**
+ * Birthday theme pages — P0 content upgrade.
+ *
+ * Each page now has:
+ *  - hero image (real Unsplash photo with proper attribution)
+ *  - multi-paragraph editorial intro
+ *  - tip-list / idea-list execution breakdowns
+ *  - Amazon "shop the vibe" module
+ *  - 5-question FAQ (featured snippet + AdSense pageview fuel)
+ *  - inline-ctas cross-linking into ideas/palettes/captions/zodiac
+ *  - contextual bottom CTA
+ *  - related-content block (now diversified via registry rules)
+ */
+
 const themePages: ContentPage[] = [
+  // ──────────────────────────────────────────────────────────────────────
+  // SOFT LIFE
+  // ──────────────────────────────────────────────────────────────────────
   {
     slug: "soft-life-birthday-theme",
     category: "themes",
     title: "Soft Life Birthday Theme (2026) — How to Plan an Effortlessly Beautiful Birthday",
-    description: "Plan a soft life birthday theme with colors, decorations, outfit ideas, food, and activities that feel easy, elegant, and intentional.",
+    description:
+      "Plan a soft life birthday theme with a full guide to colors, decor, outfits, food, activities, and captions. Editorial-quality ideas for a quietly luxurious birthday.",
     headline: "Soft Life Birthday Theme",
     subheadline: "Luxury without the performance. Beauty without the stress.",
     tags: { vibe: "soft-life" },
@@ -14,28 +32,112 @@ const themePages: ContentPage[] = [
     schemaType: "Article",
     publishStatus: "published",
     publishedAt: "2026-04-12",
+    updatedAt: "2026-04-19",
     sections: [
-      { type: "hero", headline: "Soft Life Birthday Theme", subheadline: "Luxury without the performance. Beauty without the stress." },
-      { type: "paragraph", body: "A soft life birthday theme is about ease elevated. It's not cheap — but it's not loud either. Think linen tablecloths, muted florals, natural light, and the kind of food that's beautiful without trying. The aesthetic is intentional simplicity. The feeling is 'I don't need to prove anything.'" },
+      {
+        type: "hero",
+        headline: "Soft Life Birthday Theme",
+        subheadline: "Luxury without the performance. Beauty without the stress.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1687370439501-5cb5fd9be204?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A neutral linen table with unscented candles and soft natural light — the soft life birthday aesthetic",
+        caption: "The soft life birthday isn't a party. It's a mood.",
+        credit: "Photo by Mélyna Côté on Unsplash",
+        creditUrl: "https://unsplash.com/@laptiteminimaliste?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "A soft life birthday theme is about ease elevated. It's not cheap — but it's not loud either. Think linen tablecloths, muted florals, natural light, and the kind of food that's beautiful without trying. The aesthetic is intentional simplicity. The feeling is <em>I don't need to prove anything.</em>",
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Soft life works for the person who has spent the last year earning back their nervous system. It's for the 30-somethings who've tried the club-birthday routine and want something that doesn't require Advil the next morning. It's for anyone who believes a birthday is supposed to feel like <em>being cared for</em>, not like hosting an event. If you're rolling your eyes at balloon arches and DJs, this is your theme.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Soft life peaks in spring and early summer — garden season, natural light until 8pm, weather that doesn't fight the aesthetic. It also lands beautifully in late fall for a golden-hour dinner at home. Skip it for mid-winter unless you have the lighting and florals to carry it indoors. And skip it entirely if you're trying to turn up — the theme is built on restraint, not energy.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look generic",
+        body: "The fast way to kill a soft life birthday is to over-beige everything and call it done. Every neutral palette on Pinterest looks the same after a while. What separates a real soft life celebration from the <a href=\"/birthday-palettes/birthday-color-palette-inspiration\">stock-photo version</a> is specificity: one unexpected textural element (a rough-glazed ceramic, a single branch of curly willow, linen instead of cotton), real light (candlelight or natural — not overheads), and food that's actually good, not just photogenic. The theme fails when it becomes a flatlay. It works when it becomes a dinner.",
+      },
       {
         type: "palette-showcase",
         heading: "Soft Life Color Palette",
         palettes: [
-          { name: "Quiet Luxury", mood: "understated, warm", colors: [{ hex: "#f5ebe0", name: "Cream" }, { hex: "#d5c4a1", name: "Wheat" }, { hex: "#c2b8a3", name: "Sand" }, { hex: "#a68a64", name: "Caramel" }, { hex: "#463f3a", name: "Espresso" }] },
+          {
+            name: "Quiet Luxury",
+            mood: "understated, warm",
+            colors: [
+              { hex: "#f5ebe0", name: "Cream" },
+              { hex: "#d5c4a1", name: "Wheat" },
+              { hex: "#c2b8a3", name: "Sand" },
+              { hex: "#a68a64", name: "Caramel" },
+              { hex: "#463f3a", name: "Espresso" },
+            ],
+          },
+          {
+            name: "Garden Soft",
+            mood: "fresh, botanical",
+            colors: [
+              { hex: "#f8f4e3", name: "Ivory" },
+              { hex: "#d4d7b9", name: "Sage" },
+              { hex: "#a8ad9c", name: "Eucalyptus" },
+              { hex: "#e8b9ab", name: "Dusty Rose" },
+              { hex: "#5c6b5a", name: "Fern" },
+            ],
+          },
         ],
       },
       {
-        type: "idea-list",
+        type: "tip-list",
         heading: "Soft Life Birthday Elements",
-        ideas: [
-          { title: "Setting", description: "Garden, courtyard, or a well-lit space with natural elements. No nightclubs. Think places with natural light and fresh air.", vibeTag: "soft-life" },
-          { title: "Food", description: "Brunch energy. Fresh fruit, pastries, charcuterie, sparkling water, champagne. Catered or at a restaurant with a beautiful setting.", vibeTag: "soft-life" },
-          { title: "Outfit", description: "Linen, silk, or knit. Neutral tones or one soft accent color. Comfortable enough to sit on the floor if the vibe goes there.", vibeTag: "soft-life" },
-          { title: "Music", description: "Lo-fi, bossa nova, or an R&B playlist that doesn't spike the energy. The music should feel like background warmth.", vibeTag: "soft-life" },
-          { title: "Activities", description: "No games. No itinerary. Maybe a group toast, a few photos, and the kind of conversation you can't have in a loud bar.", vibeTag: "soft-life" },
+        tips: [
+          {
+            title: "Setting",
+            body: "A garden, courtyard, or a well-lit home with natural elements. No nightclubs, no strobe lights, no venues that require a dress code from a bouncer. Think places with real windows and fresh air. If you're at home, clear the clutter, open every blind, and light candles even in daytime.",
+          },
+          {
+            title: "Food",
+            body: "Brunch energy done well. Fresh fruit on ceramic platters, warm pastries from a local bakery, a charcuterie board that doesn't look like a caterer made it, sparkling water in pretty glasses, and champagne (good champagne, not prosecco trying to pass). If you're at a restaurant, <a href=\"/birthday-ideas/birthday-dinner-ideas\">book somewhere with natural light</a> and a tasting-menu option — let them do the heavy lifting.",
+          },
+          {
+            title: "Outfit",
+            body: "Linen, silk, or fine-gauge knit. Neutral tones or one soft accent color (dusty rose, pale sage, blush). Comfortable enough to sit on the floor if the vibe goes there. Slip dresses, tailored trousers with a silk camisole, or a matching set that photographs as a single tonal wash.",
+          },
+          {
+            title: "Music",
+            body: "Lo-fi, bossa nova, soul instrumentals, or an R&B playlist that doesn't spike the energy. Sade, Blood Orange, Nujabes, Sault, early Tirzah. The music should feel like background warmth — never center stage. Keep the volume where conversation stays easy.",
+          },
+          {
+            title: "Activities",
+            body: "No games. No itinerary printouts. Maybe a group toast at a natural pause, a few photos before the food gets eaten, and the kind of conversation you can't have in a loud bar. If you want a ritual, make it simple: everyone shares one thing they loved about the past year.",
+          },
         ],
       },
-      { type: "inline-cta", text: "Full decoration breakdown in our Journal →", href: "/blog/best-birthday-decorations-soft-life-party" },
+      {
+        type: "inline-cta",
+        text: "Full decoration breakdown in our Journal →",
+        href: "/blog/best-birthday-decorations-soft-life-party",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "The soft life menu is built around natural colors and real ingredients. Think: a whipped ricotta board with honey and figs, heirloom tomato salad with torn basil, sourdough focaccia, a simple roast chicken or poached salmon, and a flourless chocolate cake served in slim wedges. Drink-wise, one signature cocktail (a lavender gin spritz, a white peach bellini, or a dirty martini done well) plus sparkling water in glass bottles on the table. If you want the exact vibe, browse our <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner ideas</a> for restaurants built for this energy.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=2400&auto=format&fit=crop",
+        alt: "A soft neutral table setting with candles, florals, and linen napkins",
+        caption: "The details are the design.",
+        ratio: "wide",
+      },
       {
         type: "amazon-shop",
         title: "Set the Soft Life Mood",
@@ -43,50 +145,181 @@ const themePages: ContentPage[] = [
         placement: "soft-life-theme",
         format: "grid",
         items: [
-          { query: "linen tablecloth neutral beige", label: "Linen Tablecloth", description: "Wrinkles are part of the aesthetic.", icon: "✦" },
-          { query: "taper candles unscented natural", label: "Unscented Taper Candles", description: "Burn slow. Light honest.", icon: "☾" },
-          { query: "dried pampas grass natural arrangement", label: "Dried Florals", description: "Pampas, wheat, bunny tails.", icon: "❋" },
-          { query: "champagne flutes crystal stemless", label: "Crystal Coupes", description: "The toast is the moment.", icon: "◈" },
-          { query: "essential oil diffuser ceramic minimalist", label: "Ceramic Diffuser", description: "Warm, quiet, barely there.", icon: "✧" },
-          { query: "silk eye mask blackout", label: "Silk Eye Mask", description: "Morning-after protection.", icon: "☽" },
+          { query: "linen tablecloth neutral beige", label: "Linen Tablecloth", description: "Wrinkles are part of the aesthetic." },
+          { query: "taper candles unscented natural cream", label: "Unscented Taper Candles", description: "Burn slow. Light honest." },
+          { query: "dried pampas grass natural arrangement", label: "Dried Florals", description: "Pampas, wheat, bunny tails." },
+          { query: "champagne coupes crystal stemless", label: "Crystal Coupes", description: "The toast is the moment." },
+          { query: "ceramic serving bowl handmade neutral", label: "Handmade Ceramic Bowl", description: "One unexpected textural piece." },
+          { query: "essential oil diffuser ceramic minimalist", label: "Ceramic Diffuser", description: "Warm, quiet, barely there." },
+          { query: "linen cloth napkins natural beige set", label: "Linen Napkins", description: "Always cloth. Never paper." },
+          { query: "silk eye mask blackout cream", label: "Silk Eye Mask", description: "Morning-after protection." },
         ],
       },
-      { type: "cta", headline: "Get your full birthday theme built for you", subheadline: "Our generator creates your colors, captions, and celebration plan based on your exact vibe.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "The soft life aesthetic is more forgiving to the budget than it looks. Under $150 gets you a linen runner, unscented candles, dried florals, and real napkins — more than enough for a dinner of 6. If you want to go further, invest in the tableware (ceramic plates, real glassware, linen everything) since they'll carry through every theme you host for the next decade. Skip the expensive florals; dried pampas, olive branches, and eucalyptus from the grocery store deliver the look.",
+      },
+      {
+        type: "inline-cta",
+        text: "Pair this with our birthday color palette inspiration for a full visual direction →",
+        href: "/birthday-palettes/birthday-color-palette-inspiration",
+      },
+      {
+        type: "faq",
+        heading: "Soft Life Birthday FAQ",
+        questions: [
+          {
+            question: "What colors work best for a soft life birthday theme?",
+            answer:
+              "Warm neutrals are the foundation — cream, wheat, sand, caramel, and a deep grounding tone like espresso or fern. Avoid pure white (too sterile) and bright colors that break the tonal flow. Pick one soft accent (dusty rose, pale sage, or blush) and let everything else stay in the neutral family. The whole palette should read as one quiet tonal wash.",
+          },
+          {
+            question: "What should guests wear to a soft life birthday?",
+            answer:
+              "Suggest 'tonal neutrals and easy fabrics' on the invite. Linen, silk, knit, or cashmere in beige, cream, taupe, dusty rose, or sage. Avoid black (wrong energy) and anything with loud patterns. Slip dresses, tailored trousers with silk tops, or matching sets photograph beautifully together without coordination.",
+          },
+          {
+            question: "How do you decorate for a soft life birthday on a budget?",
+            answer:
+              "Focus spend on linens and lighting — they carry 80% of the visual impact. A $40 linen runner, $25 of unscented taper candles, and $20 of dried pampas grass from a florist cover a dinner for 6. Skip fresh florals (dried and branches look more intentional anyway) and ignore balloon/signage trends entirely. The whole point is restraint.",
+          },
+          {
+            question: "Is a soft life birthday better for dinner or brunch?",
+            answer:
+              "Both work, but brunch is the more natural fit — the aesthetic was built around natural light, fresh food, and unhurried pacing. Brunch also lets you skip alcohol if you want while keeping the vibe, where an evening dinner usually needs wine to feel complete. If you're hosting at home, brunch is also easier to execute beautifully.",
+          },
+          {
+            question: "What food and drinks fit a soft life birthday?",
+            answer:
+              "Warm pastries, a fruit platter on ceramic, a whipped ricotta or charcuterie board, a simple main (roast chicken, poached salmon, or heirloom tomato pasta), and a flourless cake in slim wedges. Drink-wise: one signature cocktail, good champagne, sparkling water in glass bottles, and fresh herbs or fruit as the garnish — not cocktail napkins printed with 'birthday girl.'",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your soft life birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, celebration style, and destination picks tuned to your exact vibe.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
       { type: "related-content" },
     ],
   },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // DARK FEMININE
+  // ──────────────────────────────────────────────────────────────────────
   {
     slug: "dark-feminine-birthday-theme",
     category: "themes",
     title: "Dark Feminine Birthday Theme (2026) — Mysterious, Powerful & Intentional",
-    description: "Plan a dark feminine birthday theme with moody colors, ritual-inspired activities, dramatic aesthetics, and celebration ideas that embrace mystery and power.",
+    description:
+      "The complete dark feminine birthday theme guide: moody color palettes, ritual-inspired activities, dramatic dinner ideas, and shoppable decor for a powerful intentional birthday.",
     headline: "Dark Feminine Birthday Theme",
     subheadline: "Not a party. A ritual.",
-    tags: { vibe: "spiritual" },
+    tags: { vibe: "intimate", zodiac: "scorpio", theme: "dark-feminine" },
     canonicalPath: "/birthday-themes/dark-feminine-birthday-theme",
     schemaType: "Article",
     publishStatus: "published",
     publishedAt: "2026-04-13",
+    updatedAt: "2026-04-19",
     sections: [
-      { type: "hero", headline: "Dark Feminine Birthday Theme", subheadline: "Not a party. A ritual." },
-      { type: "paragraph", body: "The dark feminine birthday theme is about reclaiming depth. It's not goth — it's intentional. Burgundy candles, low lighting, velvet textures, and the kind of celebration that feels like a scene from a film nobody's made yet. The vibe is powerful, mysterious, and unapologetically female. Think: Scorpio energy, black-tie meets witchcraft, the dinner party where everyone leaves feeling like they witnessed something." },
+      {
+        type: "hero",
+        headline: "Dark Feminine Birthday Theme",
+        subheadline: "Not a party. A ritual.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1543251660-ebb499e629bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "Moody candlelit table with taper candles — the dark feminine aesthetic",
+        caption: "Candlelight does most of the work.",
+        credit: "Photo by Annie Spratt on Unsplash",
+        creditUrl: "https://unsplash.com/@anniespratt?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "The dark feminine birthday theme is about reclaiming depth. It's not goth — it's intentional. Burgundy candles, low lighting, velvet textures, and the kind of celebration that feels like a scene from a film nobody's made yet. The vibe is powerful, mysterious, and unapologetically female. Think: Scorpio energy, black-tie meets witchcraft, the dinner party where everyone leaves feeling like they witnessed something.",
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Dark feminine works for the person who's ready to stop performing lightness. It's for deep-water signs (<a href=\"/zodiac-birthdays/scorpio-birthday-ideas\">Scorpios</a>, Cancers, Pisces), late-stage millennials who grew up on Lana and Fiona Apple, and anyone whose birthday has started to feel more like a seasonal reckoning than a celebration. It's the theme for the year you stopped explaining yourself.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "October and November peak hard — Scorpio season, shorter days, the kind of darkness that makes candles finally make sense. Late January also works (winter depth + birthday intensity). Skip it in high summer when the sun sets at 9 — the aesthetic needs the dark to carry it. And be careful with outdoor dark-feminine attempts; the theme is inherently indoor, candlelit, enclosed.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look costume-y",
+        body: "The fastest way to wreck a dark feminine birthday is leaning on Halloween signifiers — plastic spider webs, fake skulls, anything rubber. The theme lives at the intersection of <em>Vogue editorial</em> and <em>witchy dinner party</em>, not haunted house. Pick real materials (velvet, brass, silk, fresh flowers in dark tones), invest in real candles (not battery tea lights), and skip anything with a costume-shop price tag. The look is expensive-feeling even on a small budget — because it's about texture and restraint, not quantity.",
+      },
       {
         type: "palette-showcase",
         heading: "Dark Feminine Color Palette",
         palettes: [
-          { name: "Obsidian Ceremony", mood: "dramatic, powerful", colors: [{ hex: "#1a0a0a", name: "Onyx" }, { hex: "#6b1a2a", name: "Oxblood" }, { hex: "#8b0000", name: "Deep Crimson" }, { hex: "#3d1a4e", name: "Midnight Plum" }, { hex: "#c9a96e", name: "Aged Gold" }] },
+          {
+            name: "Obsidian Ceremony",
+            mood: "dramatic, powerful",
+            colors: [
+              { hex: "#1a0a0a", name: "Onyx" },
+              { hex: "#6b1a2a", name: "Oxblood" },
+              { hex: "#8b0000", name: "Deep Crimson" },
+              { hex: "#3d1a4e", name: "Midnight Plum" },
+              { hex: "#c9a96e", name: "Aged Gold" },
+            ],
+          },
+          {
+            name: "Velvet Underground",
+            mood: "moody, intimate",
+            colors: [
+              { hex: "#0f0a0f", name: "Black Coffee" },
+              { hex: "#4a1e3a", name: "Wine" },
+              { hex: "#8b3a3a", name: "Dried Rose" },
+              { hex: "#2a2018", name: "Smoked Oak" },
+              { hex: "#b8860b", name: "Brass" },
+            ],
+          },
         ],
       },
       {
-        type: "idea-list",
+        type: "tip-list",
         heading: "Dark Feminine Birthday Elements",
-        ideas: [
-          { title: "Setting", description: "Candlelit spaces, private dining rooms, underground bars, or a dramatically lit home setting. Darkness is the aesthetic — use it. No bright venues.", vibeTag: "intimate" },
-          { title: "Décor", description: "Black candles, dried flowers, velvet ribbons, gold accents. Fresh flowers in deep burgundy or black. A table that looks like it belongs in a renaissance painting.", vibeTag: "luxury" },
-          { title: "Outfit", description: "Floor-length, structured, statement-making. Deep red, black, or midnight purple. One piece of real jewelry. The outfit should feel like armor and art simultaneously.", vibeTag: "luxury" },
-          { title: "Activity", description: "A tarot or astrology reading, a ritual journaling session at midnight, or a private sound bath. Something that marks the birthday as a portal, not just a party.", vibeTag: "spiritual" },
-          { title: "Music", description: "Lana Del Rey's deeper cuts, FKA Twigs, Sade, or a curated slow-burn R&B playlist. The music should feel like smoke — slow, atmospheric, enveloping.", vibeTag: "spiritual" },
+        tips: [
+          {
+            title: "Setting",
+            body: "Candlelit spaces, private dining rooms, underground bars, or a dramatically lit home setting. Darkness is the aesthetic — use it. No bright venues, no fluorescent lighting, no overhead ceiling fixtures. If you're at home, kill every overhead light and rely entirely on candles and one or two warm lamps.",
+          },
+          {
+            title: "Décor",
+            body: "Black or oxblood candles, dried flowers in dark tones, velvet ribbons, brass or gold accents. Fresh flowers in deep burgundy, black calla lilies, or dark dahlias. A table that looks like it belongs in a renaissance painting. Skip Halloween kitsch — no plastic, no costume-shop anything.",
+          },
+          {
+            title: "Outfit",
+            body: "Floor-length, structured, statement-making. Deep red, black, midnight purple, or oxblood. One piece of real jewelry (not a pile of costume pieces). Heels that mean business. The outfit should feel like armor and art simultaneously — the character you become at this dinner.",
+          },
+          {
+            title: "Activity",
+            body: "A tarot or astrology reading, a ritual journaling session at midnight, or a private sound bath. Something that marks the birthday as a portal, not just a party. If that's too far out, a wine-pairing dinner or a cocktail masterclass held entirely by candlelight delivers the same depth without the woo-woo.",
+          },
+          {
+            title: "Music",
+            body: "Lana Del Rey's deeper cuts, FKA Twigs, Sade, Portishead, Chelsea Wolfe, or a curated slow-burn R&B playlist. The music should feel like smoke — slow, atmospheric, enveloping. Never uptempo. The energy is inward, not hype.",
+          },
         ],
+      },
+      {
+        type: "inline-cta",
+        text: "Build this around a <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner</a> or a <a href=\"/birthday-ideas/romantic-birthday-ideas\">romantic intimate format</a> — both fit.",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "Dark feminine menus lean heavy, rich, and slightly unexpected. Think: steak tartare, beef bourguignon, black risotto, fig-and-prosciutto flatbread, dark chocolate torte for dessert. Drink-wise: aged red wine, a negroni or boulevardier as the signature, mezcal-forward cocktails if you're feeling sharper, and espresso after dessert. Skip the white wine unless it's a natural orange wine — and skip anything neon or sugary. The menu should feel like a grown conversation.",
       },
       {
         type: "amazon-shop",
@@ -95,126 +328,610 @@ const themePages: ContentPage[] = [
         placement: "dark-feminine-theme",
         format: "grid",
         items: [
-          { query: "black taper candles unscented set", label: "Black Taper Candles", description: "Lighting is the first ritual.", icon: "☾" },
-          { query: "velvet tablecloth burgundy", label: "Velvet Tablecloth", description: "Heavy, deep, deliberate.", icon: "◈" },
-          { query: "dried black rose arrangement", label: "Dried Black Roses", description: "Permanent. Theatrical.", icon: "❋" },
-          { query: "crystal wine decanter smoke glass", label: "Smoke-Glass Decanter", description: "For the wine you actually chose.", icon: "✧" },
-          { query: "brass incense holder minimalist", label: "Brass Incense Holder", description: "Scent is half the mood.", icon: "✦" },
-          { query: "statement gold cocktail ring oversized", label: "Statement Ring", description: "One piece. Loud enough.", icon: "☽" },
+          { query: "black taper candles unscented set", label: "Black Taper Candles", description: "Lighting is the first ritual." },
+          { query: "velvet tablecloth burgundy wine", label: "Velvet Tablecloth", description: "Heavy, deep, deliberate." },
+          { query: "dried black rose arrangement dahlia", label: "Dried Dark Florals", description: "Permanent. Theatrical." },
+          { query: "crystal wine decanter smoke glass", label: "Smoke-Glass Decanter", description: "For the wine you actually chose." },
+          { query: "brass incense holder minimalist", label: "Brass Incense Holder", description: "Scent is half the mood." },
+          { query: "statement gold cocktail ring oversized", label: "Statement Ring", description: "One piece. Loud enough." },
+          { query: "tarot deck rider waite gold edition", label: "Tarot Deck", description: "For the midnight reading." },
+          { query: "red wine glasses stemless bordeaux", label: "Bordeaux Glasses", description: "Built for the wine you'll open." },
         ],
       },
-      { type: "cta", headline: "Get your dark feminine birthday experience built for you", subheadline: "Our generator creates your colors, captions, and celebration plan based on your exact vibe and zodiac.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Dark feminine is the theme where budget goes furthest — it was built on restraint and candlelight, not spend. Under $100 covers a dozen black tapers, a velvet runner, dried florals from a florist, and incense. The real investment is in one quality moment: either a tarot reader you actually respect ($150-300), a great wine you wouldn't normally open ($80-150), or a single piece of statement jewelry you'll wear for years. Pick one, skip the rest.",
+      },
+      {
+        type: "inline-cta",
+        text: "Pair this theme with a Scorpio-inspired birthday plan →",
+        href: "/zodiac-birthdays/scorpio-birthday-ideas",
+      },
+      {
+        type: "faq",
+        heading: "Dark Feminine Birthday FAQ",
+        questions: [
+          {
+            question: "What colors work best for a dark feminine birthday?",
+            answer:
+              "The core palette is black, oxblood (deep burgundy with brown undertones), deep crimson, midnight plum, and aged gold or brass. Avoid pure red (too vibrant), navy (reads preppy), and anything pastel. The gold accent is critical — without it the palette reads flat and gothic. With it, it reads expensive and editorial.",
+          },
+          {
+            question: "What should guests wear to a dark feminine birthday?",
+            answer:
+              "Suggest 'black tie with an edge' or 'cocktail attire, deep tones only' on the invite. Floor-length dresses, structured suits, silk, velvet, lace. Black, oxblood, deep plum, burgundy. Real jewelry over costume. Anyone in a light color or a casual fabric breaks the scene — set the expectation clearly.",
+          },
+          {
+            question: "How do you decorate for a dark feminine birthday without making it look like Halloween?",
+            answer:
+              "Stick to real materials: velvet, brass, silk, fresh or dried florals in dark tones, beeswax or real taper candles. Zero plastic, no costume-shop decor, no fake cobwebs or skulls. The aesthetic lives in the textures — if you can physically touch it and it feels luxurious, it's right. If it feels like a party store bought it, it's wrong.",
+          },
+          {
+            question: "Can a dark feminine birthday work on a budget?",
+            answer:
+              "Yes — it's one of the most budget-forgiving themes because it's built on restraint. Under $100 gets you black candles, a velvet runner, dried florals, and incense. The theme rewards spending on one quality moment (a great bottle of wine, a tarot reader, a single statement piece) rather than decor volume.",
+          },
+          {
+            question: "Is a dark feminine birthday better for dinner or a party?",
+            answer:
+              "Dinner, unambiguously. The theme is built for intimate, candlelit, slow-paced energy — 4 to 10 people max. A dark feminine 'party' with 30 people doesn't hold the vibe. If you want a larger format, think late-night cocktails in a dimly-lit bar rather than a dance floor. The mood is <em>scene</em>, not <em>crowd</em>.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your dark feminine birthday experience built for you",
+        subheadline: "Our generator creates your colors, captions, celebration plan, and cosmic layer based on your exact vibe and zodiac.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
       { type: "related-content" },
     ],
   },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // OLD MONEY
+  // ──────────────────────────────────────────────────────────────────────
   {
     slug: "old-money-birthday-theme",
     category: "themes",
     title: "Old Money Birthday Theme (2026) — Quiet Luxury Birthday Aesthetic",
-    description: "Plan an old money birthday theme with quiet luxury colors, understated elegance, timeless décor, and celebration ideas that feel inherited, not purchased.",
+    description:
+      "The old money birthday theme guide: quiet luxury colors, timeless décor, classic menu, and birthday celebration ideas that feel inherited, not purchased.",
     headline: "Old Money Birthday Theme",
     subheadline: "Understated. Timeless. Impossibly elegant.",
-    tags: { vibe: "luxury" },
+    tags: { vibe: "luxury", theme: "old-money" },
     canonicalPath: "/birthday-themes/old-money-birthday-theme",
     schemaType: "Article",
     publishStatus: "published",
     publishedAt: "2026-04-13",
+    updatedAt: "2026-04-19",
     sections: [
-      { type: "hero", headline: "Old Money Birthday Theme", subheadline: "Understated. Timeless. Impossibly elegant." },
-      { type: "paragraph", body: "Old money doesn't announce itself — that's the point. An old money birthday theme is about restraint as a flex. Navy, cream, hunter green. Classic restaurants that have been open since 1987. A table that looks like it belongs in a colonial estate. No loud logos, no over-decorated cakes, no confetti cannons. Just exceptional quality, the right people, and an aesthetic that feels borrowed from a family portrait gallery." },
+      {
+        type: "hero",
+        headline: "Old Money Birthday Theme",
+        subheadline: "Understated. Timeless. Impossibly elegant.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1696249680087-c29352cda5e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A classic dining room with a set table and warm lighting — old money birthday aesthetic",
+        caption: "The setting is the story.",
+        credit: "Photo by Praswin Prakashan on Unsplash",
+        creditUrl: "https://unsplash.com/@praswinprakashan?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "Old money doesn't announce itself — that's the point. An old money birthday theme is about restraint as a flex. Navy, cream, hunter green. Classic restaurants that have been open since 1987. A table that looks like it belongs in a colonial estate. No loud logos, no over-decorated cakes, no confetti cannons. Just exceptional quality, the right people, and an aesthetic that feels borrowed from a family portrait gallery.",
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Old money works for the person who's stopped trying to impress strangers on the internet. It's for late-30s and 40s who are done with club-birthday culture, for the person whose taste has outpaced their feed, and for anyone who grew up around — or aspires to — the kind of understated wealth where the house is 100 years old and nobody photographs the dinner. It's the theme for a quietly great year.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Any season, but fall is the sweet spot — the aesthetic is built for sweater weather, hunter green, candlelight, and longer dinners. Winter works at a private club or estate. Spring and summer require more care (garden parties can work; poolside doesn't). Save this for the milestone birthday where you want the night to feel like it mattered.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look theme-party",
+        body: "Old money goes wrong when it becomes Ralph Lauren cosplay. The real version is subtle: real silver (or nothing), actual linen (not poly 'linen-look'), flowers from a florist you've used before, a restaurant that's been booked three weeks out. Skip anything with a crest, monogrammed napkins that look freshly ordered, or a 'dress code' on the invite using the word 'preppy.' The whole theme hinges on looking like you didn't have to think about it — which requires thinking about it carefully.",
+      },
       {
         type: "palette-showcase",
         heading: "Old Money Color Palette",
         palettes: [
-          { name: "Estate Library", mood: "timeless, inherited", colors: [{ hex: "#1c3a2a", name: "Hunter Green" }, { hex: "#1a2744", name: "Navy" }, { hex: "#c8b88a", name: "Camel" }, { hex: "#f5f0e8", name: "Ivory" }, { hex: "#8b6914", name: "Antique Gold" }] },
+          {
+            name: "Estate Library",
+            mood: "timeless, inherited",
+            colors: [
+              { hex: "#1c3a2a", name: "Hunter Green" },
+              { hex: "#1a2744", name: "Navy" },
+              { hex: "#c8b88a", name: "Camel" },
+              { hex: "#f5f0e8", name: "Ivory" },
+              { hex: "#8b6914", name: "Antique Gold" },
+            ],
+          },
+          {
+            name: "Quiet Coast",
+            mood: "understated, seaside",
+            colors: [
+              { hex: "#2c3e50", name: "Yacht Navy" },
+              { hex: "#e8e4d9", name: "Linen" },
+              { hex: "#8c7851", name: "Driftwood" },
+              { hex: "#aa4a44", name: "Oxblood Leather" },
+              { hex: "#d4c5a0", name: "Sand" },
+            ],
+          },
         ],
       },
       {
-        type: "idea-list",
+        type: "tip-list",
         heading: "Old Money Birthday Elements",
-        ideas: [
-          { title: "Setting", description: "Private dining rooms, members-only clubs, historic restaurants, or a well-appointed home. The setting should feel like it predates Instagram.", vibeTag: "luxury" },
-          { title: "Table Setting", description: "Real silverware. Linen napkins. Flowers in a single color — all white, or deep green and white. No balloon arches. One large arrangement, centered.", vibeTag: "soft-life" },
-          { title: "Dress Code", description: "Smart casual to black tie. Cashmere, blazers, loafers, silk. Nothing fast fashion. The aesthetic reward goes to the person who looks effortless.", vibeTag: "luxury" },
-          { title: "Menu", description: "Classic dishes done exceptionally well. Oysters, steak, Dover sole, champagne. Order the wine properly. Let the sommelier do their job.", vibeTag: "luxury" },
-          { title: "Gift Culture", description: "One thoughtful gift over ten forgettable ones. A first edition book, a cashmere something, or an experience. Old money is about curation, not quantity.", vibeTag: "intimate" },
+        tips: [
+          {
+            title: "Setting",
+            body: "Private dining rooms, members-only clubs, historic restaurants, a well-appointed home, or a rented estate. The setting should feel like it predates Instagram. If you're renting a space, look for wood paneling, fireplaces, libraries, or gardens — not polished marble concept venues.",
+          },
+          {
+            title: "Table Setting",
+            body: "Real silverware (or nothing). Linen napkins, pressed. Flowers in a single color — all white, or deep green and white. No balloon arches. One large arrangement, centered low enough to see across the table. Crystal glassware, ideally different shapes for water, red, white, and champagne.",
+          },
+          {
+            title: "Dress Code",
+            body: "Smart casual to black tie depending on the night. Cashmere, blazers, loafers, silk, pearls. Nothing fast fashion — and nothing that screams logo. The aesthetic reward goes to the person who looks effortless in a piece they've owned for eight years.",
+          },
+          {
+            title: "Menu",
+            body: "Classic dishes done exceptionally well. Oysters, steak au poivre, Dover sole, roast chicken with potatoes, champagne. Order the wine properly — let the sommelier do their job and tip accordingly. Dessert is a proper crème brûlée or a flourless chocolate cake, not a printed-photo cake topper.",
+          },
+          {
+            title: "Gift Culture",
+            body: "One thoughtful gift over ten forgettable ones. A first-edition book, a cashmere something, a piece of estate jewelry, or an experience — dinner at a restaurant you've been meaning to try, tickets to something you'd never buy yourself. Old money is about curation, not quantity.",
+          },
         ],
       },
-      { type: "cta", headline: "Get your old money birthday experience built for you", subheadline: "Our generator creates your palettes, captions, and celebration plan based on your exact vibe.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+      {
+        type: "inline-cta",
+        text: "Perfect format: a milestone birthday dinner. See our <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner ideas</a> and <a href=\"/birthday-destinations/luxury-birthday-destinations\">luxury destinations</a>.",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "The old money menu is a classical menu done right. Start with raw oysters or a wedge salad. Main: filet, Dover sole, or roast chicken with proper potatoes. Side: creamed spinach or haricots verts. Finish with a cheese course (real cheese, properly aged) and a single elegant dessert. Wine-wise: an aged Bordeaux, a proper Burgundy, or — if seasonal — a lightly chilled Beaujolais. Champagne is compulsory. Cocktails if any: classics only. Old fashioned, martini, Manhattan, French 75. No neon, no infused syrups, no 'signature cocktail' with a pun name.",
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the Old Money Aesthetic",
+        subtitle: "Pieces that look like you inherited them.",
+        placement: "old-money-theme",
+        format: "grid",
+        items: [
+          { query: "crystal wine glasses set stemware", label: "Crystal Stemware Set", description: "For the wine and the moment." },
+          { query: "monogram stationery cream personalized", label: "Monogram Stationery", description: "Real notes. Real paper." },
+          { query: "cashmere throw blanket navy camel", label: "Cashmere Throw", description: "For the room, the couch, the lap." },
+          { query: "silver picture frame vintage estate", label: "Silver Picture Frame", description: "Portrait-gallery energy." },
+          { query: "ivory taper candles set classic", label: "Ivory Taper Candles", description: "Unscented, full-length, real wax." },
+          { query: "leather guest book cream", label: "Leather Guest Book", description: "For the note nobody else will write." },
+          { query: "linen napkins white hemstitch set", label: "Hemstitched Linen Napkins", description: "Cloth only. Always." },
+          { query: "pearl stud earrings freshwater classic", label: "Pearl Studs", description: "One piece. Forever." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Old money is the theme most sensitive to budget — not because it requires spending, but because cheap signifiers read loud. Under $200: invest in linen napkins, real taper candles, and a single florist arrangement. Spend the rest on the restaurant reservation. $500+: add a cheese course at home or rent crystal glassware for a dinner party. The actual rule: spend on the 2-3 things guests will touch (glassware, linens, the menu) and zero on decor that photographs well but fades fast.",
+      },
+      {
+        type: "inline-cta",
+        text: "Pair this with a milestone birthday format — see <a href=\"/birthday-ideas/30th-birthday-ideas\">30th</a>, 40th, or 50th birthday directions.",
+      },
+      {
+        type: "faq",
+        heading: "Old Money Birthday FAQ",
+        questions: [
+          {
+            question: "What colors work best for an old money birthday theme?",
+            answer:
+              "The core palette is hunter green, navy, ivory, camel, and antique gold. Burgundy and oxblood work as accents. Avoid anything bright, anything pastel, and anything metallic beyond brass or antique gold. Silver is fine for flatware but not for decor — too shiny. The goal is a palette that would blend into a 1920s library.",
+          },
+          {
+            question: "What should guests wear to an old money birthday?",
+            answer:
+              "The dress code depends on the venue — smart casual for a lunch, cocktail for a club dinner, black tie for a milestone. Key aesthetic markers: cashmere, fine wool, silk, real pearls, tailored pieces, leather shoes. Skip fast fashion, large logos, and anything trend-dated. The aesthetic reward goes to whoever looks effortless in something they've clearly owned for years.",
+          },
+          {
+            question: "How do you decorate for an old money birthday?",
+            answer:
+              "Focus on three things: lighting (warm, candle-forward, never bright), flowers (one monochromatic arrangement, never supermarket bouquets in mixed colors), and tableware (real silver, linen, crystal). Skip balloons, skip banners, skip anything printed with the word 'birthday.' The room should feel like the setting of a novel, not a celebration.",
+          },
+          {
+            question: "Can an old money birthday work on a budget?",
+            answer:
+              "Yes, because the theme is about restraint, not spend. Under $200 gets you real linen napkins, unscented taper candles, a single florist arrangement, and a well-set table. The rest of the budget goes to the restaurant reservation or the wine. The cheap version of old money fails because it leans on signifiers (monograms, crests, Ralph Lauren) instead of quality — avoid that trap and a small budget goes far.",
+          },
+          {
+            question: "What food and drinks fit an old money birthday?",
+            answer:
+              "Classical menus done right: oysters, steak au poivre or Dover sole, proper potatoes, creamed spinach, a cheese course, and a classic dessert like crème brûlée. Wine: aged Bordeaux, a good Burgundy, or champagne. Cocktails: classics only — old fashioned, martini, Manhattan, French 75. Nothing 'signature,' nothing with a pun name, nothing served in a coupe with flowers floating on top.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your old money birthday experience built for you",
+        subheadline: "Our generator creates your palettes, captions, celebration plan, and destination picks based on your exact vibe.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
       { type: "related-content" },
     ],
   },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Y2K
+  // ──────────────────────────────────────────────────────────────────────
   {
     slug: "y2k-birthday-theme",
     category: "themes",
     title: "Y2K Birthday Theme (2026) — Retro Futurism Birthday Aesthetic",
-    description: "Plan a Y2K birthday theme with iridescent colors, chrome accents, early-2000s nostalgia, and party ideas that feel like the future that never happened.",
+    description:
+      "Plan a Y2K birthday theme with iridescent colors, chrome accents, early-2000s nostalgia, maximalist outfits, and shoppable decor that feels like the future that never happened.",
     headline: "Y2K Birthday Theme",
     subheadline: "Chrome. Iridescent. The future that never happened — but should have.",
-    tags: { vibe: "turn-up" },
+    tags: { vibe: "turn-up", theme: "y2k" },
     canonicalPath: "/birthday-themes/y2k-birthday-theme",
     schemaType: "Article",
     publishStatus: "published",
     publishedAt: "2026-04-13",
+    updatedAt: "2026-04-19",
     sections: [
-      { type: "hero", headline: "Y2K Birthday Theme", subheadline: "Chrome. Iridescent. The future that never happened — but should have." },
-      { type: "paragraph", body: "Y2K birthday themes are having a full renaissance — and the aesthetic is deeper than just nostalgia. It's a specific visual language: iridescent fabrics, chrome surfaces, baby blue and hot pink together, frosted lips and butterfly clips. A Y2K birthday done right feels like stepping into a 2001 music video produced by someone with genuinely good taste. Playful, maximalist, and completely unafraid." },
+      {
+        type: "hero",
+        headline: "Y2K Birthday Theme",
+        subheadline: "Chrome. Iridescent. The future that never happened — but should have.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1603847734787-9e8a3f3e9d60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "Iridescent chrome aesthetic with pink and blue metallic tones — Y2K birthday aesthetic",
+        caption: "Every surface should catch the light.",
+        credit: "Photo by Emily Bernal on Unsplash",
+        creditUrl: "https://unsplash.com/@emilybernal?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "Y2K birthday themes are having a full renaissance — and the aesthetic is deeper than just nostalgia. It's a specific visual language: iridescent fabrics, chrome surfaces, baby blue and hot pink together, frosted lips and butterfly clips. A Y2K birthday done right feels like stepping into a 2001 music video produced by someone with genuinely good taste. Playful, maximalist, and completely unafraid.",
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Y2K works for anyone turning 21 through 35 who has the cultural reference points to do it right — not as costume, but as mood. It's for the person whose playlist opens with Aaliyah and closes with Charli XCX, who knows the difference between Destiny's Child era Beyoncé and solo-album Beyoncé, and who's ready for a birthday that photographs like a TRL segment. It's also the best theme for a group of friends who know how to go all in on a dress code.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Y2K peaks around <a href=\"/birthday-ideas/birthday-captions-for-yourself\">milestone birthdays</a> where dressing up is welcome — 21st, 25th, 30th. It's a party theme, not a dinner theme — best at night, best with a group of 8+, best where there's space to dance. Seasonally it holds up year-round but summer rooftop + winter disco are the two strongest formats. Skip for intimate dinners; it's too much energy for 4 people at a table.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look costume-y",
+        body: "The fastest way to wreck a Y2K birthday is going full Halloween store — inflatable butterfly chairs, $5 rhinestone stickers, generic 'Y2K party' kits. The aesthetic works when the references are specific: actual butterfly hair clips from the drugstore (not a 'themed' pack), real iridescent fabric, a playlist that isn't just the 'Y2K Hits' Spotify generic list. Ground the theme in one great outfit, one great decor element, and one great photo moment — not thirty cheap ones.",
+      },
       {
         type: "palette-showcase",
         heading: "Y2K Color Palette",
         palettes: [
-          { name: "Millennium Shimmer", mood: "playful, futuristic", colors: [{ hex: "#a8d8ea", name: "Baby Blue" }, { hex: "#ff69b4", name: "Hot Pink" }, { hex: "#c0c0c0", name: "Chrome Silver" }, { hex: "#dda0dd", name: "Mauve Lilac" }, { hex: "#f5f5dc", name: "Iridescent Cream" }] },
+          {
+            name: "Millennium Shimmer",
+            mood: "playful, futuristic",
+            colors: [
+              { hex: "#a8d8ea", name: "Baby Blue" },
+              { hex: "#ff69b4", name: "Hot Pink" },
+              { hex: "#c0c0c0", name: "Chrome Silver" },
+              { hex: "#dda0dd", name: "Mauve Lilac" },
+              { hex: "#f5f5dc", name: "Iridescent Cream" },
+            ],
+          },
+          {
+            name: "Chrome Club",
+            mood: "nightlife, metallic",
+            colors: [
+              { hex: "#1a1a1a", name: "Obsidian" },
+              { hex: "#e0e0e0", name: "Polished Chrome" },
+              { hex: "#ff007f", name: "Rave Pink" },
+              { hex: "#00d4ff", name: "Electric Blue" },
+              { hex: "#b19cd9", name: "Holo Violet" },
+            ],
+          },
         ],
       },
       {
-        type: "idea-list",
+        type: "tip-list",
         heading: "Y2K Birthday Elements",
-        ideas: [
-          { title: "Dress Code", description: "Low-rise, bedazzled, butterfly clips, platform sneakers, iridescent anything. The reference point is 2001 but the execution is 2026. Make it look intentional.", vibeTag: "turn-up" },
-          { title: "Décor", description: "Mylar balloons, chrome table covers, disco balls, holographic banners. Everything should catch the light and throw it somewhere unexpected.", vibeTag: "turn-up" },
-          { title: "Playlist", description: "Destiny's Child, early Britney, Jennifer Lopez, Christina Aguilera, Aaliyah — mixed with hyperpop and modern Y2K-influenced artists. The energy should be maximalist and unapologetic.", vibeTag: "turn-up" },
-          { title: "Photo Ops", description: "Flip phone props, a Y2K photo booth backdrop, or a mirrored surface setup. The content should look like it came from a bedazzled camera phone circa 2002.", vibeTag: "turn-up" },
-          { title: "Cake", description: "Chrome-effect fondant, holographic edible glitter, a cake that looks like a prop from TRL. The more maximalist, the more correct.", vibeTag: "turn-up" },
+        tips: [
+          {
+            title: "Dress Code",
+            body: "Low-rise, bedazzled, butterfly clips, platform sneakers, iridescent anything. The reference point is 2001 but the execution is 2026. Make it look intentional — statement pieces over full outfits. Paris Hilton dinner vibe, not Halloween store.",
+          },
+          {
+            title: "Décor",
+            body: "Mylar balloons, chrome table covers, mirror balls, holographic banners. Everything should catch the light and throw it somewhere unexpected. Skip printed backdrops with 'Y2K PARTY' in Comic Sans — they age the whole setup instantly.",
+          },
+          {
+            title: "Playlist",
+            body: "Destiny's Child, early Britney, Jennifer Lopez, Christina Aguilera, Aaliyah, TLC — mixed with hyperpop and modern Y2K-influenced artists (Charli XCX, Slayyyter, Rina Sawayama). The energy should be maximalist and unapologetic. Also worth pairing with our <a href=\"/birthday-captions/30th-birthday-captions\">milestone birthday captions</a>.",
+          },
+          {
+            title: "Photo Ops",
+            body: "Flip phone props, a Y2K photo booth backdrop, a mirrored surface setup, or an iridescent curtain. Disposable cameras for guests. The content should look like it came from a bedazzled camera phone circa 2002 — lo-fi flash, harsh light, perfect imperfection.",
+          },
+          {
+            title: "Cake",
+            body: "Chrome-effect fondant, holographic edible glitter, a cake that looks like a prop from TRL. Multi-tier, unapologetically bright, topped with something metallic. The more maximalist, the more correct. Photograph it before cutting.",
+          },
         ],
       },
-      { type: "cta", headline: "Get your Y2K birthday experience built for you", subheadline: "Our generator creates your palettes, captions, and celebration plan based on your exact vibe and aesthetic.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+      {
+        type: "inline-cta",
+        text: "Pair this with our <a href=\"/birthday-themes/maximalist-birthday-theme\">maximalist birthday theme</a> if you want to go even harder.",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "Y2K menus should feel playful and over-the-top. Pink champagne, cotton-candy cocktails, blue curaçao in martini glasses, mini sliders, candy-coated desserts, an ice cream bar with sprinkles and glitter toppings. Think less 'gourmet' and more 'millennium bug launch party' — the food should be a prop, not a course. Keep it shareable, Instagram-forward, and color-coordinated with the decor.",
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the Y2K Aesthetic",
+        subtitle: "Chrome, sparkle, and the exact references you'll recognize.",
+        placement: "y2k-theme",
+        format: "grid",
+        items: [
+          { query: "butterfly hair clips pack colorful y2k", label: "Butterfly Hair Clips", description: "The universal Y2K signal." },
+          { query: "iridescent tablecloth holographic party", label: "Iridescent Tablecloth", description: "Every surface should shimmer." },
+          { query: "mirror disco ball large silver", label: "Large Disco Ball", description: "Hangs high, throws light." },
+          { query: "instant camera fujifilm instax mini", label: "Instant Camera", description: "Lo-fi flash, perfect Y2K output." },
+          { query: "chrome metallic shoulder bag mini", label: "Chrome Mini Bag", description: "The accessory of the decade." },
+          { query: "rhinestone hair accessories set", label: "Rhinestone Hair Pieces", description: "For hair, for outfits, for vibes." },
+          { query: "holographic photo backdrop birthday", label: "Holographic Backdrop", description: "Built-in photo op." },
+          { query: "colored sunglasses tinted y2k oval", label: "Tinted Sunglasses", description: "Oval frames, colored lenses." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Y2K is surprisingly budget-friendly because the best signifiers are drugstore-cheap — butterfly clips, tinted sunglasses, iridescent tape. Under $100 gets you decor, photo props, and a playlist that carries the night. The mistake is overbuying: one great disco ball beats ten mylar balloons. Spend on the outfit and the cake. Skip the 'Y2K party kit' on Amazon — assemble the aesthetic yourself from real references.",
+      },
+      {
+        type: "inline-cta",
+        text: "Need captions to match? Browse <a href=\"/birthday-captions/25th-birthday-captions\">25th</a> and <a href=\"/birthday-captions/30th-birthday-captions\">30th birthday captions</a> for the Y2K energy.",
+      },
+      {
+        type: "faq",
+        heading: "Y2K Birthday FAQ",
+        questions: [
+          {
+            question: "What colors work best for a Y2K birthday theme?",
+            answer:
+              "The classic Y2K palette: baby blue, hot pink, chrome silver, mauve lilac, and iridescent cream. For a more nightlife-forward version, swap in obsidian black, electric blue, rave pink, and holographic violet. The core rule: every color should feel metallic, frosted, or iridescent. Pure matte colors break the aesthetic.",
+          },
+          {
+            question: "What should guests wear to a Y2K birthday party?",
+            answer:
+              "Suggest 'Y2K dress code' on the invite with specific references — 'think TRL 2002' or 'think Destiny's Child album cover.' Low-rise, bedazzled, iridescent, chrome, butterfly clips, platform sneakers, tinted sunglasses. Encourage statement pieces over full costumes — one great Y2K accessory beats a full outfit from a costume shop.",
+          },
+          {
+            question: "How do you decorate for a Y2K birthday without it looking cheap?",
+            answer:
+              "Invest in one great centerpiece (a real disco ball, an iridescent backdrop, or a chrome table cover) and supplement with smaller accents. Skip 'Y2K PARTY' printed banners, inflatable decor, and generic themed kits. The aesthetic rewards authenticity — drugstore butterfly clips look more Y2K than 'Y2K-themed' stickers from a party store.",
+          },
+          {
+            question: "Is Y2K better for a dinner or a party?",
+            answer:
+              "Party, unambiguously. The theme needs energy, volume, and space for outfits to be seen. Best with 8+ people, at night, somewhere with music and a dance floor (even if the dance floor is just a cleared living room). Skip Y2K for intimate dinners — it's too much production for four people at a table.",
+          },
+          {
+            question: "What food and drinks fit a Y2K birthday?",
+            answer:
+              "Pink champagne, blue curaçao cocktails, cotton-candy martinis, mini sliders, candy-coated desserts, an ice cream bar with glitter toppings. Color-coordinate the food with the decor. The aesthetic is playful and over-the-top — skip gourmet, lean into nostalgic early-2000s party food with a modern glow-up.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your Y2K birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, and celebration plan based on your exact vibe and aesthetic.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
       { type: "related-content" },
     ],
   },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // MAXIMALIST
+  // ──────────────────────────────────────────────────────────────────────
   {
     slug: "maximalist-birthday-theme",
     category: "themes",
     title: "Maximalist Birthday Theme (2026) — Dopamine Dressing & Bold Party Aesthetic",
-    description: "Plan a maximalist birthday with bold colors, layered textures, dopamine dressing, and celebration ideas where more is always more.",
+    description:
+      "Plan a maximalist birthday theme with bold colors, layered textures, dopamine dressing, and celebration ideas where more is always more. Full decor, outfit, food, and shop-the-vibe guide.",
     headline: "Maximalist Birthday Theme",
     subheadline: "More color. More texture. More everything. That's the point.",
-    tags: { vibe: "turn-up" },
+    tags: { vibe: "turn-up", zodiac: "leo", theme: "maximalist" },
     canonicalPath: "/birthday-themes/maximalist-birthday-theme",
     schemaType: "Article",
     publishStatus: "published",
     publishedAt: "2026-04-13",
+    updatedAt: "2026-04-19",
     sections: [
-      { type: "hero", headline: "Maximalist Birthday Theme", subheadline: "More color. More texture. More everything. That's the point." },
-      { type: "paragraph", body: "A maximalist birthday is a rejection of 'less is more' — and it's deeply, joyfully correct. The maximalist aesthetic is about layering: multiple patterns, unexpected color combinations, surfaces that shouldn't work but do, a table that looks like it took genuine vision to execute. If someone walks in and immediately says 'this is a lot,' you're doing it right. This isn't chaos — it's curated abundance." },
+      {
+        type: "hero",
+        headline: "Maximalist Birthday Theme",
+        subheadline: "More color. More texture. More everything. That's the point.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1573840470198-b55ed2ce236d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A colorful bold patterned table with layered textures — maximalist birthday aesthetic",
+        caption: "Layered color is the whole idea.",
+        credit: "Photo by Ronel Alvarez on Unsplash",
+        creditUrl: "https://unsplash.com/@ronofalvarez?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "A maximalist birthday is a rejection of 'less is more' — and it's deeply, joyfully correct. The maximalist aesthetic is about layering: multiple patterns, unexpected color combinations, surfaces that shouldn't work but do, a table that looks like it took genuine vision to execute. If someone walks in and immediately says <em>this is a lot</em>, you're doing it right. This isn't chaos — it's curated abundance.",
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Maximalism works for <a href=\"/zodiac-birthdays/leo-birthday-ideas\">Leos</a>, Sagittarians, and anyone whose personality fills the room before they do. It's for the person who collects things — vintage glassware, printed scarves, colorful ceramics, art books. It's for whoever has spent the last five years pretending to like beige and is ready to go home. And it's the only theme built for someone whose friend group is incapable of coordinating outfits — maximalism makes the mismatch the point.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Maximalism is year-round but lands hardest in late spring, summer, and early fall — more light, more saturation, more outdoor options. It's ideal for a dinner party of 8-12 or a daytime-into-evening brunch-to-drinks format. Skip it for a minimalist venue or a black-tie format; the theme needs room to breathe and a host willing to commit fully. Half-maximalist always looks like indecision.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look chaotic",
+        body: "Maximalism fails when it becomes random — piled-up colors with no through-line. The real version has a thesis: a palette of 4-5 specific colors that recur across the table, outfits, and florals. Patterns clash intentionally (stripe + floral + solid in the same color family). Nothing matches, but everything belongs. The rule is <em>curated abundance</em>: you can break every rule as long as you have a reason. Random is not maximalist. Intentional overabundance is.",
+      },
       {
         type: "palette-showcase",
         heading: "Maximalist Color Palette",
         palettes: [
-          { name: "Curated Abundance", mood: "bold, layered, joyful", colors: [{ hex: "#e63946", name: "Fire Red" }, { hex: "#f4a261", name: "Tangerine" }, { hex: "#a8dadc", name: "Aqua" }, { hex: "#6a0572", name: "Royal Purple" }, { hex: "#ffd166", name: "Marigold" }] },
+          {
+            name: "Curated Abundance",
+            mood: "bold, layered, joyful",
+            colors: [
+              { hex: "#e63946", name: "Fire Red" },
+              { hex: "#f4a261", name: "Tangerine" },
+              { hex: "#a8dadc", name: "Aqua" },
+              { hex: "#6a0572", name: "Royal Purple" },
+              { hex: "#ffd166", name: "Marigold" },
+            ],
+          },
+          {
+            name: "Garden Clash",
+            mood: "botanical, unbridled",
+            colors: [
+              { hex: "#d62828", name: "Poppy Red" },
+              { hex: "#f77f00", name: "Saffron" },
+              { hex: "#06a77d", name: "Jade" },
+              { hex: "#d4a5a5", name: "Rose Dust" },
+              { hex: "#003049", name: "Peacock" },
+            ],
+          },
         ],
       },
       {
-        type: "idea-list",
+        type: "tip-list",
         heading: "Maximalist Birthday Elements",
-        ideas: [
-          { title: "Table Setting", description: "Multiple floral arrangements in contrasting heights. Patterned tablecloths under solid runners. Colored glassware. Mix the china patterns intentionally — it should look collected, not matched.", vibeTag: "luxury" },
-          { title: "Outfit", description: "Pattern mixing, bold color blocking, statement jewelry, a bag that doesn't coordinate with anything but works anyway. Maximalism is fashion with a point of view.", vibeTag: "turn-up" },
-          { title: "Cake", description: "Tall, layered, multiple tiers of different flavors and textures. Decorated with fruit, flowers, sprinkles, and at least one element that surprises. The cake is the centerpiece.", vibeTag: "turn-up" },
-          { title: "Balloons", description: "Multiple sizes, multiple colors, arranged intentionally across the ceiling and walls. Not a balloon arch — a balloon environment. The room should feel full.", vibeTag: "turn-up" },
-          { title: "Music", description: "A playlist that refuses genre consistency: Afrobeats into jazz into hyperpop into Motown into Samba. The maximalist playlist has range and doesn't apologize for it.", vibeTag: "turn-up" },
+        tips: [
+          {
+            title: "Table Setting",
+            body: "Multiple floral arrangements in contrasting heights. Patterned tablecloths under solid runners. Colored glassware — every guest gets a different color. Mix china patterns intentionally (all vintage, mismatched on purpose). It should look collected, not matched.",
+          },
+          {
+            title: "Outfit",
+            body: "Pattern mixing, bold color blocking, statement jewelry stacked, a bag that doesn't coordinate with anything but works anyway. Maximalism is fashion with a point of view — florals + stripes, mustard + magenta, a printed suit with sequined heels. One anchor piece, everything else plays off it.",
+          },
+          {
+            title: "Cake",
+            body: "Tall, layered, multiple tiers of different flavors and textures. Decorated with fruit, flowers, sprinkles, and at least one surprise element. The cake is the centerpiece — it should photograph from ten feet away.",
+          },
+          {
+            title: "Florals",
+            body: "Multiple arrangements, multiple colors, multiple textures — tulips with dahlias with eucalyptus with hot-pink roses. Grocery-store florals rearranged with intention beat a single designer bouquet. Height variation matters; cluster short and tall together.",
+          },
+          {
+            title: "Music",
+            body: "A playlist that refuses genre consistency: Afrobeats into jazz into hyperpop into Motown into Samba. The maximalist playlist has range and doesn't apologize for it. Pair with our <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner ideas</a> for a long-table dinner format.",
+          },
         ],
       },
-      { type: "cta", headline: "Get your maximalist birthday experience built for you", subheadline: "Our generator creates your palettes, captions, and celebration plan based on your exact vibe.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+      {
+        type: "inline-cta",
+        text: "Match the color chaos with <a href=\"/birthday-palettes/birthday-color-palette-inspiration\">our color palette inspiration</a>.",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "Maximalist menus are about color, abundance, and visual drama. A long-table grazing board with every color represented — heirloom tomatoes, roasted beets, pomegranate, blood orange, olives, pickled vegetables, three cheeses, three breads. Main course should be a family-style dish with color (saffron paella, a whole roasted fish with herbs, a colorful Moroccan tagine). Cocktails: bold, colorful, garnished heavily — negronis, spicy margaritas, hibiscus spritzes. Dessert: a tall fruit-topped cake that looks like a painting.",
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the Maximalist Vibe",
+        subtitle: "Every piece earns its seat at a loud table.",
+        placement: "maximalist-theme",
+        format: "grid",
+        items: [
+          { query: "colored glassware tumblers set of six", label: "Colored Tumblers", description: "Every guest, different color." },
+          { query: "bold floral patterned tablecloth cotton", label: "Patterned Tablecloth", description: "Start with a loud base." },
+          { query: "faux flowers oversized bright bouquet", label: "Oversized Faux Florals", description: "Clusters in clashing tones." },
+          { query: "colorful taper candles assorted set", label: "Colorful Taper Candles", description: "Mismatched by design." },
+          { query: "patterned cloth napkins set mixed", label: "Patterned Napkins", description: "Never match. Always work." },
+          { query: "colorful cake topper birthday letter", label: "Statement Cake Topper", description: "The cake's final layer." },
+          { query: "disco ball centerpiece mirror small", label: "Mini Disco Ball", description: "One unexpected accent." },
+          { query: "colorful serving platter stoneware ceramic", label: "Colorful Serving Platters", description: "Every platter a different tone." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Maximalism is forgiving to budgets because it's built on layering — secondhand, grocery-store, thrifted items actually work better than matched new sets. Under $100: grocery-store florals in 4 colors, mismatched thrifted glassware, and a printed tablecloth. The real investment is time, not money: sourcing the mismatched pieces takes care. If you want to go bigger, rent colored glassware and plates from a party rental company — it's cheaper than buying and gives you the volume of variety the theme requires.",
+      },
+      {
+        type: "inline-cta",
+        text: "Pair this theme with our <a href=\"/birthday-themes/y2k-birthday-theme\">Y2K birthday theme</a> for a high-energy nightlife version.",
+      },
+      {
+        type: "faq",
+        heading: "Maximalist Birthday FAQ",
+        questions: [
+          {
+            question: "What colors work best for a maximalist birthday theme?",
+            answer:
+              "A maximalist palette is 4-5 bold, saturated colors that recur across decor, outfits, and florals. The classic: fire red, tangerine, aqua, royal purple, and marigold. For a more botanical version: poppy red, saffron, jade, rose dust, peacock blue. The key isn't the specific palette — it's committing to 4-5 and repeating them everywhere so the chaos feels intentional.",
+          },
+          {
+            question: "What should guests wear to a maximalist birthday?",
+            answer:
+              "Suggest 'bold color welcome, pattern mixing encouraged' on the invite. Florals with stripes, statement jewelry stacked, color-blocked outfits, a printed suit, sequined anything. The aesthetic rewards commitment — someone who shows up in all black looks disconnected from the night. Encourage one anchor piece guests are willing to go big with.",
+          },
+          {
+            question: "How do you decorate for a maximalist birthday without it looking chaotic?",
+            answer:
+              "Pick a 4-5 color palette and repeat it across every surface — tablecloth, napkins, florals, glassware, cake. The colors clash, but because they're the <em>same</em> colors clashing everywhere, it reads intentional. Skip random decor. Every piece should echo another piece somewhere in the room.",
+          },
+          {
+            question: "Can a maximalist birthday work on a budget?",
+            answer:
+              "Yes — maximalism is forgiving to budgets because secondhand, thrifted, and grocery-store items actually work better than matched new sets. Under $100: grocery-store florals in 4 colors, mismatched thrifted glassware, a printed tablecloth. The investment is time (sourcing the pieces) not money. Party rental companies also offer cheap colored glassware by the dozen.",
+          },
+          {
+            question: "What food and drinks fit a maximalist birthday?",
+            answer:
+              "Color-forward and abundant. A grazing board with every color represented (heirloom tomatoes, roasted beets, pomegranate, blood orange, olives, three cheeses). Family-style mains with visual drama (saffron paella, whole roasted fish, Moroccan tagine). Cocktails heavy on garnish: negronis, spicy margaritas, hibiscus spritzes. Cake: tall, layered, topped with fruit and flowers.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your maximalist birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, and celebration plan based on your exact vibe.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
       { type: "related-content" },
     ],
   },
