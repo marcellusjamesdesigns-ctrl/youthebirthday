@@ -1,6 +1,31 @@
 import type { Restaurant } from "@/lib/db/schema";
 
 /**
+ * Reject a Google Places match that doesn't meaningfully resemble the
+ * AI-suggested name. Places Text Search is fuzzy and will "helpfully"
+ * match nonsense to unrelated real places — this gate stops that.
+ */
+function nameResemblesMatch(aiName: string, matchedName: string): boolean {
+  const normalize = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length >= 3); // skip tiny words like "& the"
+
+  const aiWords = new Set(normalize(aiName));
+  const matchedWords = new Set(normalize(matchedName));
+
+  if (aiWords.size === 0) return true; // can't judge — trust it
+
+  // Require at least one significant word in common
+  for (const w of aiWords) {
+    if (matchedWords.has(w)) return true;
+  }
+  return false;
+}
+
+/**
  * Verify AI-generated restaurant suggestions against Google Places.
  *
  * For each AI-suggested restaurant:
@@ -74,6 +99,21 @@ export async function verifyRestaurantsWithGooglePlaces(
             msg: "restaurant:not-operational-dropped",
             name: r.name,
             status,
+          }),
+        );
+        continue;
+      }
+
+      // Reject matches that don't share any significant word with AI name.
+      // Prevents "Nonsense Cafe" from being verified as "Cactus Cafe".
+      const matchedName = place.displayName?.text ?? "";
+      if (matchedName && !nameResemblesMatch(r.name, matchedName)) {
+        console.log(
+          JSON.stringify({
+            level: "info",
+            msg: "restaurant:name-mismatch-dropped",
+            aiName: r.name,
+            googleMatch: matchedName,
           }),
         );
         continue;
