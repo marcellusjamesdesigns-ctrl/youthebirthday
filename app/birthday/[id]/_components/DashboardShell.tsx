@@ -189,65 +189,10 @@ export function DashboardShell({
         )}
 
         <div className="mt-12 space-y-10">
-          {/* ─── Color Palettes ─────────────────────────────────────────── */}
-          {sections?.palettes && sections.palettes.length > 0 && (
-            <PaletteSection palettes={sections.palettes} sessionId={sessionId} isPremium={isPremium} />
-          )}
-
-          {/* ─── Captions (all visible for free — proves value) ────── */}
-          {sections?.captions && sections.captions.length > 0 && (
-            <section className="animate-fade-rise space-y-5">
-              <SectionLabel>Your Caption Pack</SectionLabel>
-              <div className="space-y-6">
-                {sections.captions.map((cat) => (
-                  <div key={cat.category} className="space-y-2">
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
-                      {cat.category}
-                    </p>
-                    {cat.captions.map((caption, j) => (
-                      <CopyableCaption key={j} caption={caption} />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* ─── Ad: after captions (moved spacing for editorial flow) ── */}
-
-          {/* ─── Celebration Style ─────────────────────────────────────── */}
-          {sections?.celebrationStyle && (
-            <section className="animate-fade-rise">
-              <div className="animated-border-card glow-champagne">
-                <div className="p-6 sm:p-8 space-y-4">
-                  <SectionLabel>Your Celebration</SectionLabel>
-                  <h3 className="heading-editorial text-xl sm:text-2xl">
-                    {sections.celebrationStyle.primaryStyle}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
-                    {sections.celebrationStyle.description}
-                  </p>
-                  <div className="space-y-1.5 pt-1">
-                    {sections.celebrationStyle.rituals.slice(0, 4).map((ritual, i) => (
-                      <p key={i} className="text-[13px] text-foreground/70 pl-3 border-l border-champagne/20 leading-relaxed">
-                        {ritual}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-2 pt-3">
-                    <StyleTag>{sections.celebrationStyle.aesthetic}</StyleTag>
-                    <StyleTag>{sections.celebrationStyle.outfit}</StyleTag>
-                    <StyleTag>{sections.celebrationStyle.playlist}</StyleTag>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* ─── Ad: after celebration style (natural content break) ──── */}
-          {sections?.celebrationStyle && (
-            <AdUnit slot="3782501964" format="auto" className="my-10" />
-          )}
+          {/* Section order is deliberate: WHO (hero above) → WHERE (travel,
+              the most visual/shareable moment) → HOW (celebration style) →
+              THE LOOK (palette) → THE VOICE (captions) → grounded execution
+              (restaurants, activities) → extras (gifts, cosmic). */}
 
           {/* ─── Destinations: Show 1 free as proof, lock the rest ──── */}
           {!isPremium && sections?.destinations && sections.destinations.length > 0 && (() => {
@@ -384,9 +329,67 @@ export function DashboardShell({
             );
           })()}
 
-          {/* ─── Ad: between destinations and restaurants ─────────────── */}
+          {/* ─── Ad: between destinations and celebration ─────────────── */}
           {sections?.destinations && sections.destinations.length > 0 && (
             <AdUnit slot="7641823095" format="horizontal" className="my-10" />
+          )}
+
+          {/* ─── Celebration Style ─────────────────────────────────────── */}
+          {sections?.celebrationStyle && (
+            <section className="animate-fade-rise">
+              <div className="animated-border-card glow-champagne">
+                <div className="p-6 sm:p-8 space-y-4">
+                  <SectionLabel>Your Celebration</SectionLabel>
+                  <h3 className="heading-editorial text-xl sm:text-2xl">
+                    {sections.celebrationStyle.primaryStyle}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-none">
+                    {sections.celebrationStyle.description}
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    {sections.celebrationStyle.rituals.slice(0, 4).map((ritual, i) => (
+                      <p key={i} className="text-[13px] text-foreground/70 pl-3 border-l border-champagne/20 leading-relaxed">
+                        {ritual}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-3">
+                    <StyleTag>{sections.celebrationStyle.aesthetic}</StyleTag>
+                    <StyleTag>{sections.celebrationStyle.outfit}</StyleTag>
+                    <StyleTag>{sections.celebrationStyle.playlist}</StyleTag>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ─── Ad: after celebration style (natural content break) ──── */}
+          {sections?.celebrationStyle && (
+            <AdUnit slot="3782501964" format="auto" className="my-10" />
+          )}
+
+          {/* ─── Color Palettes ─────────────────────────────────────────── */}
+          {sections?.palettes && sections.palettes.length > 0 && (
+            <PaletteSection palettes={sections.palettes} sessionId={sessionId} isPremium={isPremium} />
+          )}
+
+          {/* ─── Captions (all visible for free — proves value) ────── */}
+          {sections?.captions && sections.captions.length > 0 && (
+            <section className="animate-fade-rise space-y-5">
+              <SectionLabel>Your Caption Pack</SectionLabel>
+              <div className="space-y-6">
+                {sections.captions.map((cat) => (
+                  <div key={cat.category} className="space-y-2">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
+                      {cat.category}
+                    </p>
+                    {cat.captions.map((caption, j) => (
+                      <CopyableCaption key={j} caption={caption} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
           )}
 
           {/* ─── Restaurants & Venues (premium only — no separate teaser) ── */}

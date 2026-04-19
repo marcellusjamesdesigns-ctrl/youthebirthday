@@ -41,6 +41,7 @@ import type { z } from "zod";
 import { userWaitlist } from "@/lib/db/schema";
 import { or, eq as eqDrizzle } from "drizzle-orm";
 import { sendBirthdayReport } from "@/lib/email/send-report";
+import { verifyRestaurantsWithGooglePlaces } from "./verify-restaurants";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -281,7 +282,7 @@ export async function runBirthdayPipeline(
     ]);
 
     if (restaurantResult) {
-      const restaurants = restaurantResult.restaurants.map((r) => ({
+      const rawRestaurants = restaurantResult.restaurants.map((r) => ({
         name: r.name,
         cuisine: r.cuisine,
         priceRange: r.priceRange as "$" | "$$" | "$$$" | "$$$$",
@@ -290,6 +291,15 @@ export async function runBirthdayPipeline(
         rating: r.rating ?? undefined,
         venueType: r.venueType,
       }));
+
+      // Verify each restaurant against Google Places — drops closed/missing
+      // venues and enriches with real ratings/addresses. If no GOOGLE_PLACES_API_KEY
+      // is set, this is a no-op and the AI suggestions go through as-is.
+      const celebrationCity = session.celebrationCity?.trim() || session.currentCity;
+      const restaurants = await verifyRestaurantsWithGooglePlaces(
+        rawRestaurants,
+        celebrationCity,
+      );
 
       await db
         .update(birthdayGenerations)
