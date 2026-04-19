@@ -362,13 +362,22 @@ export async function GET(
               }}
             >
               {cosmic?.sunSign ? (
-                <div style={{ display: "flex", fontSize: 24, color: "#555" }}>
-                  <div style={{ display: "flex", marginRight: 32 }}>☉ {cosmic.sunSign}</div>
+                <div style={{ display: "flex", fontSize: 22, color: "#666", letterSpacing: 4, textTransform: "uppercase" }}>
+                  <div style={{ display: "flex", marginRight: 32 }}>
+                    <span style={{ display: "flex", color: "#444", marginRight: 8 }}>Sun</span>
+                    {cosmic.sunSign}
+                  </div>
                   {cosmic.moonSign && (
-                    <div style={{ display: "flex", marginRight: 32 }}>☽ {cosmic.moonSign}</div>
+                    <div style={{ display: "flex", marginRight: 32 }}>
+                      <span style={{ display: "flex", color: "#444", marginRight: 8 }}>Moon</span>
+                      {cosmic.moonSign}
+                    </div>
                   )}
                   {cosmic.risingSign && (
-                    <div style={{ display: "flex" }}>↑ {cosmic.risingSign}</div>
+                    <div style={{ display: "flex" }}>
+                      <span style={{ display: "flex", color: "#444", marginRight: 8 }}>Rising</span>
+                      {cosmic.risingSign}
+                    </div>
                   )}
                 </div>
               ) : (
