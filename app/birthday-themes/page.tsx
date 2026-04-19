@@ -28,7 +28,7 @@ const BY_VIBE = [
     id: "vibe-quiet",
     label: "Quiet & Intentional",
     intro: "For the birthday that doesn't need to perform. Restrained, considered, lived-in luxury.",
-    themes: ["soft-life-birthday-theme", "old-money-birthday-theme"],
+    themes: ["soft-life-birthday-theme", "old-money-birthday-theme", "garden-party-birthday-theme"],
     comingSoon: ["Quiet Luxury", "All-White"],
   },
   {
@@ -52,8 +52,8 @@ const BY_SEASON = [
     id: "season-spring",
     label: "Spring Birthdays",
     intro: "Natural light, fresh florals, garden-forward energy.",
-    themes: ["soft-life-birthday-theme"],
-    comingSoon: ["Garden Party", "Pastel Brunch"],
+    themes: ["soft-life-birthday-theme", "garden-party-birthday-theme"],
+    comingSoon: ["Pastel Brunch"],
   },
   {
     id: "season-summer",
@@ -83,7 +83,7 @@ const BY_COLOR = [
     id: "color-neutral",
     label: "Neutral & Warm",
     intro: "Cream, wheat, camel, ivory. Understated palettes built on texture.",
-    themes: ["soft-life-birthday-theme", "old-money-birthday-theme"],
+    themes: ["soft-life-birthday-theme", "old-money-birthday-theme", "garden-party-birthday-theme"],
   },
   {
     id: "color-deep",
@@ -138,8 +138,7 @@ const BY_OCCASION = [
     id: "occasion-brunch",
     label: "Brunch / Daytime",
     intro: "Natural light, relaxed pacing, photogenic food.",
-    themes: ["soft-life-birthday-theme"],
-    comingSoon: ["Garden Party"],
+    themes: ["soft-life-birthday-theme", "garden-party-birthday-theme"],
   },
 ];
 
@@ -218,7 +217,7 @@ export default function ThemesHub() {
 
   return (
     <div className="min-h-screen bg-gradient-luxury">
-      <div className="mx-auto max-w-5xl px-6 py-8 pb-20 space-y-14">
+      <div className="mx-auto max-w-5xl px-6 py-8 pb-20 space-y-10">
         <Breadcrumbs items={breadcrumbItems} />
 
         {/* ─── HERO ─────────────────────────────────────────────────── */}

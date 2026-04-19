@@ -2,9 +2,12 @@
 
 import { useState, useEffect } from "react";
 
-// Admin token must match ADMIN_SECRET in Vercel env vars.
-// For client components, we prompt the user for the token after passcode.
+// Admin token stored in localStorage after first-time entry.
+// User only needs to paste it ONCE per device. After that, the 6-digit
+// passcode is the per-visit gate. Click "Sign out" on the dashboard to
+// clear the stored token (e.g. when changing admin secret).
 const ADMIN_PASSCODE = "062093";
+const TOKEN_STORAGE_KEY = "ytb-admin-token";
 
 interface Stats {
   overview: {
@@ -48,18 +51,21 @@ interface Stats {
 export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
   const [adminToken, setAdminToken] = useState("");
+  const [hasStoredToken, setHasStoredToken] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [passcodeError, setPasscodeError] = useState(false);
+  const [needsTokenEntry, setNeedsTokenEntry] = useState(false);
+  const [tokenInput, setTokenInput] = useState("");
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Check if already authed via sessionStorage
+  // Check if we already have a stored admin token from a previous session
   useEffect(() => {
-    const savedToken = sessionStorage.getItem("ytb-admin-token");
-    if (savedToken) {
-      setAdminToken(savedToken);
-      setAuthed(true);
+    const saved = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (saved) {
+      setAdminToken(saved);
+      setHasStoredToken(true);
     }
   }, []);
 
@@ -72,55 +78,114 @@ export default function AdminDashboard() {
       headers: { "x-admin-token": adminToken },
     })
       .then((r) => {
-        if (!r.ok) throw new Error("Unauthorized — check your admin token");
+        if (!r.ok) throw new Error("Stored admin token is invalid. Please sign out and re-enter.");
         return r.json();
       })
       .then(setStats)
       .catch((e) => {
         setError(e.message);
-        // Clear bad token so they can re-enter
-        sessionStorage.removeItem("ytb-admin-token");
-        setAuthed(false);
-        setAdminToken("");
       })
       .finally(() => setLoading(false));
   }, [authed, adminToken]);
 
   function handlePasscode(e: React.FormEvent) {
     e.preventDefault();
-    if (passcode === ADMIN_PASSCODE) {
-      setPasscodeError(false);
-      // Now prompt for admin token
-      const token = prompt("Enter your admin token (ADMIN_SECRET from Vercel):");
-      if (token && token.trim()) {
-        sessionStorage.setItem("ytb-admin-token", token.trim());
-        setAdminToken(token.trim());
-        setAuthed(true);
-      }
-    } else {
+    if (passcode !== ADMIN_PASSCODE) {
       setPasscodeError(true);
       setPasscode("");
+      return;
+    }
+    setPasscodeError(false);
+
+    if (hasStoredToken) {
+      // Token already on this device — skip straight to dashboard
+      setAuthed(true);
+    } else {
+      // First time on this device — need to enter token
+      setNeedsTokenEntry(true);
     }
   }
 
-  // Passcode gate
+  function handleTokenSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const t = tokenInput.trim();
+    if (!t) return;
+    localStorage.setItem(TOKEN_STORAGE_KEY, t);
+    setAdminToken(t);
+    setHasStoredToken(true);
+    setNeedsTokenEntry(false);
+    setAuthed(true);
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    setAdminToken("");
+    setHasStoredToken(false);
+    setAuthed(false);
+    setStats(null);
+    setPasscode("");
+    setTokenInput("");
+  }
+
+  // ── 1. Token entry (first time on this device) ──────────────────
+  if (needsTokenEntry) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <form onSubmit={handleTokenSubmit} className="text-center space-y-6 max-w-sm w-full px-6">
+          <div className="space-y-2">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">Admin</p>
+            <h1 className="heading-editorial text-2xl">One-time token</h1>
+            <p className="text-[12px] text-muted-foreground/60 leading-relaxed mt-3">
+              Paste your admin secret (the <code className="text-champagne/70">ADMIN_SECRET</code> from
+              Vercel) once. We&apos;ll remember it on this device so you only need the passcode going
+              forward.
+            </p>
+          </div>
+          <input
+            type="password"
+            placeholder="Admin secret"
+            value={tokenInput}
+            onChange={(e) => setTokenInput(e.target.value)}
+            required
+            autoComplete="current-password"
+            className="luxury-input w-full px-4 py-3.5 text-base"
+          />
+          <button
+            type="submit"
+            disabled={!tokenInput.trim()}
+            className="w-full rounded-full bg-foreground py-3.5 text-[15px] font-medium text-background tracking-wide hover:bg-foreground/90 disabled:opacity-40 transition-all"
+          >
+            Save & Continue
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // ── 2. Passcode gate ────────────────────────────────────────────
   if (!authed) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <form onSubmit={handlePasscode} className="text-center space-y-6 max-w-xs">
+        <form onSubmit={handlePasscode} className="text-center space-y-6 max-w-xs w-full px-6">
           <div className="space-y-2">
             <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">Admin</p>
             <h1 className="heading-editorial text-2xl">Enter Passcode</h1>
+            {hasStoredToken && (
+              <p className="text-[11px] text-muted-foreground/50 mt-2">
+                Device remembered. Just your passcode.
+              </p>
+            )}
           </div>
           <input
             type="password"
             inputMode="numeric"
             maxLength={6}
+            placeholder="••••••"
             value={passcode}
             onChange={(e) => setPasscode(e.target.value.replace(/\D/g, ""))}
-            placeholder="••••••"
+            required
             autoFocus
-            className="luxury-input w-full px-4 py-3.5 text-2xl text-center tracking-[0.5em] font-mono"
+            className="luxury-input w-full px-4 py-3.5 text-base text-center tracking-[0.3em]"
           />
           {passcodeError && (
             <p className="text-[12px] text-rose">Incorrect passcode</p>
@@ -128,226 +193,179 @@ export default function AdminDashboard() {
           <button
             type="submit"
             disabled={passcode.length !== 6}
-            className="w-full rounded-full bg-foreground py-3 text-sm font-medium text-background tracking-wide transition-all hover:bg-foreground/90 disabled:opacity-30"
+            className="w-full rounded-full bg-foreground py-3.5 text-[15px] font-medium text-background tracking-wide hover:bg-foreground/90 disabled:opacity-40 transition-all"
           >
-            Enter
+            Unlock
           </button>
         </form>
       </div>
     );
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground animate-gentle-pulse">Loading dashboard...</p>
-      </div>
-    );
-  }
+  // ── 3. Dashboard (authed) ───────────────────────────────────────
+  return <AuthedDashboard
+    stats={stats}
+    loading={loading}
+    error={error}
+    onSignOut={handleSignOut}
+  />;
+}
 
-  if (error || !stats) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-rose">{error ?? "Failed to load"}</p>
-      </div>
-    );
-  }
+// ──────────────────────────────────────────────────────────────────
+// The original dashboard rendering, extracted for clarity
+// ──────────────────────────────────────────────────────────────────
 
+function AuthedDashboard({
+  stats,
+  loading,
+  error,
+  onSignOut,
+}: {
+  stats: Stats | null;
+  loading: boolean;
+  error: string | null;
+  onSignOut: () => void;
+}) {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-6xl px-6 py-10 space-y-10">
-        <div className="flex items-baseline justify-between gap-4">
-          <div>
-            <h1 className="heading-editorial text-3xl">Economics Dashboard</h1>
-            <p className="text-sm text-muted-foreground mt-1">youthebirthday.app</p>
+    <div className="min-h-screen bg-gradient-luxury">
+      <div className="mx-auto max-w-6xl px-6 py-10 space-y-8">
+        <div className="flex justify-between items-start">
+          <div className="space-y-1">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60">Admin</p>
+            <h1 className="heading-editorial text-3xl sm:text-4xl">Economics Dashboard</h1>
+            <p className="text-sm text-muted-foreground/60">youthebirthday.app</p>
           </div>
-          <a
-            href="/admin/blog"
-            className="text-[11px] uppercase tracking-[0.25em] text-champagne/70 hover:text-champagne transition-colors self-center"
-          >
-            Blog Queue →
-          </a>
+          <div className="flex items-center gap-4">
+            <a
+              href="/admin/blog"
+              className="text-[12px] uppercase tracking-[0.2em] text-champagne/70 hover:text-champagne transition-colors"
+            >
+              Blog queue →
+            </a>
+            <button
+              onClick={onSignOut}
+              className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/50 hover:text-rose transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
 
-        {/* Warnings banner */}
-        {stats.warnings.length > 0 && (
-          <div className="space-y-2">
-            {stats.warnings.map((w, i) => (
-              <div key={i} className="rounded-xl bg-rose/10 border border-rose/20 px-5 py-3 text-sm text-rose">
-                {w}
-              </div>
-            ))}
+        {loading && (
+          <p className="text-sm text-muted-foreground/50">Loading…</p>
+        )}
+        {error && (
+          <div className="rounded-xl border border-rose/30 bg-rose/5 p-4 space-y-2">
+            <p className="text-sm text-rose/90">{error}</p>
+            <button
+              onClick={onSignOut}
+              className="text-[11px] uppercase tracking-[0.2em] text-rose/70 hover:text-rose transition-colors"
+            >
+              Sign out & re-enter
+            </button>
           </div>
         )}
 
-        {/* Overview metrics */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <MetricCard label="Total Sessions" value={stats.overview.totalSessions} />
-          <MetricCard label="Generations" value={stats.overview.completedGenerations} subtitle={`${stats.overview.completionRate.toFixed(0)}% completion`} />
-          <MetricCard label="Errors" value={stats.overview.errorGenerations} accent="rose" />
-          <MetricCard label="Email Captures" value={stats.users.totalEmailCaptures} />
-        </div>
-
-        {/* Revenue & cost metrics */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <MetricCard label="Premium Users" value={stats.users.premiumUsers} accent="champagne" />
-          <MetricCard label="Free→Paid %" value={`${stats.users.conversionRate.toFixed(1)}%`} accent="champagne" />
-          <MetricCard label="Avg Cost/Gen" value={`$${(stats.economics.avgCostPerGenerationCents / 100).toFixed(2)}`} />
-          <MetricCard label="Total AI Cost" value={`$${stats.economics.totalCostDollars}`} />
-        </div>
-
-        {/* Spend breakdown */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <MetricCard label="AI Cost (24h)" value={`$${stats.economics.cost24hDollars}`} />
-          <MetricCard label="AI Cost (7d)" value={`$${stats.economics.cost7dDollars}`} />
-          <MetricCard label="Projected /mo" value={`$${stats.economics.projectedMonthlyCostDollars}`} accent={Number(stats.economics.projectedMonthlyCostDollars) > 50 ? "rose" : undefined} />
-          <MetricCard label="Cost per $1 Revenue" value="—" subtitle="needs Stripe data" />
-        </div>
-
-        {/* Services health */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-foreground/80">Services &amp; Balances</h2>
-          <div className="grid sm:grid-cols-2 gap-2">
-            {stats.services.map((s) => (
-              <div key={s.name} className={`lift-card p-3 flex items-center justify-between ${s.critical ? "" : "opacity-70"}`}>
-                <div>
-                  <p className="text-sm text-foreground/80">{s.name}</p>
-                  <p className="text-[10px] text-muted-foreground/50 mt-0.5">{s.note}</p>
-                </div>
-                {s.critical && (
-                  <span className="text-[8px] uppercase tracking-wider text-champagne/60 bg-champagne/10 px-2 py-0.5 rounded-full">Critical</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Daily volume */}
-        {stats.dailyVolume.length > 0 && (
-          <section className="space-y-3">
-            <h2 className="text-sm font-medium text-foreground/80">Daily Sessions (14d)</h2>
-            <div className="flex items-end gap-1 h-32">
-              {stats.dailyVolume
-                .slice()
-                .reverse()
-                .map((d: any) => {
-                  const max = Math.max(...stats.dailyVolume.map((v: any) => Number(v.sessions)));
-                  const h = max > 0 ? (Number(d.sessions) / max) * 100 : 0;
-                  return (
-                    <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                      <span className="text-[9px] text-muted-foreground/40">{Number(d.sessions)}</span>
-                      <div
-                        className="w-full rounded-t bg-champagne/30 min-h-[2px]"
-                        style={{ height: `${Math.max(h, 2)}%` }}
-                      />
-                      <span className="text-[8px] text-muted-foreground/30">
-                        {new Date(d.day).toLocaleDateString("en", { month: "short", day: "numeric" })}
-                      </span>
-                    </div>
-                  );
-                })}
+        {stats && (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <StatCard label="Total Sessions" value={stats.overview.totalSessions.toString()} />
+              <StatCard label="Generations" value={stats.overview.totalGenerations.toString()} sub={`${(stats.overview.completionRate * 100).toFixed(0)}% completion`} />
+              <StatCard label="Errors" value={stats.overview.errorGenerations.toString()} tone={stats.overview.errorGenerations > 0 ? "warn" : "ok"} />
+              <StatCard label="Email Captures" value={stats.users.totalEmailCaptures.toString()} />
             </div>
-          </section>
-        )}
 
-        {/* Breakdowns */}
-        <div className="grid sm:grid-cols-2 gap-6">
-          {/* Mode breakdown */}
-          <section className="space-y-3">
-            <h2 className="text-sm font-medium text-foreground/80">Mode Breakdown</h2>
-            <div className="space-y-2">
-              {stats.modeBreakdown.map((m) => (
-                <div key={m.mode} className="flex justify-between items-center lift-card p-3">
-                  <span className="text-sm text-foreground/70 capitalize">{m.mode}</span>
-                  <span className="text-sm font-mono text-champagne/70">{m.count}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <StatCard label="Premium Users" value={stats.users.premiumUsers.toString()} tone="champagne" />
+              <StatCard label="Free → Paid %" value={`${(stats.users.conversionRate * 100).toFixed(1)}%`} tone="champagne" />
+              <StatCard label="Avg Cost/Gen" value={`$${(stats.economics.avgCostPerGenerationCents / 100).toFixed(2)}`} />
+              <StatCard label="Total AI Cost" value={`$${stats.economics.totalCostDollars}`} />
             </div>
-          </section>
 
-          {/* Top vibes */}
-          <section className="space-y-3">
-            <h2 className="text-sm font-medium text-foreground/80">Top Vibes</h2>
-            <div className="space-y-2">
-              {stats.vibeBreakdown.map((v) => (
-                <div key={v.vibe} className="flex justify-between items-center lift-card p-3">
-                  <span className="text-sm text-foreground/70">{v.vibe}</span>
-                  <span className="text-sm font-mono text-champagne/70">{v.count}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <StatCard label="AI Cost (24h)" value={`$${stats.economics.cost24hDollars}`} sub="past 24 hours" />
+              <StatCard label="AI Cost (7d)" value={`$${stats.economics.cost7dDollars}`} sub="past 7 days" />
+              <StatCard label="Projected /mo" value={`$${stats.economics.projectedMonthlyCostDollars}`} sub="based on last 7d" />
+              <StatCard label="Cost per $1 Revenue" value="—" sub="needs Stripe data" />
             </div>
-          </section>
-        </div>
 
-        {/* Recent sessions */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-foreground/80">Recent Sessions</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border/20 text-left text-[10px] uppercase tracking-wider text-muted-foreground/50">
-                  <th className="pb-2 pr-4">Name</th>
-                  <th className="pb-2 pr-4">City</th>
-                  <th className="pb-2 pr-4">Vibe</th>
-                  <th className="pb-2 pr-4">Mode</th>
-                  <th className="pb-2 pr-4">Status</th>
-                  <th className="pb-2">Time</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/10">
-                {stats.recentSessions.map((s) => (
-                  <tr key={s.id} className="text-foreground/70">
-                    <td className="py-2 pr-4">{s.name}</td>
-                    <td className="py-2 pr-4 text-muted-foreground/50">{s.city}</td>
-                    <td className="py-2 pr-4 text-muted-foreground/50">{s.vibe}</td>
-                    <td className="py-2 pr-4">
-                      <span className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                        s.mode === "cosmic" ? "text-plum/70 bg-plum/10" : "text-champagne/70 bg-champagne/10"
-                      }`}>
-                        {s.mode}
-                      </span>
-                    </td>
-                    <td className="py-2 pr-4">
-                      <span className={`text-[9px] uppercase tracking-wider ${
-                        s.status === "complete" ? "text-green-400/70" :
-                        s.status === "error" ? "text-rose" :
-                        "text-muted-foreground/50"
-                      }`}>
-                        {s.status}
-                      </span>
-                    </td>
-                    <td className="py-2 text-muted-foreground/40 text-xs">
-                      {new Date(s.createdAt).toLocaleString("en", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
-                    </td>
-                  </tr>
+            {stats.warnings && stats.warnings.length > 0 && (
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-1">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-amber-500/80">Warnings</p>
+                {stats.warnings.map((w, i) => (
+                  <p key={i} className="text-[13px] text-amber-500/90">{w}</p>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <h2 className="text-[11px] uppercase tracking-[0.25em] text-champagne/60">Services & Balances</h2>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {stats.services.map((s) => (
+                  <div key={s.name} className="lift-card p-4 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm font-medium text-foreground/85">{s.name}</p>
+                      <p className="text-[11px] text-muted-foreground/60 mt-0.5">{s.note}</p>
+                    </div>
+                    {s.critical && (
+                      <span className="text-[9px] uppercase tracking-[0.15em] text-rose/80 border border-rose/30 rounded-full px-2 py-0.5">
+                        Critical
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="space-y-3">
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-champagne/60">Mode Breakdown</h2>
+                {stats.modeBreakdown.map((m) => (
+                  <div key={m.mode} className="flex justify-between text-sm text-muted-foreground/70">
+                    <span className="capitalize">{m.mode}</span>
+                    <span className="font-mono text-foreground/80">{m.count}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-3">
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-champagne/60">Top Vibes</h2>
+                {stats.vibeBreakdown.slice(0, 5).map((v) => (
+                  <div key={v.vibe} className="flex justify-between text-sm text-muted-foreground/70">
+                    <span>{v.vibe}</span>
+                    <span className="font-mono text-foreground/80">{v.count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-function MetricCard({
+function StatCard({
   label,
   value,
-  subtitle,
-  accent,
+  sub,
+  tone,
 }: {
   label: string;
-  value: string | number;
-  subtitle?: string;
-  accent?: "champagne" | "rose";
+  value: string;
+  sub?: string;
+  tone?: "ok" | "warn" | "champagne";
 }) {
-  const valueColor = accent === "champagne" ? "text-champagne" : accent === "rose" ? "text-rose" : "text-foreground";
-
+  const toneClass =
+    tone === "warn"
+      ? "text-rose"
+      : tone === "champagne"
+      ? "text-champagne"
+      : "text-foreground";
   return (
     <div className="lift-card p-4 space-y-1">
-      <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{label}</p>
-      <p className={`text-2xl font-medium ${valueColor}`}>{value}</p>
-      {subtitle && <p className="text-[11px] text-muted-foreground/40">{subtitle}</p>}
+      <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60">{label}</p>
+      <p className={`text-2xl font-editorial ${toneClass}`}>{value}</p>
+      {sub && <p className="text-[10px] text-muted-foreground/40">{sub}</p>}
     </div>
   );
 }

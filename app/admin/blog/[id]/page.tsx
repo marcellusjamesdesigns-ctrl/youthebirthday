@@ -8,7 +8,7 @@ import type { BlogPost } from "@/lib/content/types";
 
 function getAdminToken() {
   if (typeof window === "undefined") return "";
-  return sessionStorage.getItem("ytb-admin-token") ?? "";
+  return localStorage.getItem("ytb-admin-token") ?? "";
 }
 const ADMIN_PASSCODE = "062093";
 

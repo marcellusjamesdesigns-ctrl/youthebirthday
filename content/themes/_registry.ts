@@ -935,6 +935,220 @@ const themePages: ContentPage[] = [
       { type: "related-content" },
     ],
   },
+  // ──────────────────────────────────────────────────────────────────────
+  // GARDEN PARTY — new theme page prototype (2026-04-19)
+  // Thesis: Not flowers on a table. Outdoor softness, good light, pretty
+  //         food, an easy dress code.
+  // ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "garden-party-birthday-theme",
+    category: "themes",
+    title: "Garden Party Birthday Theme (2026) — Outdoor Softness, Good Light, Pretty Food",
+    description:
+      "Plan a garden party birthday theme with real editorial direction: palettes, outfit ideas, menu, rain plan, and curated decor. For spring and summer birthdays that deserve to happen outside.",
+    headline: "Garden Party Birthday Theme",
+    subheadline: "Outdoor softness. Good light. Pretty food. An easy dress code.",
+    tags: { vibe: "soft-life", season: "spring", theme: "garden-party" },
+    canonicalPath: "/birthday-themes/garden-party-birthday-theme",
+    schemaType: "Article",
+    publishStatus: "published",
+    publishedAt: "2026-04-19",
+    updatedAt: "2026-04-19",
+    sections: [
+      {
+        type: "hero",
+        headline: "Garden Party Birthday Theme",
+        subheadline: "Outdoor softness. Good light. Pretty food. An easy dress code.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1680695779444-24fc71296e66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "An outdoor table set for a garden party birthday — linen, florals, natural light",
+        caption: "The light does most of the work.",
+        credit: "Photo by Rhamely on Unsplash",
+        creditUrl: "https://unsplash.com/@rhamely?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "A garden party birthday is not flowers on a table. It's outdoor softness, real light, food that looks like itself, and a dress code that doesn't require explaining. The whole theme hinges on one thing: being outside, intentionally. Everything else — florals, palette, menu, drinkware — exists to support that one decision.",
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Garden party works for anyone whose birthday lands between late April and early October. It's for the person who wants a celebration that feels easy — no DJ, no venue buyout, no logistics that require a group text. It's especially good for milestone birthdays (30th, 40th) where the guest list is small and the vibe wants to feel like an afternoon you'll remember a decade later, not a party you'll recover from.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Late spring and early fall are the sweet spots — when the sun is out but not punishing and the light holds late enough for golden hour to do its job. Mid-summer works if you have shade. Avoid the hottest month in your climate (August in the South, July in the Midwest) unless the venue is covered. Garden parties also land well at <a href=\"/birthday-ideas/birthday-dinner-ideas\">outdoor restaurants with real gardens</a> — not just a patio with string lights.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look like a toddler tea party",
+        body: "The fastest way to wreck a garden party birthday is going full storybook — pastel bunting, floral-print tablecloths from a party store, plastic teacups. That reads as kid's birthday, not grown-up celebration. The real version is tonal and restrained: linen in one neutral, florals in 2-3 colors max (not every pastel at once), real glassware, and a dress code that leaves room for an actual outfit. The aesthetic is <em>brunch at a private home in the South of France</em>, not <em>tea party with dolls</em>. If something on your table would look right in a child's bedroom, cut it.",
+      },
+      {
+        type: "palette-showcase",
+        heading: "Garden Party Color Palettes",
+        palettes: [
+          {
+            name: "Fresh Garden",
+            mood: "soft, botanical, sunlit",
+            colors: [
+              { hex: "#f5ebe0", name: "Cream Linen" },
+              { hex: "#d4d7b9", name: "Sage" },
+              { hex: "#e8b9ab", name: "Blush" },
+              { hex: "#a68a64", name: "Honey" },
+              { hex: "#5c6b5a", name: "Fern" },
+            ],
+          },
+          {
+            name: "Wildflower",
+            mood: "unbridled, picked-from-the-field",
+            colors: [
+              { hex: "#fcefcb", name: "Butter" },
+              { hex: "#e76f51", name: "Poppy" },
+              { hex: "#a8c9e0", name: "Dusty Sky" },
+              { hex: "#6a994e", name: "Meadow" },
+              { hex: "#bc4749", name: "Berry" },
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip-list",
+        heading: "Garden Party Birthday Elements",
+        tips: [
+          {
+            title: "Setting",
+            body: "A real garden (yours, a rental estate, or a restaurant with an actual outdoor dining area). Covered patio works if the coverage is architectural — a pergola, a greenhouse, an awning. Avoid bare grass with no shade structure unless you're planning for full-sun afternoon. The setting carries 60% of the aesthetic; invest in the venue before anything else.",
+          },
+          {
+            title: "Florals",
+            body: "Mismatched arrangements, 2-3 colors that belong together (not every pastel at once). Seasonal is everything — tulips and ranunculus in spring, sweet peas and peonies in early summer, dahlias and cosmos in late summer, chrysanthemums and roses in fall. Skip premium florist arrangements; hit the farmer's market and arrange yourself. Clusters in varied heights, some low enough to see across.",
+          },
+          {
+            title: "Food",
+            body: "Food that looks like itself. Heirloom tomato salad with torn basil, burrata with stone fruit, a warm olive tapenade, fresh sourdough, a long platter of roasted vegetables. A simple main (grilled fish, roast chicken, or a vegetable tart) served family-style. Lemon olive oil cake or a fruit galette for dessert. Nothing dyed, nothing neon, nothing that requires explaining.",
+          },
+          {
+            title: "Dress code",
+            body: "'Garden party attire' on the invite is enough — guests know. Linen, silk, fine cotton. Florals welcome but not required. Block-heeled sandals (stilettos sink in grass). Straw hats if the sun is up. Avoid tight polyester — the fabric photographs badly outdoors and doesn't breathe. Your own outfit can anchor the palette; let guests orbit around it.",
+          },
+          {
+            title: "Drinks",
+            body: "A signature garden cocktail (elderflower spritz, rosé punch with fresh berries, a Pimm's cup if you want tradition). Sparkling water in glass bottles on every table. Good champagne. Iced herbal tea for non-drinkers. Skip the full bar — two cocktails done well beats eight done okay, and a garden party is not a bar-rail format.",
+          },
+        ],
+      },
+      {
+        type: "inline-cta",
+        text: "Pair this with <a href=\"/birthday-themes/soft-life-birthday-theme\">soft life</a> if you want even more restraint — they share DNA.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1618072400417-462cce71debe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "Red and yellow wildflowers on a wooden table — garden party florals",
+        caption: "Mismatched, seasonal, arranged by someone with a point of view.",
+        credit: "Photo by Parker Coffman on Unsplash",
+        creditUrl: "https://unsplash.com/@lowmurmer?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "wide",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "The garden party menu is built around things that photograph well without trying and eat well without coordination. Open with a grazing board (heirloom tomatoes, burrata, stone fruit, three cheeses, olive tapenade, sourdough). Main, served family-style: a simple grilled protein or a vegetable tart — something that can sit on the table for 20 minutes without dying. Sides: a green salad with a real dressing, a grain salad with herbs, roasted seasonal vegetables. Dessert: a lemon olive oil cake, a galette, or a pavlova with fresh berries. Drinks: one signature cocktail, good rosé or champagne, iced herbal tea, sparkling water in glass. If you want the exact vibe, browse our <a href=\"/birthday-ideas/birthday-dinner-ideas\">birthday dinner ideas</a> for restaurants with real gardens.",
+      },
+      {
+        type: "tip-list",
+        heading: "Rain Plan / Indoor Backup",
+        tips: [
+          {
+            title: "Covered patio or pergola",
+            body: "The easiest save. A covered outdoor space keeps the garden-party vibe intact — you just move the table under the structure and add warm lighting. Works in drizzle; less so in wind. Have battery-powered string lights or lanterns ready if the afternoon turns overcast.",
+          },
+          {
+            title: "Conservatory or greenhouse restaurant",
+            body: "If you're booking a venue, search for restaurants with glass-enclosed dining rooms, conservatories, or greenhouse spaces. These cities have them: New York (Gallow Green), LA (Cafe Gratitude has outdoor covered seating, Barbareño has a garden), Chicago (Galit, Lula Cafe), London (Kensington Roof Gardens). The aesthetic translates perfectly indoors when the room has plants and real light.",
+          },
+          {
+            title: "Indoor table with garden styling",
+            body: "If you have to be fully indoors, lean into it. Move your dining room table near the largest window. Use a linen runner, open a real bottle of wine, bring in real florals (not fake). Skip the outdoor signifiers that won't translate (straw hats, sun umbrellas) and go full Nancy Meyers kitchen instead.",
+          },
+          {
+            title: "Botanical centerpiece instead of full outdoor setup",
+            body: "If plans change last-minute, dial the theme back to one strong element: a single dramatic florist arrangement (tall, wild, textural) as the centerpiece, with the rest of the table kept minimal. A really beautiful floral centerpiece in an indoor space still carries the garden party feeling without the production of moving the whole concept inside.",
+          },
+        ],
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the Garden Party Vibe",
+        subtitle: "Eight pieces that carry the setting when the venue doesn't do all the work.",
+        placement: "garden-party-theme",
+        format: "grid",
+        items: [
+          { query: "linen tablecloth natural cream outdoor", label: "Natural Linen Tablecloth", description: "The foundation. Wrinkles are fine outdoors." },
+          { query: "rattan chargers set woven bamboo", label: "Rattan Chargers", description: "Texture under every plate." },
+          { query: "outdoor lantern candles brass garden", label: "Garden Lanterns", description: "For golden hour and after." },
+          { query: "stemless wine glasses set outdoor", label: "Stemless Wine Glasses", description: "Stems blow over on grass. Learn from us." },
+          { query: "floral shears brass pruning garden", label: "Brass Floral Shears", description: "For last-minute cuttings from the yard." },
+          { query: "rattan serving trays set round woven", label: "Rattan Serving Trays", description: "For the grazing board. For the cake. For everything." },
+          { query: "outdoor cushions linen natural set of four", label: "Linen Outdoor Cushions", description: "For the stone bench nobody usually sits on." },
+          { query: "woven picnic basket large french", label: "Large Picnic Basket", description: "Double duty — storage during, decor before." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Garden party is forgiving to tight budgets because the venue (a real garden, your yard, a park) is usually free or cheap. Under $150 covers a linen runner, farmer's-market florals, stemless glassware, and a grazing board. $300-500 lets you add proper rattan chargers, outdoor lanterns, and invest in better florals. Luxury version ($1,000+): rent a private estate garden or book a private dining experience at a greenhouse restaurant — the venue is where luxury garden parties actually spend.",
+      },
+      {
+        type: "inline-cta",
+        text: "Need a full palette match? Start with our <a href=\"/birthday-palettes/birthday-color-palette-inspiration\">birthday color palette inspiration</a>.",
+      },
+      {
+        type: "faq",
+        heading: "Garden Party Birthday FAQ",
+        questions: [
+          {
+            question: "What colors work best for a garden party birthday?",
+            answer:
+              "The classic palette is cream, sage, blush, honey, and a grounding deep green. For a more vibrant version, go wildflower: butter yellow, poppy red, dusty sky blue, meadow green, berry. The key rule is 2-3 colors max beyond your neutral base — if every pastel on the wheel is on your table, it reads as kid's birthday. Pick a tight palette and repeat it across florals, napkins, and glassware.",
+          },
+          {
+            question: "What should guests wear to a garden party birthday?",
+            answer:
+              "Put 'garden party attire' on the invite — guests understand. Linen, silk, fine cotton, block-heeled sandals (stilettos sink in grass). Florals welcome but not required. Straw hats if the sun is up. Avoid tight polyester (doesn't photograph well outdoors) and full suits (wrong energy). Your own outfit can anchor the palette; let guests dress to orbit around it.",
+          },
+          {
+            question: "What's the rain plan for a garden party birthday?",
+            answer:
+              "Four options, in order of preference: (1) covered patio or pergola — easiest save, keeps the vibe; (2) conservatory or greenhouse restaurant — glass enclosure preserves the aesthetic; (3) indoor dining room near the largest window with lots of real florals and linen, leaning into Nancy Meyers energy; (4) a single dramatic florist centerpiece indoors, dialing the theme back to one strong element rather than moving the full concept inside.",
+          },
+          {
+            question: "What food and drinks fit a garden party birthday?",
+            answer:
+              "Open with a grazing board (heirloom tomatoes, burrata, stone fruit, olives, sourdough, three cheeses). Main served family-style: grilled fish, roast chicken, or a vegetable tart. Simple sides: green salad with a real dressing, a grain salad with fresh herbs. Dessert: lemon olive oil cake, galette, or pavlova. Drinks: one signature cocktail (elderflower spritz, rosé punch, Pimm's cup), good champagne or rosé, sparkling water in glass bottles, iced herbal tea for non-drinkers.",
+          },
+          {
+            question: "Can a garden party birthday work on a budget?",
+            answer:
+              "Yes — it's one of the most budget-friendly themes because the venue (your garden, a park, a friend's yard) is usually free. Under $150 covers a linen runner, farmer's-market florals, stemless glassware, and a grazing board. The investment goes further with time: sourcing the right florals at 6am on Saturday, arranging them yourself, and doing the food simply. The luxury version spends on the venue — a private estate or greenhouse restaurant — rather than decor.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your garden party birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, celebration plan, and destination picks tuned to your exact vibe and season.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
+      { type: "related-content" },
+    ],
+  },
 ];
 
 themePages.forEach(registerPage);
