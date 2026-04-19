@@ -13,6 +13,14 @@ import type {
 
 export const runtime = "edge";
 
+/**
+ * Satori rules (via next/og):
+ * - Every element MUST have explicit `display` (we use `flex` everywhere).
+ * - Prefer <div> over <h1>/<p>/<span>; Satori's semantic-tag support is
+ *   inconsistent and will silently produce an empty PNG if it chokes.
+ * - No system fontFamily — Satori uses its built-in default.
+ * - No `auto` margins, no percentage border-radius.
+ */
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -76,23 +84,22 @@ export async function GET(
             flexDirection: "column",
             backgroundColor: "#0a0a0b",
             color: "#f5f0eb",
-            padding: 0,
           }}
         >
           {/* Color bar */}
-          <div style={{ display: "flex", width: "100%", height: "6px" }}>
+          <div style={{ display: "flex", width: "100%", height: 6 }}>
             {primaryColors.map((hex, i) => (
-              <div key={i} style={{ flex: 1, backgroundColor: hex }} />
+              <div key={i} style={{ display: "flex", flex: 1, backgroundColor: hex }} />
             ))}
           </div>
 
-          {/* Main content area */}
+          {/* Main content */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               flex: 1,
-              padding: "40px 56px 32px",
+              padding: "40px 56px 32px 56px",
             }}
           >
             {/* Top row: brand + name */}
@@ -104,175 +111,166 @@ export async function GET(
                 marginBottom: 24,
               }}
             >
-              <span
+              <div
                 style={{
+                  display: "flex",
                   fontSize: 13,
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase" as const,
+                  letterSpacing: 4,
+                  textTransform: "uppercase",
                   color: "#666",
                 }}
               >
                 You the Birthday
-              </span>
-              <span style={{ fontSize: 14, color: "#666" }}>
+              </div>
+              <div style={{ display: "flex", fontSize: 14, color: "#666" }}>
                 {name} · {ageTurning}
-              </span>
+              </div>
             </div>
 
             {/* Title */}
-            <h1
-              style={{
-                fontSize: 44,
-                fontWeight: 700,
-                lineHeight: 1.1,
-                margin: "0 0 16px 0",
-                textAlign: "center" as const,
-              }}
-            >
-              {title}
-            </h1>
-
-            {/* Badges */}
             <div
               style={{
                 display: "flex",
+                fontSize: 44,
+                fontWeight: 700,
+                lineHeight: 1.1,
+                marginBottom: 16,
+                textAlign: "center",
                 justifyContent: "center",
-                gap: 10,
-                marginBottom: 20,
               }}
             >
-              {archetype && (
-                <span
-                  style={{
-                    border: `1px solid ${accentHex}66`,
-                    color: `${accentHex}cc`,
-                    padding: "4px 14px",
-                    borderRadius: 20,
-                    fontSize: 13,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase" as const,
-                  }}
-                >
-                  {archetype}
-                </span>
-              )}
-              {era && (
-                <span
-                  style={{
-                    border: "1px solid #444",
-                    color: "#999",
-                    padding: "4px 14px",
-                    borderRadius: 20,
-                    fontSize: 13,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase" as const,
-                  }}
-                >
-                  {era}
-                </span>
-              )}
+              {title}
             </div>
+
+            {/* Badges */}
+            {(archetype || era) && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: 20,
+                }}
+              >
+                {archetype && (
+                  <div
+                    style={{
+                      display: "flex",
+                      border: `1px solid ${accentHex}66`,
+                      color: `${accentHex}cc`,
+                      padding: "4px 14px",
+                      borderRadius: 20,
+                      fontSize: 13,
+                      letterSpacing: 1,
+                      textTransform: "uppercase",
+                      marginRight: 10,
+                    }}
+                  >
+                    {archetype}
+                  </div>
+                )}
+                {era && (
+                  <div
+                    style={{
+                      display: "flex",
+                      border: "1px solid #444",
+                      color: "#999",
+                      padding: "4px 14px",
+                      borderRadius: 20,
+                      fontSize: 13,
+                      letterSpacing: 1,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {era}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Caption */}
             {bestCaption && (
               <div
                 style={{
                   display: "flex",
-                  margin: "8px 0 16px",
+                  margin: "8px 0 16px 0",
                   paddingLeft: 16,
                   borderLeft: `3px solid ${accentHex}88`,
+                  fontSize: 20,
+                  fontStyle: "italic",
+                  color: "#ccc",
+                  lineHeight: 1.5,
                 }}
               >
-                <p
-                  style={{
-                    fontSize: 20,
-                    fontStyle: "italic",
-                    color: "#ccc",
-                    lineHeight: 1.5,
-                    margin: 0,
-                  }}
-                >
-                  {`"${bestCaption}"`}
-                </p>
+                {`"${bestCaption}"`}
               </div>
             )}
 
-            {/* Middle section: celebration + destination */}
-            <div
-              style={{
-                display: "flex",
-                gap: 40,
-                margin: "12px 0",
-                padding: "16px 0",
-                borderTop: "1px solid #222",
-                borderBottom: "1px solid #222",
-              }}
-            >
-              {/* Celebration style */}
-              {celebrationStyle && (
-                <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase" as const,
-                      color: "#555",
-                      marginBottom: 6,
-                    }}
-                  >
-                    Your Celebration
-                  </span>
-                  <span style={{ fontSize: 16, fontWeight: 600, color: "#ddd" }}>
-                    {celebrationStyle.primaryStyle}
-                  </span>
-                  <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                    <span
+            {/* Celebration + destination */}
+            {(celebrationStyle || topDest) && (
+              <div
+                style={{
+                  display: "flex",
+                  margin: "12px 0",
+                  padding: "16px 0",
+                  borderTop: "1px solid #222",
+                  borderBottom: "1px solid #222",
+                }}
+              >
+                {celebrationStyle && (
+                  <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                    <div
                       style={{
+                        display: "flex",
                         fontSize: 10,
-                        color: "#777",
-                        border: "1px solid #333",
-                        borderRadius: 10,
-                        padding: "2px 8px",
+                        letterSpacing: 2,
+                        textTransform: "uppercase",
+                        color: "#555",
+                        marginBottom: 6,
                       }}
                     >
-                      {celebrationStyle.aesthetic}
-                    </span>
-                    <span
+                      Your Celebration
+                    </div>
+                    <div
                       style={{
-                        fontSize: 10,
-                        color: "#777",
-                        border: "1px solid #333",
-                        borderRadius: 10,
-                        padding: "2px 8px",
+                        display: "flex",
+                        fontSize: 16,
+                        fontWeight: 600,
+                        color: "#ddd",
                       }}
                     >
-                      {celebrationStyle.outfit}
-                    </span>
+                      {celebrationStyle.primaryStyle}
+                    </div>
                   </div>
-                </div>
-              )}
-
-              {/* Top destination */}
-              {topDest && (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase" as const,
-                      color: "#555",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {topDest.section === "chosen" ? "Your City" : "Top Destination"}
-                  </span>
-                  <span style={{ fontSize: 16, fontWeight: 600, color: "#ddd" }}>
-                    {topDest.city}
-                    {topDest.country ? `, ${topDest.country}` : ""}
-                  </span>
-                </div>
-              )}
-            </div>
+                )}
+                {topDest && (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        fontSize: 10,
+                        letterSpacing: 2,
+                        textTransform: "uppercase",
+                        color: "#555",
+                        marginBottom: 6,
+                      }}
+                    >
+                      {topDest.section === "chosen" ? "Your City" : "Top Destination"}
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        fontSize: 16,
+                        fontWeight: 600,
+                        color: "#ddd",
+                      }}
+                    >
+                      {topDest.city}
+                      {topDest.country ? `, ${topDest.country}` : ""}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Bottom row: zodiac + palette */}
             <div
@@ -284,28 +282,32 @@ export async function GET(
                 paddingTop: 16,
               }}
             >
-              {/* Big 3 */}
               {cosmic?.sunSign ? (
-                <div style={{ display: "flex", gap: 16, fontSize: 12, color: "#555" }}>
-                  <span>☉ {cosmic.sunSign}</span>
-                  {cosmic.moonSign && <span>☽ {cosmic.moonSign}</span>}
-                  {cosmic.risingSign && <span>↑ {cosmic.risingSign}</span>}
+                <div style={{ display: "flex", fontSize: 12, color: "#555" }}>
+                  <div style={{ display: "flex", marginRight: 16 }}>☉ {cosmic.sunSign}</div>
+                  {cosmic.moonSign && (
+                    <div style={{ display: "flex", marginRight: 16 }}>☽ {cosmic.moonSign}</div>
+                  )}
+                  {cosmic.risingSign && (
+                    <div style={{ display: "flex" }}>↑ {cosmic.risingSign}</div>
+                  )}
                 </div>
               ) : (
-                <div />
+                <div style={{ display: "flex" }} />
               )}
 
-              {/* Palette swatches */}
-              <div style={{ display: "flex", gap: 4 }}>
+              <div style={{ display: "flex" }}>
                 {primaryColors.map((hex, i) => (
                   <div
                     key={i}
                     style={{
+                      display: "flex",
                       width: 20,
                       height: 20,
-                      borderRadius: "50%",
+                      borderRadius: 10,
                       backgroundColor: hex,
                       border: "1px solid #333",
+                      marginLeft: i === 0 ? 0 : 4,
                     }}
                   />
                 ))}
@@ -315,32 +317,26 @@ export async function GET(
             {/* Brand footer */}
             <div
               style={{
-                textAlign: "center" as const,
+                display: "flex",
+                justifyContent: "center",
                 marginTop: 16,
                 paddingTop: 12,
                 borderTop: "1px solid #1a1a1a",
+                fontSize: 11,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                color: "#444",
               }}
             >
-              <span
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase" as const,
-                  color: "#444",
-                }}
-              >
-                youthebirthday.app
-              </span>
+              youthebirthday.app
             </div>
           </div>
         </div>
       ),
-      {
-        width: 1200,
-        height: 630,
-      },
+      { width: 1200, height: 630 },
     );
-  } catch {
+  } catch (err) {
+    console.error("[og] render error:", err instanceof Error ? err.message : String(err));
     return new ImageResponse(
       (
         <div
@@ -355,20 +351,24 @@ export async function GET(
             color: "#f5f0eb",
           }}
         >
-          <p
+          <div
             style={{
+              display: "flex",
               fontSize: 14,
-              letterSpacing: "0.3em",
-              textTransform: "uppercase" as const,
+              letterSpacing: 4,
+              textTransform: "uppercase",
               color: "#666",
+              marginBottom: 20,
             }}
           >
             You the Birthday
-          </p>
-          <h1 style={{ fontSize: 44, fontWeight: 700 }}>
+          </div>
+          <div style={{ display: "flex", fontSize: 44, fontWeight: 700 }}>
             Your Personalized Birthday Experience
-          </h1>
-          <p style={{ fontSize: 18, color: "#666" }}>youthebirthday.app</p>
+          </div>
+          <div style={{ display: "flex", fontSize: 18, color: "#666", marginTop: 20 }}>
+            youthebirthday.app
+          </div>
         </div>
       ),
       { width: 1200, height: 630 },
