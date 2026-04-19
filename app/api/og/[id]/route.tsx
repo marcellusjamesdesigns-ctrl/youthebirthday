@@ -117,6 +117,10 @@ export async function GET(
     if (serifBold) fonts.push({ name: "Playfair Display", data: serifBold, style: "normal", weight: 700 });
     if (serifItalic) fonts.push({ name: "Playfair Display", data: serifItalic, style: "italic", weight: 400 });
 
+    // Retina-quality scale factor — doubles the canvas + every layout value
+    // so proportions stay identical but the output is crisp when zoomed.
+    const S = 2;
+
     return new ImageResponse(
       (
         <div
@@ -130,7 +134,7 @@ export async function GET(
           }}
         >
           {/* Color bar */}
-          <div style={{ display: "flex", width: "100%", height: 6 }}>
+          <div style={{ display: "flex", width: "100%", height: 12 }}>
             {primaryColors.map((hex, i) => (
               <div key={i} style={{ display: "flex", flex: 1, backgroundColor: hex }} />
             ))}
@@ -142,7 +146,7 @@ export async function GET(
               display: "flex",
               flexDirection: "column",
               flex: 1,
-              padding: "40px 56px 32px 56px",
+              padding: "80px 112px 64px 112px",
             }}
           >
             {/* Top row: brand + name */}
@@ -151,21 +155,21 @@ export async function GET(
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: 24,
+                marginBottom: 48,
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  fontSize: 13,
-                  letterSpacing: 4,
+                  fontSize: 26,
+                  letterSpacing: 8,
                   textTransform: "uppercase",
                   color: "#666",
                 }}
               >
                 You the Birthday
               </div>
-              <div style={{ display: "flex", fontSize: 14, color: "#666" }}>
+              <div style={{ display: "flex", fontSize: 28, color: "#666" }}>
                 {name} · {ageTurning}
               </div>
             </div>
@@ -174,10 +178,10 @@ export async function GET(
             <div
               style={{
                 display: "flex",
-                fontSize: 44,
+                fontSize: 88,
                 fontWeight: 700,
                 lineHeight: 1.1,
-                marginBottom: 16,
+                marginBottom: 32,
                 textAlign: "center",
                 justifyContent: "center",
                 fontFamily: "Playfair Display",
@@ -192,7 +196,7 @@ export async function GET(
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  marginBottom: 20,
+                  marginBottom: 40,
                 }}
               >
                 {archetype && (
@@ -201,12 +205,12 @@ export async function GET(
                       display: "flex",
                       border: `1px solid ${accentHex}66`,
                       color: `${accentHex}cc`,
-                      padding: "4px 14px",
-                      borderRadius: 20,
-                      fontSize: 13,
-                      letterSpacing: 1,
+                      padding: "8px 28px",
+                      borderRadius: 40,
+                      fontSize: 26,
+                      letterSpacing: 2,
                       textTransform: "uppercase",
-                      marginRight: 10,
+                      marginRight: 20,
                     }}
                   >
                     {archetype}
@@ -218,10 +222,10 @@ export async function GET(
                       display: "flex",
                       border: "1px solid #444",
                       color: "#999",
-                      padding: "4px 14px",
-                      borderRadius: 20,
-                      fontSize: 13,
-                      letterSpacing: 1,
+                      padding: "8px 28px",
+                      borderRadius: 40,
+                      fontSize: 26,
+                      letterSpacing: 2,
                       textTransform: "uppercase",
                     }}
                   >
@@ -236,10 +240,10 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  margin: "8px 0 16px 0",
-                  paddingLeft: 16,
+                  margin: "16px 0 32px 0",
+                  paddingLeft: 32,
                   borderLeft: `3px solid ${accentHex}88`,
-                  fontSize: 20,
+                  fontSize: 40,
                   fontStyle: "italic",
                   color: "#ccc",
                   lineHeight: 1.5,
@@ -256,19 +260,19 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  margin: "12px 0 0 0",
-                  padding: "16px 0 0 0",
+                  margin: "24px 0 0 0",
+                  padding: "32px 0 0 0",
                   borderTop: "1px solid #222",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
-                    fontSize: 10,
-                    letterSpacing: 2,
+                    fontSize: 20,
+                    letterSpacing: 4,
                     textTransform: "uppercase",
                     color: "#555",
-                    marginBottom: 6,
+                    marginBottom: 12,
                   }}
                 >
                   Your Celebration
@@ -276,10 +280,10 @@ export async function GET(
                 <div
                   style={{
                     display: "flex",
-                    fontSize: 18,
+                    fontSize: 36,
                     fontWeight: 600,
                     color: "#ddd",
-                    marginBottom: 8,
+                    marginBottom: 16,
                   }}
                 >
                   {celebrationStyle.primaryStyle}
@@ -287,10 +291,10 @@ export async function GET(
                 <div
                   style={{
                     display: "flex",
-                    fontSize: 13,
+                    fontSize: 26,
                     color: "#999",
                     lineHeight: 1.5,
-                    marginBottom: 6,
+                    marginBottom: 12,
                   }}
                 >
                   {celebrationStyle.description}
@@ -299,7 +303,7 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      fontSize: 12,
+                      fontSize: 24,
                       color: "#888",
                       lineHeight: 1.4,
                     }}
@@ -316,19 +320,19 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  margin: "12px 0 0 0",
-                  padding: "12px 0 0 0",
+                  margin: "24px 0 0 0",
+                  padding: "24px 0 0 0",
                   borderTop: "1px solid #222",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
-                    fontSize: 10,
-                    letterSpacing: 2,
+                    fontSize: 20,
+                    letterSpacing: 4,
                     textTransform: "uppercase",
                     color: "#555",
-                    marginBottom: 4,
+                    marginBottom: 8,
                   }}
                 >
                   {topDest.section === "chosen" ? "Your City" : "Top Destination Pick"}
@@ -336,7 +340,7 @@ export async function GET(
                 <div
                   style={{
                     display: "flex",
-                    fontSize: 16,
+                    fontSize: 32,
                     fontWeight: 600,
                     color: "#ddd",
                   }}
@@ -353,15 +357,15 @@ export async function GET(
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: 20,
-                paddingTop: 16,
+                marginTop: 40,
+                paddingTop: 32,
               }}
             >
               {cosmic?.sunSign ? (
-                <div style={{ display: "flex", fontSize: 12, color: "#555" }}>
-                  <div style={{ display: "flex", marginRight: 16 }}>☉ {cosmic.sunSign}</div>
+                <div style={{ display: "flex", fontSize: 24, color: "#555" }}>
+                  <div style={{ display: "flex", marginRight: 32 }}>☉ {cosmic.sunSign}</div>
                   {cosmic.moonSign && (
-                    <div style={{ display: "flex", marginRight: 16 }}>☽ {cosmic.moonSign}</div>
+                    <div style={{ display: "flex", marginRight: 32 }}>☽ {cosmic.moonSign}</div>
                   )}
                   {cosmic.risingSign && (
                     <div style={{ display: "flex" }}>↑ {cosmic.risingSign}</div>
@@ -377,9 +381,9 @@ export async function GET(
                     key={i}
                     style={{
                       display: "flex",
-                      width: 20,
-                      height: 20,
-                      borderRadius: 10,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
                       backgroundColor: hex,
                       border: "1px solid #333",
                       marginLeft: i === 0 ? 0 : 4,
@@ -394,11 +398,11 @@ export async function GET(
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: 16,
-                paddingTop: 12,
+                marginTop: 32,
+                paddingTop: 24,
                 borderTop: "1px solid #1a1a1a",
-                fontSize: 11,
-                letterSpacing: 2,
+                fontSize: 22,
+                letterSpacing: 4,
                 textTransform: "uppercase",
                 color: "#444",
               }}
@@ -408,7 +412,13 @@ export async function GET(
           </div>
         </div>
       ),
-      { width: 1200, height: 630, fonts: fonts.length > 0 ? fonts : undefined },
+      {
+        // 2x standard OG size for retina-crisp downloads and social previews.
+        // Social platforms auto-scale down; we never lose quality up-scaling.
+        width: 2400,
+        height: 1260,
+        fonts: fonts.length > 0 ? fonts : undefined,
+      },
     );
   } catch (err) {
     console.error("[og] render error:", err instanceof Error ? err.message : String(err));
