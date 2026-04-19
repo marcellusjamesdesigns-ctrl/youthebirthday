@@ -76,7 +76,6 @@ export async function GET(
             flexDirection: "column",
             backgroundColor: "#0a0a0b",
             color: "#f5f0eb",
-            fontFamily: "Georgia, 'Times New Roman', serif",
             padding: 0,
           }}
         >
@@ -354,7 +353,6 @@ export async function GET(
             justifyContent: "center",
             backgroundColor: "#0a0a0b",
             color: "#f5f0eb",
-            fontFamily: "Georgia, serif",
           }}
         >
           <p
