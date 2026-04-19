@@ -4,6 +4,7 @@ import { getContentPagesByCategory } from "@/lib/content/render";
 import { Breadcrumbs, breadcrumbsForHub, generateBreadcrumbSchema } from "@/components/content/Breadcrumbs";
 import AdUnit from "@/components/AdUnit";
 import type { ContentPage } from "@/lib/content/types";
+import { ThemeFinder } from "./_components/ThemeFinder";
 
 export const metadata: Metadata = {
   title: "Find Your Birthday Aesthetic — Birthday Themes (2026) | You The Birthday",
@@ -18,20 +19,11 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── Hub configuration ────────────────────────────────────────────────
-// Grouping definitions live here so the hub surface is editor-curated
-// rather than auto-derived. When new theme pages ship, add their slug
-// to the relevant groups below.
+// ─── Theme groupings ───────────────────────────────────────────────────
+// When a new theme page ships, move its slug from `comingSoon` to `themes`
+// in the relevant groups. The hub picks up the change automatically.
 
-type ThemeGroup = {
-  id: string;
-  label: string;
-  intro: string;
-  themes: string[]; // slugs (existing)
-  comingSoon?: string[]; // labels, rendered as non-clickable
-};
-
-const BY_VIBE: ThemeGroup[] = [
+const BY_VIBE = [
   {
     id: "vibe-quiet",
     label: "Quiet & Intentional",
@@ -55,7 +47,7 @@ const BY_VIBE: ThemeGroup[] = [
   },
 ];
 
-const BY_SEASON: ThemeGroup[] = [
+const BY_SEASON = [
   {
     id: "season-spring",
     label: "Spring Birthdays",
@@ -86,7 +78,7 @@ const BY_SEASON: ThemeGroup[] = [
   },
 ];
 
-const BY_COLOR: ThemeGroup[] = [
+const BY_COLOR = [
   {
     id: "color-neutral",
     label: "Neutral & Warm",
@@ -108,7 +100,7 @@ const BY_COLOR: ThemeGroup[] = [
   },
 ];
 
-const BY_BUDGET: ThemeGroup[] = [
+const BY_BUDGET = [
   {
     id: "budget-under-150",
     label: "Under $150",
@@ -129,7 +121,7 @@ const BY_BUDGET: ThemeGroup[] = [
   },
 ];
 
-const BY_OCCASION: ThemeGroup[] = [
+const BY_OCCASION = [
   {
     id: "occasion-dinner",
     label: "Dinner Party",
@@ -154,7 +146,7 @@ const BY_OCCASION: ThemeGroup[] = [
 const FEATURED: { slug: string; why: string }[] = [
   {
     slug: "soft-life-birthday-theme",
-    why: "The most flexible theme on the site — works for every age, every venue, every budget.",
+    why: "The most flexible theme. Works for every age, every venue, every budget.",
   },
   {
     slug: "dark-feminine-birthday-theme",
@@ -162,7 +154,7 @@ const FEATURED: { slug: string; why: string }[] = [
   },
   {
     slug: "y2k-birthday-theme",
-    why: "The party theme if you want a scene. 21st through 35th, group-format, high energy.",
+    why: "The party theme. 21st through 35th, group-format, high energy.",
   },
 ];
 
@@ -199,88 +191,6 @@ const FAQS = [
   },
 ];
 
-function Pill({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      className="rounded-full border border-champagne/20 bg-champagne/5 px-5 py-2 text-[12px] uppercase tracking-[0.15em] text-champagne/70 hover:text-champagne hover:border-champagne/40 hover:bg-champagne/10 transition-all"
-    >
-      {children}
-    </a>
-  );
-}
-
-function ThemeCard({ page }: { page: ContentPage }) {
-  return (
-    <Link href={page.canonicalPath} className="lift-card p-6 space-y-3 block group">
-      <h3 className="font-editorial text-xl text-foreground group-hover:text-champagne transition-colors">
-        {page.headline}
-      </h3>
-      <p className="text-[13px] text-muted-foreground/70 leading-relaxed">
-        {page.subheadline}
-      </p>
-      {(page.tags.vibe || page.tags.zodiac || page.tags.theme) && (
-        <div className="flex flex-wrap gap-1.5 pt-1">
-          {page.tags.vibe && (
-            <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/50 border border-border/40 rounded-full px-2 py-0.5">
-              {page.tags.vibe}
-            </span>
-          )}
-          {page.tags.zodiac && (
-            <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/50 border border-border/40 rounded-full px-2 py-0.5">
-              {page.tags.zodiac}
-            </span>
-          )}
-        </div>
-      )}
-    </Link>
-  );
-}
-
-function ComingSoonCard({ label }: { label: string }) {
-  return (
-    <div className="p-6 rounded-xl border border-dashed border-border/30 space-y-2 opacity-60">
-      <p className="text-[9px] uppercase tracking-[0.2em] text-champagne/40">Coming soon</p>
-      <p className="font-editorial text-lg text-muted-foreground/70">{label}</p>
-    </div>
-  );
-}
-
-function GroupSection({
-  group,
-  themeLookup,
-}: {
-  group: ThemeGroup;
-  themeLookup: Record<string, ContentPage>;
-}) {
-  const themes = group.themes
-    .map((slug) => themeLookup[slug])
-    .filter(Boolean);
-
-  if (themes.length === 0 && (!group.comingSoon || group.comingSoon.length === 0)) {
-    return null;
-  }
-
-  return (
-    <div className="space-y-4">
-      <div>
-        <h3 className="font-editorial text-lg sm:text-xl text-foreground">
-          {group.label}
-        </h3>
-        <p className="text-[13px] text-muted-foreground/65 mt-1">{group.intro}</p>
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {themes.map((t) => (
-          <ThemeCard key={t.canonicalPath} page={t} />
-        ))}
-        {group.comingSoon?.map((label) => (
-          <ComingSoonCard key={label} label={label} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function ThemesHub() {
   const pages = getContentPagesByCategory("themes");
   const themeLookup: Record<string, ContentPage> = {};
@@ -308,24 +218,22 @@ export default function ThemesHub() {
 
   return (
     <div className="min-h-screen bg-gradient-luxury">
-      <div className="mx-auto max-w-5xl px-6 py-8 pb-20 space-y-16">
+      <div className="mx-auto max-w-5xl px-6 py-8 pb-20 space-y-14">
         <Breadcrumbs items={breadcrumbItems} />
 
         {/* ─── HERO ─────────────────────────────────────────────────── */}
-        <section className="py-10 sm:py-16 text-center space-y-5">
+        <section className="py-8 sm:py-12 text-center space-y-5">
           <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60 animate-fade-rise">
             you the birthday
           </p>
           <h1 className="heading-editorial text-4xl sm:text-5xl lg:text-6xl animate-fade-rise stagger-1">
             Find Your Birthday Aesthetic
           </h1>
-          <p className="mx-auto max-w-2xl text-muted-foreground leading-relaxed animate-fade-rise stagger-2">
-            A birthday theme is more than a color scheme. It&apos;s the through-line that
-            connects your outfit, decor, food, music, and the mood of the night. Pick
-            the aesthetic that feels like an expanded version of who you already are —
-            or let us generate it for you.
+          <p className="mx-auto max-w-xl text-muted-foreground leading-relaxed animate-fade-rise stagger-2">
+            Pick the aesthetic that feels like an expanded version of how you already
+            live. Or let us generate it for you.
           </p>
-          <div className="pt-3 animate-fade-rise stagger-3">
+          <div className="pt-2 animate-fade-rise stagger-3">
             <Link
               href="/onboarding"
               className="inline-block rounded-full bg-foreground px-7 py-3 text-[14px] font-medium text-background tracking-wide hover:bg-foreground/90 transition-all"
@@ -333,15 +241,6 @@ export default function ThemesHub() {
               Generate Your Birthday Aesthetic
             </Link>
           </div>
-        </section>
-
-        {/* ─── PILL PICKER ──────────────────────────────────────────── */}
-        <section className="flex flex-wrap justify-center gap-2.5">
-          <Pill href="#by-vibe">By Vibe</Pill>
-          <Pill href="#by-season">By Season</Pill>
-          <Pill href="#by-color">By Color</Pill>
-          <Pill href="#by-budget">By Budget</Pill>
-          <Pill href="#by-occasion">By Occasion</Pill>
         </section>
 
         {/* ─── FEATURED ─────────────────────────────────────────────── */}
@@ -357,7 +256,7 @@ export default function ThemesHub() {
               <Link
                 key={page!.canonicalPath}
                 href={page!.canonicalPath}
-                className="animated-border-card p-6 space-y-3 block group"
+                className="lift-card p-6 space-y-3 block group"
               >
                 <p className="text-[10px] uppercase tracking-[0.25em] text-champagne/50">
                   Featured
@@ -369,7 +268,6 @@ export default function ThemesHub() {
                   {page!.subheadline}
                 </p>
                 <p className="text-[12px] text-muted-foreground/60 leading-relaxed pt-2 border-t border-border/20">
-                  <span className="text-champagne/60">Why this works — </span>
                   {why}
                 </p>
               </Link>
@@ -377,205 +275,42 @@ export default function ThemesHub() {
           </div>
         </section>
 
-        {/* ─── AD ───────────────────────────────────────────────────── */}
-        <AdUnit slot="2856419037" format="auto" className="my-4" />
+        {/* ─── THEME FINDER (tabbed) ────────────────────────────────── */}
+        <ThemeFinder
+          themeLookup={themeLookup}
+          byVibe={BY_VIBE}
+          bySeason={BY_SEASON}
+          byColor={BY_COLOR}
+          byBudget={BY_BUDGET}
+          byOccasion={BY_OCCASION}
+        />
 
-        {/* ─── BY VIBE ──────────────────────────────────────────────── */}
-        <section id="by-vibe" className="space-y-8 scroll-mt-20">
-          <div className="text-center space-y-2">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
-              Section 01
-            </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">By Vibe</h2>
-            <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto">
-              The fastest way to pick a theme: what energy do you want the night to have?
-            </p>
-          </div>
-          <div className="space-y-10">
-            {BY_VIBE.map((group) => (
-              <GroupSection key={group.id} group={group} themeLookup={themeLookup} />
-            ))}
-          </div>
-        </section>
-
-        {/* ─── BY SEASON ────────────────────────────────────────────── */}
-        <section id="by-season" className="space-y-8 scroll-mt-20">
-          <div className="text-center space-y-2">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
-              Section 02
-            </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">By Season</h2>
-            <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto">
-              Themes that actually work for the time of year you&apos;re celebrating.
-            </p>
-          </div>
-          <div className="space-y-10">
-            {BY_SEASON.map((group) => (
-              <GroupSection key={group.id} group={group} themeLookup={themeLookup} />
-            ))}
-          </div>
-        </section>
-
-        {/* ─── INLINE CTA ───────────────────────────────────────────── */}
-        <section className="animated-border-card p-8 sm:p-10 text-center space-y-4 glow-champagne">
+        {/* ─── MID CTA ──────────────────────────────────────────────── */}
+        <section className="animated-border-card p-8 text-center space-y-3 glow-champagne">
           <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60">
             Not sure yet?
           </p>
           <h2 className="heading-editorial text-xl sm:text-2xl">
             Let the generator pick your aesthetic
           </h2>
-          <p className="mx-auto max-w-md text-sm text-muted-foreground leading-relaxed">
-            Answer a few questions — we&apos;ll match you to the right theme and build out
-            the full celebration direction.
-          </p>
           <Link
             href="/onboarding"
-            className="inline-block rounded-full bg-foreground px-8 py-3 text-[14px] font-medium text-background tracking-wide hover:bg-foreground/90 transition-all"
+            className="inline-block rounded-full bg-foreground px-7 py-2.5 text-[14px] font-medium text-background tracking-wide hover:bg-foreground/90 transition-all mt-2"
           >
             Generate My Birthday
           </Link>
         </section>
 
-        {/* ─── BY COLOR ─────────────────────────────────────────────── */}
-        <section id="by-color" className="space-y-8 scroll-mt-20">
-          <div className="text-center space-y-2">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
-              Section 03
-            </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">By Color</h2>
-            <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto">
-              If you already know your palette, start here.
-            </p>
-          </div>
-          <div className="space-y-10">
-            {BY_COLOR.map((group) => (
-              <GroupSection key={group.id} group={group} themeLookup={themeLookup} />
-            ))}
-          </div>
-          <div className="text-center pt-4">
-            <Link
-              href="/birthday-palettes"
-              className="text-[12px] uppercase tracking-[0.2em] text-champagne/50 hover:text-champagne transition-colors"
-            >
-              Browse all color palettes →
-            </Link>
-          </div>
-        </section>
-
-        {/* ─── BY BUDGET ────────────────────────────────────────────── */}
-        <section id="by-budget" className="space-y-8 scroll-mt-20">
-          <div className="text-center space-y-2">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
-              Section 04
-            </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">By Budget</h2>
-            <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto">
-              Some themes work anywhere. Others need real investment to land.
-            </p>
-          </div>
-          <div className="space-y-10">
-            {BY_BUDGET.map((group) => (
-              <GroupSection key={group.id} group={group} themeLookup={themeLookup} />
-            ))}
-          </div>
-        </section>
-
-        {/* ─── BY OCCASION ──────────────────────────────────────────── */}
-        <section id="by-occasion" className="space-y-8 scroll-mt-20">
-          <div className="text-center space-y-2">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
-              Section 05
-            </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">By Occasion</h2>
-            <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto">
-              Different formats, different themes.
-            </p>
-          </div>
-          <div className="space-y-10">
-            {BY_OCCASION.map((group) => (
-              <GroupSection key={group.id} group={group} themeLookup={themeLookup} />
-            ))}
-          </div>
-        </section>
-
         {/* ─── AD ───────────────────────────────────────────────────── */}
-        <AdUnit slot="3782501964" format="auto" className="my-4" />
-
-        {/* ─── EDITORIAL GUIDE ──────────────────────────────────────── */}
-        <section className="space-y-6 max-w-3xl mx-auto">
-          <div className="text-center space-y-2">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
-              The Guide
-            </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">
-              How to choose a birthday theme that actually fits you
-            </h2>
-          </div>
-          <div className="space-y-5 text-[15px] text-muted-foreground leading-relaxed">
-            <p>
-              The wrong theme is the one you picked because it looked good on Pinterest.
-              The right theme is the one that feels like an expanded version of how you
-              already live. Start there — with your actual energy, your actual
-              aesthetic, your actual people — and the rest gets easier.
-            </p>
-            <p>
-              <strong className="text-foreground/90">Start with vibe, not visuals.</strong>{" "}
-              Ask yourself: do I want the night to feel calm, intimate, celebratory, or
-              electric? A soft life birthday is built on restraint. A dark feminine
-              birthday is built on depth. A maximalist birthday is built on presence.
-              Once the energy is locked, the palette and decor answer themselves.
-            </p>
-            <p>
-              <strong className="text-foreground/90">Check the venue.</strong> An
-              old-money birthday doesn&apos;t work in a polished concept venue. A Y2K
-              birthday doesn&apos;t work in a candlelit dining room. The space and the
-              theme have to agree — if they don&apos;t, one of them has to change. When in
-              doubt, let the venue lead and pick a theme that flatters it, not one that
-              fights it.
-            </p>
-            <p>
-              <strong className="text-foreground/90">Respect your budget.</strong> Some
-              themes scale beautifully on $150 (soft life, dark feminine, Y2K).
-              Others need real investment to avoid looking cheap (old money,
-              maximalist). Pick the theme your budget can execute well rather than the
-              one you have to fake. A fully-committed $200 soft life dinner beats a
-              watered-down $800 old money event every time.
-            </p>
-            <p>
-              <strong className="text-foreground/90">Set a dress code — and mean it.</strong>{" "}
-              The fastest way to kill a theme is letting guests show up however they
-              want. A real dress code (&ldquo;cocktail, jewel tones only&rdquo; or &ldquo;black tie
-              with an edge&rdquo;) brings the scene together. Put it on the invite.
-              People rise to the occasion when you give them one.
-            </p>
-            <p>
-              <strong className="text-foreground/90">Lock the color story early.</strong>{" "}
-              Every other decision follows from the palette. Florals, napkins, cake,
-              invite, outfit — they all need to belong to the same visual world. Pick 3–5
-              colors and hold the line. Browse our{" "}
-              <Link href="/birthday-palettes/birthday-color-palette-inspiration" className="text-champagne/80 hover:text-champagne transition-colors underline underline-offset-2">
-                birthday color palette inspiration
-              </Link>{" "}
-              if you need a starting point.
-            </p>
-            <p>
-              <strong className="text-foreground/90">Decide: subtle or full production?</strong>{" "}
-              Not every birthday needs a theme at full volume. A subtle theme shows up
-              in one or two gestures (the right flowers, a dress code on the invite, a
-              single signature cocktail). A full-production theme shows up in every
-              element. Both work. Pick which energy the night deserves before you start
-              buying decor.
-            </p>
-          </div>
-        </section>
+        <AdUnit slot="2856419037" format="auto" className="my-2" />
 
         {/* ─── CROSS-LINK BLOCK ─────────────────────────────────────── */}
-        <section className="space-y-5 max-w-3xl mx-auto">
-          <div className="text-center space-y-2">
+        <section className="space-y-4">
+          <div className="text-center space-y-1">
             <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
               Keep building
             </p>
-            <h2 className="heading-editorial text-2xl">Pair your theme with</h2>
+            <h2 className="heading-editorial text-xl sm:text-2xl">Pair your theme with</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <Link href="/birthday-palettes" className="lift-card p-5 space-y-1.5">
@@ -605,13 +340,91 @@ export default function ThemesHub() {
           </div>
         </section>
 
+        {/* ─── EDITORIAL GUIDE (collapsed by default) ───────────────── */}
+        <section className="max-w-3xl mx-auto">
+          <details className="lift-card p-6 group">
+            <summary className="cursor-pointer list-none flex items-center justify-between gap-4">
+              <div className="space-y-1">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
+                  The Guide
+                </p>
+                <h2 className="heading-editorial text-xl sm:text-2xl text-foreground">
+                  How to choose a birthday theme that actually fits you
+                </h2>
+                <p className="text-[12px] text-muted-foreground/60">
+                  A 5-minute read on vibe, venue, budget, dress code, and color stories.
+                </p>
+              </div>
+              <span className="text-muted-foreground/40 transition-transform group-open:rotate-180 text-base shrink-0">
+                ▾
+              </span>
+            </summary>
+            <div className="space-y-4 text-[15px] text-muted-foreground leading-relaxed mt-6 pt-6 border-t border-border/20">
+              <p>
+                The wrong theme is the one you picked because it looked good on Pinterest.
+                The right theme is the one that feels like an expanded version of how you
+                already live. Start there — with your actual energy, your actual
+                aesthetic, your actual people — and the rest gets easier.
+              </p>
+              <p>
+                <strong className="text-foreground/90">Start with vibe, not visuals.</strong>{" "}
+                Ask yourself: do I want the night to feel calm, intimate, celebratory, or
+                electric? A soft life birthday is built on restraint. A dark feminine
+                birthday is built on depth. A maximalist birthday is built on presence.
+                Once the energy is locked, the palette and decor answer themselves.
+              </p>
+              <p>
+                <strong className="text-foreground/90">Check the venue.</strong> An
+                old-money birthday doesn&apos;t work in a polished concept venue. A Y2K
+                birthday doesn&apos;t work in a candlelit dining room. The space and the
+                theme have to agree — if they don&apos;t, one of them has to change. When in
+                doubt, let the venue lead and pick a theme that flatters it, not one that
+                fights it.
+              </p>
+              <p>
+                <strong className="text-foreground/90">Respect your budget.</strong> Some
+                themes scale beautifully on $150 (soft life, dark feminine, Y2K).
+                Others need real investment to avoid looking cheap (old money,
+                maximalist). Pick the theme your budget can execute well rather than the
+                one you have to fake. A fully-committed $200 soft life dinner beats a
+                watered-down $800 old money event every time.
+              </p>
+              <p>
+                <strong className="text-foreground/90">Set a dress code — and mean it.</strong>{" "}
+                The fastest way to kill a theme is letting guests show up however they
+                want. A real dress code (&ldquo;cocktail, jewel tones only&rdquo; or &ldquo;black tie
+                with an edge&rdquo;) brings the scene together. Put it on the invite.
+                People rise to the occasion when you give them one.
+              </p>
+              <p>
+                <strong className="text-foreground/90">Lock the color story early.</strong>{" "}
+                Every other decision follows from the palette. Florals, napkins, cake,
+                invite, outfit — they all need to belong to the same visual world. Pick 3–5
+                colors and hold the line. Browse our{" "}
+                <Link href="/birthday-palettes/birthday-color-palette-inspiration" className="text-champagne/80 hover:text-champagne transition-colors underline underline-offset-2">
+                  birthday color palette inspiration
+                </Link>{" "}
+                if you need a starting point.
+              </p>
+              <p>
+                <strong className="text-foreground/90">Decide: subtle or full production?</strong>{" "}
+                Not every birthday needs a theme at full volume. A subtle theme shows up
+                in one or two gestures (the right flowers, a dress code on the invite, a
+                single signature cocktail). A full-production theme shows up in every
+                element. Both work. Pick which energy the night deserves before you start
+                buying decor.
+              </p>
+            </div>
+          </details>
+        </section>
+
         {/* ─── FAQ ──────────────────────────────────────────────────── */}
-        <section className="space-y-5 max-w-3xl mx-auto">
+        <section className="space-y-4 max-w-3xl mx-auto">
           <div className="text-center space-y-2">
             <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">
               FAQ
             </p>
-            <h2 className="heading-editorial text-2xl sm:text-3xl">
+            <h2 className="heading-editorial text-2xl">
               Birthday Theme Questions
             </h2>
           </div>
@@ -633,22 +446,18 @@ export default function ThemesHub() {
         </section>
 
         {/* ─── FINAL CTA ────────────────────────────────────────────── */}
-        <section className="animated-border-card p-8 sm:p-10 text-center space-y-5 glow-champagne">
+        <section className="animated-border-card p-8 text-center space-y-3 glow-champagne">
           <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60">
             One last thing
           </p>
           <h2 className="heading-editorial text-xl sm:text-2xl">
             Not sure which theme is yours?
           </h2>
-          <p className="mx-auto max-w-md text-sm text-muted-foreground leading-relaxed">
-            Our generator builds your full birthday experience — theme, palette,
-            captions, celebration style, destination picks — based on your actual vibe.
-          </p>
           <Link
             href="/onboarding"
-            className="inline-block rounded-full bg-foreground px-8 py-3 text-[14px] font-medium text-background tracking-wide hover:bg-foreground/90 transition-all"
+            className="inline-block rounded-full bg-foreground px-7 py-2.5 text-[14px] font-medium text-background tracking-wide hover:bg-foreground/90 transition-all mt-2"
           >
-            Generate Your Birthday Aesthetic
+            Generate My Birthday
           </Link>
         </section>
       </div>
