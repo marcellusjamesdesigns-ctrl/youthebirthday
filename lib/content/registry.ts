@@ -34,6 +34,12 @@ export function getRelatedPages(
   if (page.category === "themes") {
     return getThemeRelatedPages(page, limit);
   }
+  // IDEA pages follow the same diversification pattern as themes: Ideas
+  // pages are planning-surface, so we want them to bridge into Themes,
+  // Captions, Palettes, and Destinations rather than dead-end in more Ideas.
+  if (page.category === "ideas") {
+    return getIdeaRelatedPages(page, limit);
+  }
 
   const related: { page: ContentPage; score: number }[] = [];
 
@@ -105,6 +111,58 @@ function getThemeRelatedPages(page: ContentPage, limit: number): ContentPage[] {
   pickByCategory("destinations", 1);
 
   // Fill any remaining slots with top-scored candidates
+  for (const r of scored) {
+    if (picked.length >= limit) break;
+    if (!picked.includes(r.page)) picked.push(r.page);
+  }
+
+  return picked.slice(0, limit);
+}
+
+/**
+ * Idea pages need diversified related content so they bridge into
+ * Themes, Captions, Palettes, and Destinations rather than dead-ending
+ * in more Idea pages. Picks top-scored within each category.
+ */
+function getIdeaRelatedPages(page: ContentPage, limit: number): ContentPage[] {
+  const scored = getAllPages()
+    .filter((c) => c.canonicalPath !== page.canonicalPath)
+    .map((candidate) => {
+      let score = 0;
+      if (candidate.tags.vibe && candidate.tags.vibe === page.tags.vibe) score += 3;
+      if (candidate.tags.celebrationType && candidate.tags.celebrationType === page.tags.celebrationType) score += 3;
+      if (candidate.tags.age && candidate.tags.age === page.tags.age) score += 2;
+      if (candidate.tags.season && candidate.tags.season === page.tags.season) score += 1;
+      if (candidate.tags.theme && candidate.tags.theme === page.tags.theme) score += 2;
+      // Weight by category fit — we want Ideas pages to link OUT more than IN
+      if (candidate.category === "themes") score += 2;
+      if (candidate.category === "captions") score += 1;
+      if (candidate.category === "palettes") score += 1;
+      if (candidate.category === "destinations") score += 1;
+      if (candidate.category === "ideas") score += 1;
+      return { page: candidate, score };
+    })
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  // Pick a diversified set: 1 theme, 1 idea, 1 caption/palette/destination, fill remaining
+  const picked: ContentPage[] = [];
+  const pickByCategory = (cat: string, max: number) => {
+    for (const r of scored) {
+      if (picked.length >= limit) break;
+      if (r.page.category === cat && picked.filter((p) => p.category === cat).length < max) {
+        if (!picked.includes(r.page)) picked.push(r.page);
+      }
+    }
+  };
+  pickByCategory("themes", 1);
+  pickByCategory("ideas", 2);
+  pickByCategory("captions", 1);
+  pickByCategory("palettes", 1);
+  pickByCategory("destinations", 1);
+  pickByCategory("zodiac", 1);
+
+  // Fill remaining slots
   for (const r of scored) {
     if (picked.length >= limit) break;
     if (!picked.includes(r.page)) picked.push(r.page);
