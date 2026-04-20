@@ -25,12 +25,26 @@ interface SectionRendererProps {
 }
 
 export function SectionRenderer({ sections, page }: SectionRendererProps) {
-  // Mid-content ad placement: if the page has a Quick Take (theme/idea template),
-  // slot the ad AFTER it so the opening sequence (hero → image → thesis →
-  // Quick Take) stays tight. Otherwise fall back to after the 3rd section.
-  const quickTakeIndex = sections.findIndex((s) => s.type === "quick-take");
-  const midAdIndex =
-    quickTakeIndex >= 0 ? quickTakeIndex + 1 : 3;
+  // Mid-content ad placement: push the ad past the entire opening sequence
+  // (hero → image → thesis → Quick Take → "Who this is for" → "When it
+  // works") so that when AdSense doesn't fill the slot, the ~138px of
+  // reserved height reads as a natural section break rather than a
+  // loading failure inside the introduction.
+  //
+  // Strategy: land the ad right before the first heavy "scannable"
+  // section (palette-showcase / tip-list / idea-list / caption-list /
+  // destination-list / amazon-shop). Fall back to an index deep enough
+  // to clear the intro on long editorial pages.
+  const heavyTypes = new Set([
+    "palette-showcase",
+    "tip-list",
+    "idea-list",
+    "caption-list",
+    "destination-list",
+    "amazon-shop",
+  ]);
+  const firstHeavyIndex = sections.findIndex((s) => heavyTypes.has(s.type));
+  const midAdIndex = firstHeavyIndex >= 0 ? firstHeavyIndex : 6;
 
   return (
     <div className="space-y-8">
