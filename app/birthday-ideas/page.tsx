@@ -28,8 +28,7 @@ const BY_FORMAT = [
     id: "format-dinner",
     label: "Dinner & Drinks",
     intro: "The table is the celebration. Works at every age and every budget.",
-    ideas: ["birthday-dinner-ideas"],
-    comingSoon: ["Birthday Brunch Ideas", "Birthday Cocktail Party"],
+    ideas: ["birthday-dinner-ideas", "birthday-ideas-for-adults"],
   },
   {
     id: "format-trips",
@@ -38,47 +37,31 @@ const BY_FORMAT = [
     ideas: ["birthday-trip-ideas", "birthday-weekend-ideas"],
   },
   {
-    id: "format-home",
-    label: "At Home",
-    intro: "No reservation required. The plan is the space you already have.",
-    ideas: [],
-    comingSoon: ["Birthday Party Ideas at Home", "Birthday Dinner at Home"],
-  },
-  {
     id: "format-photoshoot",
     label: "Photoshoot / Content",
-    intro: "The birthday where the gift is how you looked while living it.",
-    ideas: [],
-    comingSoon: ["Birthday Photoshoot Ideas"],
+    intro: "The birthday where the gift is a print you'd actually frame.",
+    ideas: ["birthday-photoshoot-ideas"],
   },
   {
     id: "format-solo",
     label: "Solo / Reset",
     intro: "Choosing yourself is a full format. Quiet isn't the opposite of celebrated.",
-    ideas: ["solo-birthday-ideas"],
-  },
-  {
-    id: "format-party",
-    label: "Party / Group",
-    intro: "High energy, group formats, and the kind of night people text about the next day.",
-    ideas: [],
-    comingSoon: ["Girls' Night Birthday Ideas", "Birthday Club Night Ideas"],
+    ideas: ["solo-birthday-ideas", "soft-life-birthday-ideas"],
   },
 ];
 
 const BY_AGE = [
   {
+    id: "age-adults",
+    label: "Birthday Ideas for Adults",
+    intro: "Past 25, the best birthdays feel intentional — not loud.",
+    ideas: ["birthday-ideas-for-adults"],
+  },
+  {
     id: "age-30",
     label: "30th Birthday",
     intro: "The milestone. Big enough to mark, specific enough to plan.",
     ideas: ["30th-birthday-ideas"],
-  },
-  {
-    id: "age-milestones",
-    label: "21st · 25th · 35th · 40th · 50th",
-    intro: "Milestone birthdays that deserve their own plan.",
-    ideas: [],
-    comingSoon: ["21st Birthday Ideas", "25th Birthday Ideas", "35th Birthday Ideas", "40th Birthday Ideas", "50th Birthday Ideas"],
   },
 ];
 
@@ -104,23 +87,8 @@ const BY_VIBE = [
   {
     id: "vibe-luxury",
     label: "Luxury / Splurge",
-    intro: "When the point is to feel taken care of, not to DIY anything.",
-    ideas: [],
-    comingSoon: ["Luxury Birthday Ideas"],
-  },
-  {
-    id: "vibe-turn-up",
-    label: "Turn Up",
-    intro: "High energy, group formats, late nights, real dance floors.",
-    ideas: [],
-    comingSoon: ["Girls' Night Birthday Ideas", "Birthday Club Ideas"],
-  },
-  {
-    id: "vibe-adventure",
-    label: "Adventurous",
-    intro: "Trade comfort for a story. The birthday that becomes the anecdote.",
-    ideas: [],
-    comingSoon: ["Adventure Birthday Ideas", "Outdoor Birthday Ideas"],
+    intro: "Access and curation over ostentation. Real luxury doesn't announce itself.",
+    ideas: ["luxury-birthday-ideas"],
   },
 ];
 
@@ -129,28 +97,19 @@ const BY_BUDGET = [
     id: "budget-free",
     label: "Free / Low Cost",
     intro: "Effort beats spend. The best low-budget birthdays feel the most considered.",
-    ideas: [],
-    comingSoon: ["Cheap Birthday Ideas", "Free Birthday Ideas"],
-  },
-  {
-    id: "budget-under-100",
-    label: "Under $100",
-    intro: "One real dinner, one thoughtful gesture, a dress code. That's the whole plan.",
-    ideas: [],
-    comingSoon: ["Birthday Ideas Under $100", "Last-Minute Birthday Ideas"],
+    ideas: ["cheap-birthday-ideas"],
   },
   {
     id: "budget-mid",
     label: "$100–$500",
     intro: "The sweet spot. Real dinners, small trips, curated at-home celebrations.",
-    ideas: ["birthday-dinner-ideas", "birthday-weekend-ideas"],
+    ideas: ["birthday-dinner-ideas", "birthday-weekend-ideas", "soft-life-birthday-ideas"],
   },
   {
     id: "budget-luxury",
     label: "Luxury / Splurge",
     intro: "Private dining, real trips, styled photoshoots. The birthday with no corners cut.",
-    ideas: ["birthday-trip-ideas"],
-    comingSoon: ["Luxury Birthday Ideas"],
+    ideas: ["luxury-birthday-ideas", "birthday-trip-ideas"],
   },
 ];
 
@@ -172,27 +131,12 @@ const BY_WHO = [
     label: "For Your Partner",
     intro: "The plan that reminds you why you chose each other.",
     ideas: ["romantic-birthday-ideas"],
-    comingSoon: ["Birthday Ideas for Couples"],
-  },
-  {
-    id: "who-friend",
-    label: "For Your Best Friend",
-    intro: "The birthday that proves you pay attention year-round, not just once.",
-    ideas: [],
-    comingSoon: ["Best Friend Birthday Ideas"],
   },
   {
     id: "who-yourself",
     label: "For Yourself",
     intro: "Planning your own birthday isn't sad — it's sovereign.",
-    ideas: ["solo-birthday-ideas"],
-  },
-  {
-    id: "who-parent",
-    label: "For Mom / Dad",
-    intro: "The celebration that feels grown, not childish.",
-    ideas: [],
-    comingSoon: ["Birthday Ideas for Mom", "Birthday Ideas for Dad"],
+    ideas: ["solo-birthday-ideas", "soft-life-birthday-ideas"],
   },
 ];
 
@@ -202,12 +146,12 @@ const FEATURED: { slug: string; why: string }[] = [
     why: "The most flexible format. Works at every age, every budget, every group size.",
   },
   {
-    slug: "birthday-ideas-for-her",
-    why: "Thoughtful, stylish, and specific — not a generic gift guide.",
+    slug: "birthday-ideas-for-adults",
+    why: "The umbrella guide for celebrations past 25 — intentional, grown, not childish.",
   },
   {
-    slug: "birthday-ideas-for-him",
-    why: "Experience-led ideas that skip the stereotypes.",
+    slug: "luxury-birthday-ideas",
+    why: "Access and curation over ostentation. The considered version of spend.",
   },
 ];
 
