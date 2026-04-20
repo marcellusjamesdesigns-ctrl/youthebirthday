@@ -53,6 +53,16 @@ const themePages: ContentPage[] = [
         body: "A soft life birthday theme is about ease elevated. It's not cheap — but it's not loud either. Think linen tablecloths, muted florals, natural light, and the kind of food that's beautiful without trying. The aesthetic is intentional simplicity. The feeling is <em>I don't need to prove anything.</em>",
       },
       {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "Calm birthdays, solo resets, intimate brunches, wellness weekends" },
+          { label: "Works best", value: "Quiet restaurants, spa days, hotel rooms, sunlit apartments, garden brunches" },
+          { label: "Budget", value: "$100–$500 — flexible if the venue does the heavy lifting" },
+          { label: "Dress code", value: "Linen, silk, soft neutrals, barely-there glam, tonal-on-tonal" },
+          { label: "Avoid", value: "Performative luxury, cluttered decor, forced self-care clichés" },
+        ],
+      },
+      {
         type: "paragraph",
         heading: "Who this theme is for",
         body: "Soft life works for the person who has spent the last year earning back their nervous system. It's for the 30-somethings who've tried the club-birthday routine and want something that doesn't require Advil the next morning. It's for anyone who believes a birthday is supposed to feel like <em>being cared for</em>, not like hosting an event. If you're rolling your eyes at balloon arches and DJs, this is your theme.",
@@ -244,6 +254,16 @@ const themePages: ContentPage[] = [
         body: "The dark feminine birthday theme is about reclaiming depth. It's not goth — it's intentional. Burgundy candles, low lighting, velvet textures, and the kind of celebration that feels like a scene from a film nobody's made yet. The vibe is powerful, mysterious, and unapologetically female. Think: Scorpio energy, black-tie meets witchcraft, the dinner party where everyone leaves feeling like they witnessed something.",
       },
       {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "Intimate dinners, Scorpio birthdays, candlelit nights, dramatic photos" },
+          { label: "Works best", value: "Private dining rooms, moody restaurants, lounges, low-lit apartments" },
+          { label: "Budget", value: "$150–$700 — driven mostly by venue and florals" },
+          { label: "Dress code", value: "Black, oxblood, velvet, sheer layers, metallic accents" },
+          { label: "Avoid", value: "Halloween styling, plastic gothic decor, costume drama" },
+        ],
+      },
+      {
         type: "paragraph",
         heading: "Who this theme is for",
         body: "Dark feminine works for the person who's ready to stop performing lightness. It's for deep-water signs (<a href=\"/zodiac-birthdays/scorpio-birthday-ideas\">Scorpios</a>, Cancers, Pisces), late-stage millennials who grew up on Lana and Fiona Apple, and anyone whose birthday has started to feel more like a seasonal reckoning than a celebration. It's the theme for the year you stopped explaining yourself.",
@@ -425,6 +445,16 @@ const themePages: ContentPage[] = [
       {
         type: "paragraph",
         body: "Old money doesn't announce itself — that's the point. An old money birthday theme is about restraint as a flex. Navy, cream, hunter green. Classic restaurants that have been open since 1987. A table that looks like it belongs in a colonial estate. No loud logos, no over-decorated cakes, no confetti cannons. Just exceptional quality, the right people, and an aesthetic that feels borrowed from a family portrait gallery.",
+      },
+      {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "Milestone birthdays, quiet luxury dinners, classic hotel bars, elegant brunches" },
+          { label: "Works best", value: "Wood-paneled restaurants, members-club energy, estate tables, coastal lunches" },
+          { label: "Budget", value: "$200–$800 — mostly driven by venue and glassware" },
+          { label: "Dress code", value: "Cream, navy, chocolate, cashmere, pearls, loafers, tailored pieces" },
+          { label: "Avoid", value: "Logo-heavy luxury, fake wealth signals, anything too loud" },
+        ],
       },
       {
         type: "paragraph",
@@ -609,6 +639,16 @@ const themePages: ContentPage[] = [
         body: "Y2K birthday themes are having a full renaissance — and the aesthetic is deeper than just nostalgia. It's a specific visual language: iridescent fabrics, chrome surfaces, baby blue and hot pink together, frosted lips and butterfly clips. A Y2K birthday done right feels like stepping into a 2001 music video produced by someone with genuinely good taste. Playful, maximalist, and completely unafraid.",
       },
       {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "High-energy birthdays, 25th/30th nostalgia, group photos, dance nights" },
+          { label: "Works best", value: "Lounges, karaoke rooms, hotel suites, colorful restaurants, afterparties" },
+          { label: "Budget", value: "$100–$400 — depends on props and outfit details" },
+          { label: "Dress code", value: "Chrome, denim, rhinestones, baby tees, tinted lenses, metallic bags" },
+          { label: "Avoid", value: "Cheap costume-party Y2K, too many trends at once, plastic chaos" },
+        ],
+      },
+      {
         type: "paragraph",
         heading: "Who this theme is for",
         body: "Y2K works for anyone turning 21 through 35 who has the cultural reference points to do it right — not as costume, but as mood. It's for the person whose playlist opens with Aaliyah and closes with Charli XCX, who knows the difference between Destiny's Child era Beyoncé and solo-album Beyoncé, and who's ready for a birthday that photographs like a TRL segment. It's also the best theme for a group of friends who know how to go all in on a dress code.",
@@ -789,6 +829,16 @@ const themePages: ContentPage[] = [
       {
         type: "paragraph",
         body: "A maximalist birthday is a rejection of 'less is more' — and it's deeply, joyfully correct. The maximalist aesthetic is about layering: multiple patterns, unexpected color combinations, surfaces that shouldn't work but do, a table that looks like it took genuine vision to execute. If someone walks in and immediately says <em>this is a lot</em>, you're doing it right. This isn't chaos — it's curated abundance.",
+      },
+      {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "Leo energy, big dinners, creative friend groups, birthdays that want presence" },
+          { label: "Works best", value: "Colorful restaurants, art spaces, dramatic tables, house parties, rooftop dinners" },
+          { label: "Budget", value: "$200–$900 — driven by florals, tableware, and venue" },
+          { label: "Dress code", value: "Color, print, texture, statement jewelry, dramatic silhouettes" },
+          { label: "Avoid", value: "Random clutter, mismatched chaos, party-store maximalism" },
+        ],
       },
       {
         type: "paragraph",
