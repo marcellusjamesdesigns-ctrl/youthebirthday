@@ -1159,6 +1159,613 @@ const themePages: ContentPage[] = [
       { type: "related-content" },
     ],
   },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // ALL-WHITE
+  // Thesis: A palette that is a rule, not a decor trick.
+  // ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "all-white-birthday-theme",
+    category: "themes",
+    title: "All-White Birthday Theme (2026) — How to Make All-White Feel Expensive, Not Sterile",
+    description:
+      "Plan an all-white birthday theme with texture, lighting, and editorial direction. Full guide to making all-white feel intentional and expensive — not bridal, sterile, or plain.",
+    headline: "All-White Birthday Theme",
+    subheadline: "A palette that is a rule, not a decor trick.",
+    tags: { vibe: "luxury", season: "winter", theme: "all-white" },
+    canonicalPath: "/birthday-themes/all-white-birthday-theme",
+    schemaType: "Article",
+    publishStatus: "published",
+    publishedAt: "2026-04-19",
+    updatedAt: "2026-04-19",
+    sections: [
+      {
+        type: "hero",
+        headline: "All-White Birthday Theme",
+        subheadline: "A palette that is a rule, not a decor trick.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1754996615146-285cfbd9259e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "An elegant all-white birthday table setting with candles and subtle floral arrangements",
+        caption: "Texture carries the whole aesthetic.",
+        credit: "Photo by Babak Eshaghian on Unsplash",
+        creditUrl: "https://unsplash.com/@babak22ir?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "An all-white birthday is not a decor choice. It's a <em>rule</em> — a dress code and palette commitment that everyone follows, which is exactly what makes it work. When half the room shows up in color, it collapses. When the whole room commits, you get a photograph that doesn't look like any other birthday. The theme lives or dies on enforcement.",
+      },
+      {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "30th, 40th, and 50th milestones; late-summer and winter celebrations" },
+          { label: "Works best", value: "Open-plan home, gallery-style venue, private dining room, rooftop in warm weather" },
+          { label: "Budget", value: "$300–$1,500+ (linens and florals are the spend)" },
+          { label: "Dress code", value: "All-white, any fabric, any silhouette — enforce it on the invite" },
+          { label: "Avoid", value: "Bridal energy, cheap plastic white decor, unfinished-looking rooms, loud guests in color" },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "All-white works for the person who wants their birthday to feel like a statement without being loud about it. It's for the milestone birthdays (30, 40, 50) where the guest list is curated and everyone can be trusted to follow a dress code. It's for someone whose personality can hold a commitment this strong — the theme is inherently confident, and a host who's apologetic about it will wreck the aesthetic.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Late summer (August–September) is the natural fit — warm evenings, outdoor options, guests already wearing linen. Winter also works beautifully (December–February) because all-white against bare trees and crisp light reads as editorial. Spring can work but requires vigilance against pastels bleeding in. Skip mid-summer heat — white fabrics wilt visibly in high humidity, and guests will sweat through everything.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid making it look bridal or sterile",
+        body: "Bridal is the #1 misread. The fastest fix: skip anything with traditional wedding signifiers — no arches, no rose-petal aisles, no tiered white cake with sugar flowers. Sterile is the #2 misread, and it happens when every white in the room is the same white. The solution is <strong>varied temperature</strong>: mix ivory, cream, bone, chalk, and crisp white together deliberately. Combine matte and sheen textures (linen with silk with pearl with ceramic). Add one real architectural element — a structural floral, a dramatic candelabra, an oversized framed mirror. All-white isn't minimalism; it's a <em>disciplined maximalism</em> where the only rule is the color.",
+      },
+      {
+        type: "palette-showcase",
+        heading: "All-White Color Palettes",
+        palettes: [
+          {
+            name: "Warm Whites",
+            mood: "textured, lived-in, expensive",
+            colors: [
+              { hex: "#faf7f0", name: "Linen" },
+              { hex: "#f3ece1", name: "Cream" },
+              { hex: "#ede2d3", name: "Bone" },
+              { hex: "#e8ddc9", name: "Chalk" },
+              { hex: "#d9cfb8", name: "Soft Camel (accent)" },
+            ],
+          },
+          {
+            name: "Cool Whites",
+            mood: "crisp, architectural, editorial",
+            colors: [
+              { hex: "#ffffff", name: "Pure White" },
+              { hex: "#f5f5f0", name: "Porcelain" },
+              { hex: "#eceae0", name: "Frost" },
+              { hex: "#dfdccf", name: "Paper" },
+              { hex: "#b8b5a6", name: "Soft Stone (accent)" },
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip-list",
+        heading: "How to Keep All-White From Looking Flat",
+        tips: [
+          {
+            title: "Vary the temperature of your whites",
+            body: "Nothing kills this theme faster than matching every white in the room. Use warm (ivory, cream, bone) and cool (porcelain, frost, paper) together. Pick one as the dominant 70% and the other as the 30% accent. The eye reads <em>variation</em> as editorial; it reads <em>uniformity</em> as stock photo.",
+          },
+          {
+            title: "Layer textures, not colors",
+            body: "Since you've taken color off the table, texture does the entire visual job. Linen tablecloth with a silk runner. Matte ceramic plates with a brushstroke glaze. Pearl-accented napkin rings against rough-woven napkins. Add an unexpected textural element — bone-colored tapered candles, a single architectural dried floral (pampas, palm frond, birch branch) — so the table has depth.",
+          },
+          {
+            title: "Control the lighting",
+            body: "Overhead white light is a death sentence. Kill every ceiling fixture and rely on warm candlelight (cream or ivory tapers, not pure white which reads clinical) plus one or two warm lamps at eye level. The goal is skin-flattering light that makes whites glow instead of glare. Late-afternoon natural light at golden hour does half the work if the venue allows it.",
+          },
+          {
+            title: "Enforce the dress code with zero apology",
+            body: "Put 'strict all-white dress code' on the invite. Give examples (linen suit, silk slip dress, cashmere, ivory knit). Any color breaks the aesthetic, and one guest in red ruins the photos. If someone asks if cream counts — yes. If someone asks if they can wear a pattern on white — yes, as long as the pattern is white-on-white or tonal. If someone asks if they can wear beige — also yes. Black is the hard no.",
+          },
+          {
+            title: "Pick food that won't stain the palette",
+            body: "This is the one practical rule nobody talks about. Skip red wine (serve white, rosé, or champagne). Skip berries on the cake. Skip tomato sauce, beet anything, bold curry. A serving of food that stains a napkin mid-dinner wrecks the visual. Stick to a menu that stays in the palette: champagne and white wine, oysters, crudo, white fish, cauliflower and potato sides, a white chocolate or lemon-olive-oil cake.",
+          },
+        ],
+      },
+      {
+        type: "inline-cta",
+        text: "Pair this with <a href=\"/birthday-themes/old-money-birthday-theme\">old money</a> if you want heritage-coded all-white, or <a href=\"/birthday-themes/soft-life-birthday-theme\">soft life</a> for a gentler version.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1772475385350-d130ebe22bf5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A white-toned interior with natural light and textured linen furniture",
+        caption: "Natural light is a free upgrade.",
+        credit: "Photo by Caroline Badran on Unsplash",
+        creditUrl: "https://unsplash.com/@___atmos?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "wide",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "The all-white menu is constraint as design. Drinks: champagne, white wine, rosé that reads pale, vodka martinis, white negronis, sparkling water in glass. Skip anything red, anything with berry muddle, anything neon. Food: oysters, crudo, a white fish course, burrata, cauliflower steaks, potato gratin, a pale-colored risotto, a cheese board that stays in the ivory family. Dessert: a flourless white chocolate cake, lemon olive oil cake, coconut panna cotta. Garnish with herbs (thyme, rosemary, white-flowering basil) not red or purple anything.",
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the All-White Aesthetic",
+        subtitle: "Eight pieces that carry texture and temperature variation — the actual trick.",
+        placement: "all-white-theme",
+        format: "grid",
+        items: [
+          { query: "white linen tablecloth hemstitch large", label: "Hemstitched Linen Tablecloth", description: "The warm-white base layer." },
+          { query: "ivory taper candles unscented set", label: "Ivory Taper Candles", description: "Warm tapers, not clinical whites." },
+          { query: "white ceramic dinner plates matte stoneware", label: "Matte Ceramic Plates", description: "Brushstroke glaze — not gloss." },
+          { query: "pearl napkin rings set elegant", label: "Pearl Napkin Rings", description: "Tonal accent with sheen." },
+          { query: "white pampas grass dried bouquet large", label: "Dried Pampas Bouquet", description: "The one architectural moment." },
+          { query: "white linen napkins woven cloth set", label: "Woven Linen Napkins", description: "Rough texture against smooth plates." },
+          { query: "champagne flutes crystal white gold rim", label: "Crystal Flutes", description: "For the toast and every refill." },
+          { query: "cream taper candle holders brass set", label: "Brass Candle Holders", description: "One warm accent. Just one." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "All-white is the one theme where budget shows. Cheap plastic white decor (cake toppers, 'HAPPY BIRTHDAY' balloons, dollar-store plates) reads as kids' party instantly. Under $300 works only if you already own quality white linens and glassware. $500-$1,000 covers a proper dinner for 8-12: linen runner, real plates, tapers, florals. Luxury version ($1,500+) rents tabletop rentals from a company — you'll have matching crystal, real silver, pressed linens, and no stress about breakage.",
+      },
+      {
+        type: "inline-cta",
+        text: "Match the crisp palette with our <a href=\"/birthday-palettes/birthday-color-palette-inspiration\">birthday color palette inspiration</a>.",
+      },
+      {
+        type: "faq",
+        heading: "All-White Birthday FAQ",
+        questions: [
+          {
+            question: "What colors actually count as all-white?",
+            answer:
+              "Ivory, cream, bone, chalk, porcelain, paper, pale beige, and crisp white. Light taupe works if it reads tonal. Black is the hard no. Pastels (pink, blue, green) break the theme. Gold and silver are fine as accents (candle holders, flatware, jewelry) but shouldn't appear as major surface colors. When in doubt: if it photographs as white or off-white in overhead light, it counts.",
+          },
+          {
+            question: "How do I keep an all-white birthday from looking sterile?",
+            answer:
+              "Sterile happens when every white is the same white. The fix is temperature variation: mix warm whites (ivory, cream, bone) with cool whites (porcelain, frost, paper) deliberately. Layer textures — linen with silk with pearl with ceramic. Add one real architectural element (a dramatic floral, a candelabra, an oversized mirror). And control lighting: no overhead white lights, only warm candles and lamps at eye level.",
+          },
+          {
+            question: "How do I make it feel expensive, not bridal?",
+            answer:
+              "Skip wedding signifiers. No arches, no rose-petal runners, no tiered cake with sugar flowers, no welcome signs in cursive. Use editorial references instead — think Hermès showroom, Aesop store, a Calvin Klein campaign from the 90s. The difference is <em>restraint and texture</em>: an all-white birthday that feels expensive has 3-4 strong elements (linens, florals, lighting, one statement piece) instead of 20 small bridal touches.",
+          },
+          {
+            question: "What should I tell guests about the all-white dress code?",
+            answer:
+              "Be direct on the invite: 'Strict all-white dress code — any fabric, any silhouette.' Give 2-3 examples (linen suit, silk slip dress, ivory knit). Mention that cream, ivory, and tonal white-on-white patterns count; black and any other color do not. Expect one or two guests to text asking; confirm directly. Anyone who shows up in color should be politely seated in the photos' background.",
+          },
+          {
+            question: "What food and drinks work for an all-white birthday?",
+            answer:
+              "Menu that stays in the palette: oysters, crudo, white fish, burrata, potato gratin, cauliflower, risotto, white chocolate or lemon olive oil cake. Drinks: champagne, white wine, pale rosé, vodka martinis, white negronis, sparkling water. Skip red wine, berry anything, tomato sauce, beet, bold curry, anything that stains. Herbs as garnish — thyme, rosemary, white-flowering basil — never red or purple garnish.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your all-white birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, celebration plan, and destination picks tuned to your exact vibe.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
+      { type: "related-content" },
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // DISCO
+  // Thesis: The most photographed-badly theme. Here's how to do it
+  //         photographed well.
+  // ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "disco-birthday-theme",
+    category: "themes",
+    title: "Disco Birthday Theme (2026) — How to Do Disco That Photographs Well",
+    description:
+      "The disco birthday theme guide for adults — mirror balls, warm directional lighting, sequins done right, playlist arc, and how to avoid Halloween costume chaos.",
+    headline: "Disco Birthday Theme",
+    subheadline: "The most photographed-badly theme. Here's how to do it photographed well.",
+    tags: { vibe: "turn-up", season: "summer", theme: "disco" },
+    canonicalPath: "/birthday-themes/disco-birthday-theme",
+    schemaType: "Article",
+    publishStatus: "published",
+    publishedAt: "2026-04-19",
+    updatedAt: "2026-04-19",
+    sections: [
+      {
+        type: "hero",
+        headline: "Disco Birthday Theme",
+        subheadline: "The most photographed-badly theme. Here's how to do it photographed well.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1583236753302-ded72d40a5e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A single dramatic light spot against darkness — disco aesthetic done intentionally",
+        caption: "Light is the whole point.",
+        credit: "Photo by Portuguese Gravity on Unsplash",
+        creditUrl: "https://unsplash.com/@portuguesegravity?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "Disco is the most photographed-badly theme — and it's usually because people treat it like a costume party. The real aesthetic is about <em>light, reflection, and movement</em>. Mirror balls throwing fractured light across a room. Sequins catching a single warm bulb. Sweat on skin under directional light. A disco birthday done well looks like a 1979 Studio 54 photograph. A disco birthday done badly looks like a Spirit Halloween aisle.",
+      },
+      {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "21st–35th birthdays, group formats, late-night energy" },
+          { label: "Works best", value: "Dimly lit venue, private event space, a living room cleared for dancing" },
+          { label: "Budget", value: "$200–$800 (lighting and mirror balls are the investment)" },
+          { label: "Dress code", value: "Sequins, metallic, silk, satin — one statement piece, not full costume" },
+          { label: "Avoid", value: "Rainbow chaos, costume wigs, overhead white lighting that makes everyone look green" },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Disco works for the person whose birthday wants energy and a real dance floor. It's for 21st through 35th birthdays where the guest list has rhythm and the venue has space. It's for the friend group that will commit to a dress code rather than apologize for it, and for the host who understands that disco is less about <em>looking</em> retro and more about <em>feeling</em> like the best night anyone's had that year.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Summer nights and winter holiday season both land well. Summer because it flows naturally from drinks into dancing and sweaty joy. December because disco is the correct aesthetic for the end-of-year 'we made it' energy — especially NYE-adjacent birthdays. Skip disco for daytime or brunch formats; the theme is built on darkness, warm artificial light, and the kind of volume that requires neighbors to not be home.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to avoid Halloween/costume energy",
+        body: "The costume trap comes from leaning on 70s signifiers as shorthand — bell-bottoms, afro wigs, tinted round sunglasses worn indoors. These read as <em>costume</em>, not <em>theme</em>. The real version is contemporary: silk shirts, structured sequined dresses, metallic suits, platform shoes that feel like fashion not parody. Skip anything you'd buy at a costume store. Shop at vintage stores, designer consignment, and your own closet for pieces that have texture and shine. The rule: if you'd wear it to a good restaurant, it belongs at a disco birthday. If you'd wear it trick-or-treating, it doesn't.",
+      },
+      {
+        type: "palette-showcase",
+        heading: "Disco Color Palettes",
+        palettes: [
+          {
+            name: "Studio Gold",
+            mood: "warm metallic, sweaty glow",
+            colors: [
+              { hex: "#1a0f0a", name: "Deep Obsidian" },
+              { hex: "#c9a96e", name: "Vintage Gold" },
+              { hex: "#e6d3a3", name: "Champagne" },
+              { hex: "#8b5a2b", name: "Bronze" },
+              { hex: "#ffd700", name: "Pure Gold (accent)" },
+            ],
+          },
+          {
+            name: "Mirror & Smoke",
+            mood: "silver, chrome, moody",
+            colors: [
+              { hex: "#0a0a0a", name: "Smoke Black" },
+              { hex: "#c0c0c0", name: "Mirror Silver" },
+              { hex: "#e8e4dc", name: "Chrome White" },
+              { hex: "#6b0f1a", name: "Wine Red" },
+              { hex: "#d4af37", name: "Warm Gold (accent)" },
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip-list",
+        heading: "How to Make Disco Photograph Well",
+        tips: [
+          {
+            title: "One large mirror ball, hung high",
+            body: "A real mirror ball — 12-inch minimum, 16-inch ideal — hung from the ceiling with a rotating motor. One good mirror ball beats ten tabletop sequin accents. Position it near a directional light so it throws fractured light across the walls and ceiling. This is the single highest-impact decor move on the list.",
+          },
+          {
+            title: "Warm directional lighting — not overhead",
+            body: "Kill every overhead fixture. Use warm-toned lamps (2700K) at eye level, or better, a single spotlight pointed at the mirror ball. Add a warm amber or red gel if you're being ambitious. The goal: skin looks good, the room glows warm, and the mirror ball has a light to reflect. Overhead white LED is what makes every disco party photograph like a school gym.",
+          },
+          {
+            title: "Sequins in moderation, real textures everywhere else",
+            body: "One sequined element — a dress, a tablecloth, a backdrop — reads as <em>disco</em>. Five sequined elements reads as a craft store exploded. Pair sequins with silk, satin, leather, velvet. Texture variation is what separates editorial disco from Party City disco.",
+          },
+          {
+            title: "Reflective accents — metallic, not plastic",
+            body: "Brass candleholders. Silver or gold-rimmed glassware. A metallic table runner (real fabric, not foil). Disco balls as smaller centerpieces (4-inch, hanging from fishing line above the table). Anything that catches light adds to the atmosphere; anything plastic or printed breaks it. Shop for <em>objects</em>, not decor kits.",
+          },
+          {
+            title: "Build a real playlist arc — don't use 'Disco Hits'",
+            body: "A real disco playlist has a shape. Open warm (Chaka Khan, Marvin Gaye, Earth Wind & Fire). Build energy through the first hour (Donna Summer, Diana Ross, Chic). Peak late (Sister Sledge, Thelma Houston, early Madonna). Close with slow-burn soul (Curtis Mayfield, Al Green). Three hours minimum. Skip anything with 'Disco Hits' in the title — those playlists are flat and skip the deep cuts that make the night land.",
+          },
+        ],
+      },
+      {
+        type: "inline-cta",
+        text: "Pair with our <a href=\"/birthday-themes/y2k-birthday-theme\">Y2K theme</a> for a chrome-forward version, or <a href=\"/birthday-themes/maximalist-birthday-theme\">maximalist</a> for color-forward.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1719607055881-fe8c6aa6a199?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A mirror ball on a white surface reflecting warm light",
+        caption: "The mirror ball is the centerpiece, not an afterthought.",
+        credit: "Photo by Liana S on Unsplash",
+        creditUrl: "https://unsplash.com/@cherstve_pechivo?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "wide",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "Disco isn't a dinner theme — it's a drinks-and-snacks theme. Heavy hors d'oeuvres that survive heat and movement: sliders, cheese board with aged cheddar and prosciutto, oysters on ice if the venue allows it, popcorn in small metal bowls, a late-night fries moment. Drinks: champagne is mandatory, a signature golden cocktail (French 75, gold-rimmed margaritas, or a tequila sour), espresso martinis as the second-half pick-me-up. Skip plated dinner — it kills the energy and guests can't dance on full stomachs anyway.",
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the Disco Aesthetic",
+        subtitle: "Real objects, not costume-shop shortcuts.",
+        placement: "disco-theme",
+        format: "grid",
+        items: [
+          { query: "mirror ball large 12 inch hanging", label: "12-inch Mirror Ball", description: "The actual centerpiece. Hang it high." },
+          { query: "disco ball motor rotating hanging", label: "Rotating Motor", description: "Without this, it's just a ball." },
+          { query: "warm spotlight bulb amber directional", label: "Warm Spotlight Bulb", description: "Point it at the ball. Watch the room transform." },
+          { query: "sequin table runner gold metallic fabric", label: "Sequin Runner", description: "Real fabric, not foil." },
+          { query: "gold rimmed champagne coupes vintage", label: "Gold-Rim Champagne Coupes", description: "Real glass, real weight." },
+          { query: "brass candleholders vintage tall set", label: "Vintage Brass Candleholders", description: "Warm metal, real reflection." },
+          { query: "mini disco balls 4 inch set hanging", label: "Mini Disco Balls (set)", description: "Hang over the table on fishing line." },
+          { query: "metallic tablecloth satin gold elegant", label: "Satin Tablecloth", description: "Sheen without the sequin chaos." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Disco scales well with budget because one great mirror ball does most of the work. Under $200 covers a mirror ball, motor, one warm spotlight, and a sequin runner — enough for a great home party. $500 adds a sound system upgrade (real speakers beat a Bluetooth dock), better glassware, and vintage-shop sequin pieces for the host. Luxury version ($800-$1,500) rents a full DJ setup, uplighting, and catered hors d'oeuvres — but the mirror ball still does the aesthetic heavy lifting.",
+      },
+      {
+        type: "inline-cta",
+        text: "Need captions to match the energy? See our <a href=\"/birthday-captions/30th-birthday-captions\">30th</a> and <a href=\"/birthday-captions/25th-birthday-captions\">25th birthday captions</a>.",
+      },
+      {
+        type: "faq",
+        heading: "Disco Birthday FAQ",
+        questions: [
+          {
+            question: "How do I make a disco birthday photograph well?",
+            answer:
+              "Three things, in order of importance. First: one large mirror ball hung high with a rotating motor — 12 inches minimum, 16 is better. Second: warm directional lighting (2700K lamps at eye level or a warm spotlight), no overhead white LED. Third: limit sequins to one or two elements and rely on real textures (silk, satin, brass, velvet) for everything else. Those three choices separate editorial disco from school-gym disco.",
+          },
+          {
+            question: "What should guests wear to a disco birthday?",
+            answer:
+              "Put 'disco dress code — sequins, metallic, satin' on the invite. One statement piece, not a costume. Examples: a sequined dress with plain hair and makeup, a metallic suit over a silk t-shirt, a satin slip dress with gold jewelry, platform shoes or heeled boots. Shop vintage and designer consignment — skip costume stores entirely. If it reads more 1979-fashion-photograph than Halloween-aisle, it's right.",
+          },
+          {
+            question: "What's the right playlist for a disco birthday?",
+            answer:
+              "A real arc, not a greatest-hits playlist. Open warm and soulful (Chaka Khan, Marvin Gaye, Earth Wind & Fire). Build through the first hour (Donna Summer, Diana Ross, Chic, Sylvester). Peak late (Sister Sledge, Thelma Houston, early Madonna, modern disco revivalists like Jessie Ware). Close on slow-burn soul (Curtis Mayfield, Al Green). Three hours minimum. Skip any Spotify playlist titled 'Disco Hits' — they flatten the genre and miss the deep cuts.",
+          },
+          {
+            question: "Is disco better for a dinner or a party?",
+            answer:
+              "Party, always. Disco is a drinks-and-dancing theme — heavy hors d'oeuvres, late-night energy, a real dance floor. A seated dinner with a disco ball above the table is a misread; the ball doesn't do anything unless there's movement. Best format: cocktail-attire party, 15-30 people, drinks and snacks flowing, music peaking around hour two.",
+          },
+          {
+            question: "How do I do a disco birthday on a budget?",
+            answer:
+              "One great mirror ball + one warm spotlight + a sequin runner is 80% of the aesthetic for under $200. Skip costume-shop disco kits entirely (they read cheap on camera). Vintage-shop your own outfit. Build a real playlist instead of paying for a DJ. The theme rewards commitment to a few key elements far more than spreading budget across cheap decor.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your disco birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, celebration plan, and destination picks based on your exact vibe.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
+      { type: "related-content" },
+    ],
+  },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // COQUETTE
+  // Thesis: Femininity taken seriously, not ironically.
+  // ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "coquette-birthday-theme",
+    category: "themes",
+    title: "Coquette Birthday Theme (2026) — Grown, Not Childish — The Adult Coquette Guide",
+    description:
+      "How to plan a coquette birthday theme that feels grown and intentional — bows, ribbons, pearls, and blush done with restraint, not childish cosplay. Full guide with colors, dress code, and menu.",
+    headline: "Coquette Birthday Theme",
+    subheadline: "Femininity taken seriously, not ironically.",
+    tags: { vibe: "soft-life", theme: "coquette" },
+    canonicalPath: "/birthday-themes/coquette-birthday-theme",
+    schemaType: "Article",
+    publishStatus: "published",
+    publishedAt: "2026-04-19",
+    updatedAt: "2026-04-19",
+    sections: [
+      {
+        type: "hero",
+        headline: "Coquette Birthday Theme",
+        subheadline: "Femininity taken seriously, not ironically.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1756758155895-e13e0afbe54e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "Delicate pink fabric roses with pearl accents on lace — coquette aesthetic",
+        caption: "Pearl, ribbon, restraint. That's the whole formula.",
+        credit: "Photo by Alfonso Scarpa on Unsplash",
+        creditUrl: "https://unsplash.com/@lucidistortephoto?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "hero",
+      },
+      {
+        type: "paragraph",
+        body: "Coquette is femininity taken seriously, not ironically. It's bows, ribbons, pearls, blush, and candlelight — but grown. The aesthetic was built for TikTok and got diluted into a cartoon version, but done right, it's closer to a Sofia Coppola film than a teenager's bedroom. The difference is <em>restraint</em>: one perfect bow instead of fifty, real pearls instead of plastic, candlelight instead of pink LED strips.",
+      },
+      {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "25th–35th birthdays, intimate dinners and brunches, milestone celebrations for someone reclaiming softness" },
+          { label: "Works best", value: "Candlelit dinner, afternoon tea, private dining room, cozy home setting" },
+          { label: "Budget", value: "$150–$500 (the details are the spend — real ribbon, real pearls, real florals)" },
+          { label: "Dress code", value: "Blush, cream, ivory, pearls, bows, lace — soft silhouettes, no hair-bow cosplay" },
+          { label: "Avoid", value: "Costume bows, cartoon pink, plastic pearls, little-girl birthday energy, hot pink balloon arches" },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Who this theme is for",
+        body: "Coquette works for the person who grew up being told softness was childish and is now reclaiming it with full authority. It's for 25th through 35th birthdays, especially for women coming off a hard year who want something that feels <em>gentle</em> without being performative. It's for people who can pull off a bow without looking like they're in costume, and who understand that the theme is as much about mood (candlelit, intimate, unhurried) as it is about specific signifiers.",
+      },
+      {
+        type: "paragraph",
+        heading: "When it works best",
+        body: "Spring and early summer for the natural alignment with florals and light pastels. Winter works beautifully for a candlelit dinner format — deep candles + pale florals + cashmere reads as an elevated holiday-season birthday. Skip it for a loud group party; coquette needs intimate format (dinner of 6-10, brunch of 4-8, a private tea) where the details can be seen. It falls apart in a venue with 30 people where nobody can see the table.",
+      },
+      {
+        type: "paragraph",
+        heading: "How to keep coquette grown, not childish",
+        body: "The childish trap comes from <em>quantity, not quality</em> — hanging a pink balloon arch, tying bows on every single chair, serving cotton candy with rainbow sprinkles. The grown version uses the same vocabulary but with restraint: one dramatic bow on the cake stand instead of bows everywhere. Real freshwater pearls as napkin rings instead of plastic. Blush linen instead of hot pink. Candlelight instead of pink LED. And — critically — <em>real food and real drinks</em>. A cocktail of Campari and champagne reads mature; a pink-frosted unicorn cake reads like a 7-year-old's birthday. The theme hinges on taking the aesthetic seriously rather than signaling it cheaply.",
+      },
+      {
+        type: "palette-showcase",
+        heading: "Coquette Color Palettes",
+        palettes: [
+          {
+            name: "Soft Blush",
+            mood: "gentle, restored, candlelit",
+            colors: [
+              { hex: "#f5ebe0", name: "Cream" },
+              { hex: "#f3d1ca", name: "Powder Pink" },
+              { hex: "#e8b9ab", name: "Dusty Rose" },
+              { hex: "#c8a995", name: "Warm Taupe" },
+              { hex: "#8b6f5a", name: "Cocoa (accent)" },
+            ],
+          },
+          {
+            name: "Romantic Grown",
+            mood: "deeper, intimate, cashmere-coded",
+            colors: [
+              { hex: "#fcefdc", name: "Butter Cream" },
+              { hex: "#d4a5a5", name: "Rose Dust" },
+              { hex: "#a67d7d", name: "Mauve" },
+              { hex: "#8b3a3a", name: "Dried Rose (accent)" },
+              { hex: "#c9a96e", name: "Aged Gold (accent)" },
+            ],
+          },
+        ],
+      },
+      {
+        type: "tip-list",
+        heading: "How to Keep Coquette Grown",
+        tips: [
+          {
+            title: "One perfect bow, not fifty",
+            body: "The quickest signal of 'grown coquette': restraint on the bow. Tie one dramatic satin bow on the cake stand, or one at the back of your chair, or one on a favor bag. Do NOT tie bows on every chair, every vase, every napkin. One perfect bow reads as intentional; many read as party decoration.",
+          },
+          {
+            title: "Real pearls, not plastic",
+            body: "A strand of real freshwater pearls as a napkin tie. Vintage pearl earrings as place-setting gifts. A single pearl embedded in a place card. Skip plastic pearls from the craft store entirely — they photograph exactly as what they are. Real pearls cost less than you think ($20-60 for a strand) and carry the aesthetic across the whole evening.",
+          },
+          {
+            title: "Blush, not hot pink",
+            body: "The grown coquette palette is powder pink, dusty rose, cream, mauve — never hot pink, neon pink, bubblegum, or magenta. If the color would show up on a cartoon Barbie box, it's wrong. If it would show up on a watercolor painting of a peony, it's right.",
+          },
+          {
+            title: "Candlelight is mandatory",
+            body: "Overhead light kills this theme faster than any decor choice. Burn tapered candles (cream, dusty pink, or ivory — never neon) in every arrangement. A pair of pillar candles on the dining table, tapers down the runner, tealights in the bathroom. The light should be warm, flickering, and skin-flattering. Overhead white LED reads clinical.",
+          },
+          {
+            title: "Grown-up food and drinks — no candy, no cartoons",
+            body: "Serve real food. A roast chicken with rosemary, a seasonal tart, cheese course, good bread, proper dessert. Drinks: champagne, rosé, a Campari-and-champagne aperitif, espresso martinis. Skip cotton candy, unicorn cake, rainbow sprinkles, pink lemonade. The menu is the fastest way to signal 'adult celebration' rather than 'little girl's tea party.'",
+          },
+        ],
+      },
+      {
+        type: "inline-cta",
+        text: "Pair with <a href=\"/birthday-themes/soft-life-birthday-theme\">soft life</a> for the broader restraint aesthetic, or <a href=\"/birthday-themes/garden-party-birthday-theme\">garden party</a> for a daytime version.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1652419476890-edbe7576760d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=2400&utm_source=youthebirthday&utm_medium=referral",
+        alt: "A white cake topped with soft pink florals — grown coquette birthday aesthetic",
+        caption: "The cake is the statement — and it knows to be quiet about it.",
+        credit: "Photo by choose your stories on Unsplash",
+        creditUrl: "https://unsplash.com/@chooseyourstories?utm_source=youthebirthday&utm_medium=referral",
+        ratio: "wide",
+      },
+      {
+        type: "paragraph",
+        heading: "Food & drink direction",
+        body: "The coquette menu is romantic and restrained. Start with a cheese course (burrata with honey, soft goat cheese with fig jam, baguette), move to a simple main (roast chicken with lemon, halibut with brown butter, or a herb-forward pasta), side of greens with a shallot vinaigrette. Dessert: a pale floral cake (rose-water pistachio, lavender lemon, or a simple vanilla with edible pressed flowers). Drinks: champagne, rosé, a Campari-and-champagne aperitif, espresso martinis for dessert. Garnish with edible flowers and fresh herbs — never sprinkles, never anything neon.",
+      },
+      {
+        type: "amazon-shop",
+        title: "Shop the Coquette Aesthetic",
+        subtitle: "Details that carry the theme without childish signifiers.",
+        placement: "coquette-theme",
+        format: "grid",
+        items: [
+          { query: "satin ribbon blush pink wide yards", label: "Wide Satin Ribbon", description: "For one dramatic bow. Not fifty." },
+          { query: "freshwater pearl strand necklace real", label: "Freshwater Pearl Strand", description: "For napkin ties or place-setting accents." },
+          { query: "ivory taper candles set unscented", label: "Ivory Taper Candles", description: "Warm light is mandatory." },
+          { query: "blush pink linen napkins cloth set", label: "Blush Linen Napkins", description: "Powder-soft, not hot pink." },
+          { query: "vintage teacups floral pink gold rim set", label: "Vintage Teacups", description: "Mismatched, floral, gold-rimmed — thrifted works." },
+          { query: "pressed edible flowers cake decoration", label: "Pressed Edible Flowers", description: "For the cake, the cocktails, the plate edges." },
+          { query: "cake stand white ceramic pedestal elegant", label: "White Pedestal Cake Stand", description: "The one piece that makes the cake a moment." },
+          { query: "rose water hydrosol facial spray", label: "Rose Water Spray", description: "For the bathroom. Small details matter." },
+        ],
+      },
+      {
+        type: "paragraph",
+        heading: "Budget notes",
+        body: "Coquette is budget-forgiving because the theme rewards time and sourcing over spend. Under $150 covers blush linen napkins, ivory tapers, a real ribbon, a freshwater pearl strand, and grocery-store florals arranged with care. $300-500 adds vintage teacups, a better cake order, and proper glassware. The luxury version ($800+) invests in a custom cake from a real pastry chef and vintage tabletop rentals. The theme fails when budget goes to cheap plastic (plastic pearls, craft-store bows, dollar-store pink decor) rather than fewer quality pieces.",
+      },
+      {
+        type: "inline-cta",
+        text: "Anchor the aesthetic with our <a href=\"/birthday-palettes/birthday-color-palette-inspiration\">birthday color palette inspiration</a>.",
+      },
+      {
+        type: "faq",
+        heading: "Coquette Birthday FAQ",
+        questions: [
+          {
+            question: "How do I do a coquette birthday without it feeling childish?",
+            answer:
+              "Restraint is the entire answer. One dramatic bow instead of fifty. Real freshwater pearls instead of plastic. Blush linen instead of hot pink. Candlelight instead of pink LED. And — critically — real grown-up food and drinks: champagne and Campari, roast chicken, a pale floral cake. The theme hinges on taking the aesthetic seriously rather than signaling it with party-store shortcuts. If every element is high-quality and there are fewer of them, it reads grown. If everything is cheap and there are lots of it, it reads childish.",
+          },
+          {
+            question: "What colors work for a coquette birthday?",
+            answer:
+              "Powder pink, dusty rose, cream, mauve, warm taupe, blush, butter cream. Aged gold and cocoa brown as accents. Avoid hot pink, neon pink, bubblegum, magenta, bright white (too bridal). The rule: if the color would appear on a cartoon Barbie box, it's too young. If it would appear on a watercolor painting of a peony, it's right. Think Sofia Coppola film palette, not toy store.",
+          },
+          {
+            question: "What should guests wear to a coquette birthday?",
+            answer:
+              "Suggest 'soft dress code — blush, cream, pearls, lace' on the invite. Silk slip dresses, cashmere sets, lace tops, pearl earrings, low-heeled sandals or mules. One bow as an accent is welcome; full-hair-ribbon costume is not. The vibe is 'intentionally soft and grown,' not 'dressed as a doll.' If guests ask, tell them to aim for 'afternoon-tea elegance' rather than 'coquette aesthetic TikTok.'",
+          },
+          {
+            question: "What food and drinks work for a coquette birthday?",
+            answer:
+              "Real food, romantic-restrained menu. Cheese course (burrata with honey, soft goat cheese with fig jam), simple main (roast chicken with lemon, herb pasta, halibut), greens with shallot vinaigrette, pale floral cake (rose-water pistachio, lavender lemon, vanilla with pressed flowers). Drinks: champagne, rosé, Campari-and-champagne aperitif, espresso martinis. Garnish with edible flowers and fresh herbs — never sprinkles, never neon, never anything that reads as child's menu.",
+          },
+          {
+            question: "Is coquette better for a dinner, brunch, or tea?",
+            answer:
+              "All three work, but the theme is fundamentally an intimate-format theme — 4 to 10 people max. A candlelit dinner is the most romantic. An afternoon tea with vintage china is the most photogenic. A brunch with a pale cake and champagne is the most accessible. Skip any large-group format; coquette falls apart when there are 25 people and nobody can see the table. The details ARE the theme; they have to be visible.",
+          },
+        ],
+      },
+      {
+        type: "cta",
+        headline: "Get your coquette birthday built for you",
+        subheadline: "Our generator creates your palettes, captions, celebration plan, and destination picks tuned to your exact vibe.",
+        buttonText: "Generate My Birthday",
+        buttonHref: "/onboarding",
+      },
+      { type: "related-content" },
+    ],
+  },
 ];
 
 themePages.forEach(registerPage);

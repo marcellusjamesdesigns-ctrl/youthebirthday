@@ -28,8 +28,8 @@ const BY_VIBE = [
     id: "vibe-quiet",
     label: "Quiet & Intentional",
     intro: "For the birthday that doesn't need to perform. Restrained, considered, lived-in luxury.",
-    themes: ["soft-life-birthday-theme", "old-money-birthday-theme", "garden-party-birthday-theme"],
-    comingSoon: ["Quiet Luxury", "All-White"],
+    themes: ["soft-life-birthday-theme", "old-money-birthday-theme", "garden-party-birthday-theme", "all-white-birthday-theme"],
+    comingSoon: ["Quiet Luxury"],
   },
   {
     id: "vibe-moody",
@@ -42,8 +42,8 @@ const BY_VIBE = [
     id: "vibe-bold",
     label: "Bold & Unapologetic",
     intro: "For the birthday that takes up space. Maximum color, energy, and presence.",
-    themes: ["maximalist-birthday-theme", "y2k-birthday-theme"],
-    comingSoon: ["Disco", "Coquette"],
+    themes: ["maximalist-birthday-theme", "y2k-birthday-theme", "disco-birthday-theme", "coquette-birthday-theme"],
+    comingSoon: [],
   },
 ];
 
@@ -59,7 +59,7 @@ const BY_SEASON = [
     id: "season-summer",
     label: "Summer Birthdays",
     intro: "Long days, rooftop energy, color-saturated celebration.",
-    themes: ["maximalist-birthday-theme", "y2k-birthday-theme"],
+    themes: ["maximalist-birthday-theme", "y2k-birthday-theme", "disco-birthday-theme"],
     comingSoon: ["Rooftop", "Tropical", "Beach"],
   },
   {
@@ -73,8 +73,8 @@ const BY_SEASON = [
     id: "season-winter",
     label: "Winter Birthdays",
     intro: "Indoor energy, rich textures, intentional warmth.",
-    themes: ["dark-feminine-birthday-theme", "old-money-birthday-theme"],
-    comingSoon: ["All-White", "Winter Wonderland"],
+    themes: ["dark-feminine-birthday-theme", "old-money-birthday-theme", "all-white-birthday-theme"],
+    comingSoon: ["Winter Wonderland"],
   },
 ];
 
@@ -83,7 +83,7 @@ const BY_COLOR = [
     id: "color-neutral",
     label: "Neutral & Warm",
     intro: "Cream, wheat, camel, ivory. Understated palettes built on texture.",
-    themes: ["soft-life-birthday-theme", "old-money-birthday-theme", "garden-party-birthday-theme"],
+    themes: ["soft-life-birthday-theme", "old-money-birthday-theme", "garden-party-birthday-theme", "all-white-birthday-theme"],
   },
   {
     id: "color-deep",
@@ -96,7 +96,7 @@ const BY_COLOR = [
     id: "color-bold",
     label: "Bold & Saturated",
     intro: "Fire red, tangerine, electric blue, hot pink. Color-forward and unafraid.",
-    themes: ["maximalist-birthday-theme", "y2k-birthday-theme"],
+    themes: ["maximalist-birthday-theme", "y2k-birthday-theme", "disco-birthday-theme"],
   },
 ];
 
@@ -132,7 +132,7 @@ const BY_OCCASION = [
     id: "occasion-party",
     label: "Party / Group Celebration",
     intro: "Music, volume, 15+ people. Energy is the format.",
-    themes: ["y2k-birthday-theme", "maximalist-birthday-theme"],
+    themes: ["y2k-birthday-theme", "maximalist-birthday-theme", "disco-birthday-theme"],
   },
   {
     id: "occasion-brunch",
