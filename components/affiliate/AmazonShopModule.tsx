@@ -58,14 +58,17 @@ export function AmazonShopModule({
   );
 
   return (
-    <section className="space-y-5" aria-label={title}>
+    <section
+      className="space-y-5 pt-6 border-t border-border/25"
+      aria-label={title}
+    >
       <div className="flex items-baseline justify-between gap-3">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.25em] text-champagne/50">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-champagne/60">
             {title}
           </p>
           {subtitle && (
-            <p className="text-[12px] text-muted-foreground/55 mt-1.5 leading-relaxed">
+            <p className="text-[12px] text-muted-foreground/60 mt-1.5 leading-relaxed">
               {subtitle}
             </p>
           )}
@@ -108,7 +111,7 @@ export function AmazonShopModule({
         </div>
       )}
 
-      <p className="text-[10px] italic text-muted-foreground/30 leading-relaxed">
+      <p className="text-[11px] not-italic text-muted-foreground/65 leading-relaxed">
         As an Amazon Associate we earn from qualifying purchases. Prices and
         availability may vary.
       </p>
@@ -131,7 +134,7 @@ function AmazonItemCard({
       target="_blank"
       rel="noopener noreferrer sponsored"
       onClick={onClick}
-      className="lift-card p-4 space-y-2 group"
+      className="lift-card p-4 space-y-2 group bg-foreground/[0.015]"
     >
       <div className="flex items-start gap-2.5">
         {item.icon && (

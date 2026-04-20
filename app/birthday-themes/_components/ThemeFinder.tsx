@@ -121,15 +121,15 @@ export function ThemeFinder({
 
   return (
     <section className="space-y-8">
-      {/* Tab pills */}
-      <div className="flex flex-wrap justify-center gap-2">
+      {/* Tab pills — horizontal scroll on mobile, centered wrap on sm+ */}
+      <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2 -mx-6 px-6 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`rounded-full border px-5 py-2 text-[12px] uppercase tracking-[0.15em] transition-all ${
+              className={`shrink-0 snap-start rounded-full border px-5 py-2 text-[12px] uppercase tracking-[0.15em] transition-all ${
                 isActive
                   ? "border-champagne/50 bg-champagne/15 text-champagne"
                   : "border-border/50 bg-transparent text-muted-foreground/70 hover:border-champagne/30 hover:text-foreground"

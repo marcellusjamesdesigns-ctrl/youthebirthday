@@ -4,6 +4,7 @@ import { generateSchemaMarkup, generateFAQSchema } from "@/lib/content/render";
 import { Breadcrumbs, breadcrumbsForPage, generateBreadcrumbSchema } from "./Breadcrumbs";
 import AdUnit from "@/components/AdUnit";
 import { TrackContentPage } from "@/components/analytics/TrackPageView";
+import { MobileStickyGenerateCTA } from "./MobileStickyGenerateCTA";
 
 interface ContentPageLayoutProps {
   page: ContentPage;
@@ -41,6 +42,7 @@ export function ContentPageLayout({ page }: ContentPageLayoutProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
+      <MobileStickyGenerateCTA />
     </article>
   );
 }
