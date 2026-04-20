@@ -974,6 +974,16 @@ const themePages: ContentPage[] = [
         body: "A garden party birthday is not flowers on a table. It's outdoor softness, real light, food that looks like itself, and a dress code that doesn't require explaining. The whole theme hinges on one thing: being outside, intentionally. Everything else — florals, palette, menu, drinkware — exists to support that one decision.",
       },
       {
+        type: "quick-take",
+        rows: [
+          { label: "Best for", value: "Spring birthdays, brunches, intimate milestone dinners" },
+          { label: "Works best", value: "Outdoor garden, patio, rooftop greenhouse, backyard, park table" },
+          { label: "Budget", value: "$150–$500, flexible depending on venue" },
+          { label: "Dress code", value: "Linen, cotton, soft florals, block heels, garden-party polish" },
+          { label: "Avoid", value: "Plastic tea-party decor, pastel overload, fake storybook energy" },
+        ],
+      },
+      {
         type: "paragraph",
         heading: "Who this theme is for",
         body: "Garden party works for anyone whose birthday lands between late April and early October. It's for the person who wants a celebration that feels easy — no DJ, no venue buyout, no logistics that require a group text. It's especially good for milestone birthdays (30th, 40th) where the guest list is small and the vibe wants to feel like an afternoon you'll remember a decade later, not a party you'll recover from.",

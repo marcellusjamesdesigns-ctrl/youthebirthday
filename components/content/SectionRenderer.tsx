@@ -16,6 +16,7 @@ import AdUnit from "@/components/AdUnit";
 import { AmazonShopModule } from "@/components/affiliate/AmazonShopModule";
 import { ImageBlock } from "./sections/ImageBlock";
 import { PullQuoteBlock } from "./sections/PullQuoteBlock";
+import { QuickTakeBlock } from "./sections/QuickTakeBlock";
 import type { ContentPage } from "@/lib/content/types";
 
 interface SectionRendererProps {
@@ -25,12 +26,14 @@ interface SectionRendererProps {
 
 export function SectionRenderer({ sections, page }: SectionRendererProps) {
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       {sections.map((section, i) => {
         const content = (() => {
           switch (section.type) {
             case "hero":
               return <HeroSection key={i} {...section} />;
+            case "quick-take":
+              return <QuickTakeBlock key={i} {...section} />;
             case "caption-list":
               return <CaptionListSection key={i} {...section} />;
             case "idea-list":

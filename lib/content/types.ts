@@ -103,6 +103,7 @@ export interface BlogPost {
 
 export type ContentSection =
   | HeroSection
+  | QuickTakeSection
   | CaptionListSection
   | IdeaListSection
   | DestinationListSection
@@ -118,6 +119,12 @@ export type ContentSection =
   | AmazonShopSection
   | ImageSection
   | PullQuoteSection;
+
+export interface QuickTakeSection {
+  type: "quick-take";
+  heading?: string;
+  rows: { label: string; value: string }[];
+}
 
 export interface HeroSection {
   type: "hero";

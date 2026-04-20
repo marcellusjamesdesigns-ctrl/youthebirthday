@@ -12,6 +12,7 @@ import { InlineCTA } from "@/components/content/sections/InlineCTA";
 import { AmazonShopModule } from "@/components/affiliate/AmazonShopModule";
 import { ImageBlock } from "@/components/content/sections/ImageBlock";
 import { PullQuoteBlock } from "@/components/content/sections/PullQuoteBlock";
+import { QuickTakeBlock } from "@/components/content/sections/QuickTakeBlock";
 import { MidArticleCTA } from "./MidArticleCTA";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -23,6 +24,8 @@ export function BlogSectionRenderer({ sections }: { sections: ContentSection[] }
           switch (section.type) {
             case "hero":
               return <HeroSection key={i} {...section} />;
+            case "quick-take":
+              return <QuickTakeBlock key={i} {...section} />;
             case "caption-list":
               return <CaptionListSection key={i} {...section} />;
             case "idea-list":
