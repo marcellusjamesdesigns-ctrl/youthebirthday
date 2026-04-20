@@ -89,8 +89,8 @@ function GroupPanel({
         </div>
       )}
       {group.comingSoon && group.comingSoon.length > 0 && (
-        <p className="text-[11px] text-muted-foreground/45 pt-1">
-          <span className="uppercase tracking-[0.2em] text-champagne/40 mr-2">
+        <p className="text-[12px] text-muted-foreground/70 pt-1 leading-relaxed">
+          <span className="uppercase tracking-[0.2em] text-champagne/75 mr-2 text-[10px] font-medium">
             Coming soon
           </span>
           {group.comingSoon.join(" · ")}

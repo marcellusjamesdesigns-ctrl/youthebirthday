@@ -271,11 +271,11 @@ export default function IdeasHub() {
 
   return (
     <div className="min-h-screen bg-gradient-luxury">
-      <div className="mx-auto max-w-5xl px-6 py-8 pb-20 space-y-10">
+      <div className="mx-auto max-w-5xl px-6 py-8 pb-20 space-y-8">
         <Breadcrumbs items={breadcrumbItems} />
 
         {/* ─── HERO ─────────────────────────────────────────────────── */}
-        <section className="py-8 sm:py-12 text-center space-y-5">
+        <section className="pt-2 pb-2 sm:pt-4 sm:pb-4 text-center space-y-4">
           <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60 animate-fade-rise">
             you the birthday
           </p>
