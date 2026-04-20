@@ -25,6 +25,13 @@ interface SectionRendererProps {
 }
 
 export function SectionRenderer({ sections, page }: SectionRendererProps) {
+  // Mid-content ad placement: if the page has a Quick Take (theme/idea template),
+  // slot the ad AFTER it so the opening sequence (hero → image → thesis →
+  // Quick Take) stays tight. Otherwise fall back to after the 3rd section.
+  const quickTakeIndex = sections.findIndex((s) => s.type === "quick-take");
+  const midAdIndex =
+    quickTakeIndex >= 0 ? quickTakeIndex + 1 : 3;
+
   return (
     <div className="space-y-8">
       {sections.map((section, i) => {
@@ -89,13 +96,14 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
         // Hero renders immediately, everything else reveals on scroll
         if (section.type === "hero" || !content) return content;
 
-        // Insert a mid-content ad after the 3rd section
-        const showMidAd = i === 3 && sections.length > 5;
+        // Insert a mid-content ad after the Quick Take (or after the 3rd
+        // section on pages without one).
+        const showMidAd = i === midAdIndex && sections.length > 5;
 
         return (
           <Reveal key={i} delay={i > 2 ? 0 : i * 80}>
             {showMidAd && (
-              <AdUnit slot="3782501964" format="auto" className="mb-12" />
+              <AdUnit slot="3782501964" format="auto" className="mb-8" />
             )}
             {content}
           </Reveal>

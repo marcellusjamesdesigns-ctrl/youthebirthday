@@ -5,7 +5,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ headline, subheadline }: HeroSectionProps) {
   return (
-    <div className="py-16 sm:py-20 text-center space-y-5">
+    <div className="py-10 sm:py-14 text-center space-y-5">
       <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60 animate-fade-rise">
         you the birthday
       </p>
