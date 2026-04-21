@@ -7,9 +7,7 @@ interface PageProps {
 export default async function PremiumSuccessPage({ searchParams }: PageProps) {
   const { birthday } = await searchParams;
   const resumeHref = birthday ? `/birthday/${birthday}` : "/onboarding";
-  const resumeLabel = birthday
-    ? "Go to Your Birthday"
-    : "Generate a Birthday";
+  const resumeLabel = birthday ? "Open your birthday" : "Generate a birthday";
 
   return (
     <div className="min-h-screen bg-gradient-luxury flex items-center justify-center px-6">
@@ -22,23 +20,31 @@ export default async function PremiumSuccessPage({ searchParams }: PageProps) {
         </h1>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {birthday
-            ? "Your report is unlocked. Pick up right where you left off."
-            : "Unlimited birthday generations, extra palette packs, and priority processing are now yours. Go make something beautiful."}
+            ? "Your full report is unlocked — destinations, captions, palettes, and the full celebration plan. Your report is on its way to your inbox too."
+            : "Welcome to the full experience. Create a birthday dashboard any time from the home page."}
         </p>
+
+        {/* Primary + secondary actions — matched button metrics for
+            visual balance. Primary is solid; secondary is outline. */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
           <Link
             href={resumeHref}
-            className="glow-btn inline-flex justify-center"
+            className="inline-flex items-center justify-center rounded-full bg-foreground px-7 py-3 text-[14px] font-medium text-background tracking-wide transition-all hover:bg-foreground/90 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.3)]"
           >
-            {resumeLabel}
+            {resumeLabel} →
           </Link>
           <Link
             href="/"
-            className="rounded-full border border-border px-6 py-2.5 text-[13px] text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-all inline-flex justify-center"
+            className="inline-flex items-center justify-center rounded-full border border-border/60 px-7 py-3 text-[14px] font-medium text-muted-foreground tracking-wide transition-all hover:text-foreground hover:border-foreground/30"
           >
-            Back to Home
+            Back to home
           </Link>
         </div>
+
+        <p className="text-[10px] text-muted-foreground/40 pt-6 leading-relaxed">
+          Having trouble? Check your inbox for the report email, or click
+          the dashboard link to view everything online.
+        </p>
       </div>
     </div>
   );
