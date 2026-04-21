@@ -1,21 +1,41 @@
 import { useEffect, useState } from "react";
 import { getOrCreateDeviceToken } from "./device-token";
 
-export type PurchaseType = "one_time" | "subscription" | "none" | "unknown";
+export type PurchaseType =
+  | "single_report"
+  | "birthday_pass"
+  | "none"
+  | "unknown"
+  // Legacy values preserved for backward compat
+  | "one_time"
+  | "subscription";
+
+export interface PassCredits {
+  total: number;
+  used: number;
+  remaining: number;
+}
 
 interface PremiumState {
   /**
-   * True only for users with an active subscription OR an already-paid
-   * session (when the hook is called with a sessionId). This is the
-   * correct value for UI gating "show premium content for this session."
-   *
-   * IMPORTANT: one-time buyers will only show isPremium=true for the
-   * specific session they paid for — not for creating new sessions.
+   * True if the named session is unlocked (full report visible).
+   * A session is unlocked when the user either:
+   *   - paid the single-report fee for this session, OR
+   *   - paid (or auto-consumed a credit from) their Birthday Pass
    */
   isPremium: boolean;
+  /**
+   * Legacy field kept for components that reference it. Reflects
+   * purchaseType of the CURRENT SESSION (not the caller's account).
+   */
   purchaseType: PurchaseType;
-  /** True only if the caller is a real subscriber (unlimited generations). */
-  isSubscriber: boolean;
+  /**
+   * True if the caller has an active Birthday Pass with >0 credits
+   * remaining. Used to show pass status in the UI.
+   */
+  hasActivePass: boolean;
+  /** Pass credit balance, or null if no pass. */
+  passCredits: PassCredits | null;
 }
 
 export function useIsPremium(sessionId?: string | null): boolean {
@@ -26,24 +46,13 @@ export function usePremiumState(sessionId?: string | null): PremiumState {
   const [state, setState] = useState<PremiumState>({
     isPremium: false,
     purchaseType: "unknown",
-    isSubscriber: false,
+    hasActivePass: false,
+    passCredits: null,
   });
 
   useEffect(() => {
     const token = getOrCreateDeviceToken();
     if (!token) return;
-
-    // Check localStorage cache first — only for subscriber state, since
-    // session-scoped unlocks should always be verified server-side.
-    const cached = localStorage.getItem("ytb-premium");
-    const cachedType = localStorage.getItem("ytb-purchase-type") as PurchaseType | null;
-    if (cached === "true" && cachedType === "subscription") {
-      setState({
-        isPremium: true,
-        purchaseType: "subscription",
-        isSubscriber: true,
-      });
-    }
 
     const url = sessionId
       ? `/api/user/tier?sessionId=${encodeURIComponent(sessionId)}`
@@ -52,25 +61,24 @@ export function usePremiumState(sessionId?: string | null): PremiumState {
     fetch(url, { headers: { "X-Device-Token": token } })
       .then((r) => r.json())
       .then((d) => {
-        const pt: PurchaseType = d.purchaseType ?? "none";
-        const isSubscriber = d.tier === "premium";
-        const isPremium =
-          isSubscriber || d.isPaidForSession === true;
+        const isPremium = d.isPaidForSession === true;
+        const purchaseType: PurchaseType =
+          d.tier === "birthday_pass"
+            ? "birthday_pass"
+            : d.tier === "single_report"
+              ? "single_report"
+              : d.tier === "premium"
+                ? "subscription"
+                : isPremium
+                  ? "single_report"
+                  : "none";
 
-        setState({ isPremium, purchaseType: pt, isSubscriber });
-
-        // Cache ONLY the subscription flag. Session-scoped unlocks must
-        // always re-verify against the server because they're tied to a
-        // specific sessionId, not the device itself.
-        if (isSubscriber) {
-          localStorage.setItem("ytb-premium", "true");
-          localStorage.setItem("ytb-purchase-type", "subscription");
-        } else {
-          // Non-subscribers: clear any stale cache so a one-time buyer
-          // doesn't accidentally appear unlimited on their next visit.
-          localStorage.removeItem("ytb-premium");
-          localStorage.removeItem("ytb-purchase-type");
-        }
+        setState({
+          isPremium,
+          purchaseType,
+          hasActivePass: !!d.hasActivePass,
+          passCredits: d.passCredits ?? null,
+        });
       })
       .catch(() => {});
   }, [sessionId]);

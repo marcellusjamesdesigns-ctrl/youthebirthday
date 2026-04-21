@@ -6,7 +6,13 @@ import { birthdaySessions, birthdayGenerations } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { createId } from "@/lib/utils/id";
 import { runBirthdayPipeline } from "@/lib/ai/pipeline";
-import { checkGenerationLimit, incrementGenerationCount } from "@/lib/limits/generation-limits";
+import {
+  incrementGenerationCount,
+  getPassCredits,
+  consumePassCredit,
+  markSessionPaid,
+  isSessionPaid,
+} from "@/lib/limits/generation-limits";
 import type { StepStatusMap } from "@/lib/db/schema";
 
 type RouteContext = {
@@ -39,22 +45,29 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: "Already generating" }, { status: 409 });
   }
 
-  // Check generation limit
-  //   - If this session was already paid for (one-time), allow unlimited
-  //     regen on THIS session only.
-  //   - If the device/IP has a subscription, allow unlimited across sessions.
-  //   - Otherwise apply the free-tier limit.
-  const limitResult = await checkGenerationLimit(
-    ipHash,
-    deviceToken,
-    undefined,
-    id,
-  );
-  if (!limitResult.allowed) {
-    return NextResponse.json(
-      { gated: true, reason: limitResult.reason, remaining: 0 },
-      { status: 403 }
-    );
+  // PREVIEW-FIRST MODEL: generation is always allowed. The report
+  // renders a locked preview for non-paying users; the paywall lives
+  // inside the report. No 403/gated responses here.
+  //
+  // Birthday Pass auto-unlock: if the caller has remaining pass credits
+  // AND this session isn't already paid, auto-consume one credit and
+  // mark the session as paid. This is the "pass users get their next
+  // report unlocked automatically" behavior from the product spec.
+  const alreadyPaid = await isSessionPaid(id);
+  if (!alreadyPaid) {
+    const credits = await getPassCredits(ipHash, deviceToken);
+    if (credits && credits.remaining > 0) {
+      await consumePassCredit(ipHash, deviceToken);
+      await markSessionPaid(id, "birthday_pass");
+      console.log(
+        JSON.stringify({
+          level: "info",
+          msg: "pass:credit_consumed",
+          sessionId: id,
+          creditsRemainingAfter: credits.remaining - 1,
+        }),
+      );
+    }
   }
 
   // Determine version (increment if regenerating after error)

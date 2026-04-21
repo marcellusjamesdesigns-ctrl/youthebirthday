@@ -6,7 +6,11 @@ import { userWaitlist, birthdaySessions } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { createId } from "@/lib/utils/id";
 import { getRedis } from "@/lib/cache/redis";
-import { SESSION_PAID_TTL_SECONDS } from "@/lib/limits/generation-limits";
+import {
+  SESSION_PAID_TTL_SECONDS,
+  grantBirthdayPass,
+  BIRTHDAY_PASS_CREDITS_PER_PURCHASE,
+} from "@/lib/limits/generation-limits";
 import { sendBirthdayReport } from "@/lib/email/send-report";
 
 /**
@@ -46,12 +50,28 @@ export async function handleCheckoutCompleted(
     }
   }
 
-  const isSubscription = session.mode === "subscription";
-  const purchaseType = isSubscription ? "subscription" : "one_time";
-  // Subscriptions grant unlimited. One-time purchases unlock ONLY the
-  // specific session they paid for. This is the core monetization gate —
-  // don't collapse the two branches.
-  const dbTier = isSubscription ? "premium" : "one_time";
+  // NEW PRICING MODEL:
+  //   - single_report ($2.99): unlock THIS session only. Nothing else.
+  //   - birthday_pass ($4.99): grant 10 full-report credits AND unlock
+  //       the current session (so the user who just paid sees their
+  //       current report unlock immediately without consuming a credit).
+  //
+  // Purchase type comes from the checkout metadata we set ourselves.
+  // Falls back to inferring from Stripe session mode for legacy events.
+  const metaType = session.metadata?.purchaseType as
+    | "single_report"
+    | "birthday_pass"
+    | "one_time"
+    | "monthly"
+    | undefined;
+  const purchaseType: "single_report" | "birthday_pass" =
+    metaType === "birthday_pass" || metaType === "monthly"
+      ? "birthday_pass"
+      : "single_report";
+  const isPass = purchaseType === "birthday_pass";
+  // Keep tier values distinct in the DB so analytics queries can tell
+  // apart single-report buyers from pass holders.
+  const dbTier = isPass ? "birthday_pass" : "single_report";
 
   if (deviceToken) {
     try {
@@ -84,31 +104,31 @@ export async function handleCheckoutCompleted(
 
     const redis = getRedis();
 
-    if (isSubscription) {
-      // Subscription → unlimited generations across any session.
-      await redis.set(`gen:device:${deviceToken}:premium`, "true");
-      await redis.set(`gen:device:${deviceToken}:purchase_type`, purchaseType);
-      if (ipHash) {
-        await redis.set(`gen:ip:${ipHash}:premium`, "true");
-        await redis.set(`gen:ip:${ipHash}:purchase_type`, purchaseType);
-      }
+    // Birthday Pass: grant N full-report credits. Stacks if purchased
+    // again. The credits are consumed on subsequent NEW-session
+    // generations (not on viewing an already-unlocked report).
+    if (isPass) {
+      await grantBirthdayPass(
+        ipHash,
+        deviceToken,
+        BIRTHDAY_PASS_CREDITS_PER_PURCHASE,
+      );
     }
 
-    // Session-scoped unlock — written for BOTH one-time and subscription
-    // purchases so the user can view/regen/re-email the exact session
-    // they just paid for, regardless of future device changes.
+    // ALWAYS unlock the current session regardless of plan. A pass
+    // buyer who's paying from inside a specific report expects that
+    // report unlocked immediately — they don't want to burn a credit
+    // on it. Credits are for FUTURE sessions.
     if (sessionId) {
       await redis.set(`gen:session:${sessionId}:paid`, "true", {
         ex: SESSION_PAID_TTL_SECONDS,
       });
-      await redis.set(`gen:session:${sessionId}:purchase_type`, purchaseType, {
+      await redis.set(`gen:session:${sessionId}:unlock_type`, purchaseType, {
         ex: SESSION_PAID_TTL_SECONDS,
       });
     }
   } else if (email) {
-    // Edge case: checkout completed with email but no deviceToken
-    // (older client, or device-token cookie blocked). Still record the
-    // purchase so we can repair the user later by email.
+    // Edge case: checkout completed with email but no deviceToken.
     try {
       await db
         .insert(userWaitlist)
@@ -129,12 +149,16 @@ export async function handleCheckoutCompleted(
           },
         });
 
-      const redis = getRedis();
-      if (isSubscription && ipHash) {
-        await redis.set(`gen:ip:${ipHash}:premium`, "true");
+      if (isPass) {
+        await grantBirthdayPass(
+          ipHash,
+          null,
+          BIRTHDAY_PASS_CREDITS_PER_PURCHASE,
+        );
       }
+
       if (sessionId) {
-        await redis.set(`gen:session:${sessionId}:paid`, "true", {
+        await getRedis().set(`gen:session:${sessionId}:paid`, "true", {
           ex: SESSION_PAID_TTL_SECONDS,
         });
       }
@@ -159,10 +183,10 @@ export async function handleCheckoutCompleted(
     // Retry once on transient Resend / DB failures. The second attempt
     // runs after a short delay which also covers webhook→DB races where
     // the generation row hasn't been marked complete yet.
-    let sent = await sendBirthdayReport(email, sessionId, isSubscription);
+    let sent = await sendBirthdayReport(email, sessionId, isPass);
     if (!sent) {
       await new Promise((r) => setTimeout(r, 2000));
-      sent = await sendBirthdayReport(email, sessionId, isSubscription);
+      sent = await sendBirthdayReport(email, sessionId, isPass);
     }
     console.log(
       JSON.stringify({
@@ -270,10 +294,81 @@ export async function POST(request: NextRequest) {
     case "checkout.session.completed":
       await handleCheckoutCompleted(event.data.object);
       break;
+    case "invoice.payment_succeeded":
+      // Monthly renewal of a Birthday Pass subscription → refresh
+      // 10 credits for the caller. We don't reset `credits_used` to 0;
+      // we just add 10 more to `credits_total`. This way a user who
+      // burned 7 of last month's 10 now has 13 credits total — fine,
+      // slight upside to the user if they don't use all credits.
+      await handleInvoicePaid(event.data.object);
+      break;
     case "customer.subscription.deleted":
       await handleSubscriptionDeleted(event.data.object);
       break;
   }
 
   return NextResponse.json({ received: true });
+}
+
+/**
+ * Handle a Stripe `invoice.payment_succeeded` event — the recurring
+ * monthly renewal of a Birthday Pass subscription. Adds a fresh batch
+ * of credits to the subscriber's pass balance so they can generate
+ * another 10 reports this billing period.
+ *
+ * The FIRST invoice after checkout also fires this event. We use
+ * `billing_reason` to distinguish the first-billing invoice (credits
+ * already granted by the checkout.session.completed handler) from
+ * renewal invoices (where we should top up).
+ */
+async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<void> {
+  // Only top up on actual renewals. The first invoice after a new
+  // subscription has billing_reason === "subscription_create" and is
+  // already handled by the checkout.session.completed path.
+  if (invoice.billing_reason !== "subscription_cycle") {
+    return;
+  }
+
+  const customerId =
+    typeof invoice.customer === "string"
+      ? invoice.customer
+      : invoice.customer?.id;
+  if (!customerId) return;
+
+  const db = getDb();
+  const row = await db
+    .select({
+      deviceToken: userWaitlist.deviceToken,
+      ipHash: userWaitlist.ipHash,
+    })
+    .from(userWaitlist)
+    .where(eq(userWaitlist.stripeCustomerId, customerId))
+    .limit(1)
+    .then((r) => r[0] ?? null);
+
+  if (!row) {
+    console.warn(
+      JSON.stringify({
+        level: "warn",
+        msg: "pass:renewal_no_user",
+        customerId,
+      }),
+    );
+    return;
+  }
+
+  await grantBirthdayPass(
+    row.ipHash,
+    row.deviceToken,
+    BIRTHDAY_PASS_CREDITS_PER_PURCHASE,
+  );
+
+  console.log(
+    JSON.stringify({
+      level: "info",
+      msg: "pass:renewed",
+      customerId,
+      creditsAdded: BIRTHDAY_PASS_CREDITS_PER_PURCHASE,
+    }),
+  );
 }

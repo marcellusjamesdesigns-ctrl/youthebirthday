@@ -77,29 +77,21 @@ export function DashboardShell({
   const [sections, setSections] = useState<Sections | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isGated, setIsGated] = useState(false);
+  // PREVIEW-FIRST MODEL: generation is never blocked. The paywall
+  // lives inside the report as locked section teasers + CTA card.
+  // `isGated` retained as a constant false for any legacy reference.
+  const isGated = false;
 
   const triggerGeneration = useCallback(async () => {
     if (status !== "pending" && status !== "error") return;
     setIsGenerating(true);
     setErrorMsg(null);
-    setIsGated(false);
     try {
       const deviceToken = getOrCreateDeviceToken();
       const res = await fetch(`/api/birthday/${sessionId}/generate`, {
         method: "POST",
         headers: { "X-Device-Token": deviceToken },
       });
-
-      if (res.status === 403) {
-        const data = await res.json();
-        if (data.gated) {
-          setIsGated(true);
-          setIsGenerating(false);
-          analytics.generationGated({ session_id: sessionId, reason: data.reason });
-          return;
-        }
-      }
 
       if (!res.ok) {
         setIsGenerating(false);
@@ -179,14 +171,7 @@ export function DashboardShell({
           isGated={isGated}
         />
 
-        {isGated && (
-          <GenerationGate
-            sessionId={sessionId}
-            onSuccess={() => { setIsGated(false); triggerGeneration(); }}
-          />
-        )}
-
-        {!isGated && (status === "processing" || isGenerating) && (
+        {(status === "processing" || isGenerating) && (
           <StreamingStatus sessionId={sessionId} stepStatus={stepStatus} />
         )}
 
@@ -652,7 +637,31 @@ export function DashboardShell({
         </div>
 
         {/* Share */}
-        {status === "complete" && sections?.identity && (
+        {/* ─── In-report paywall CTA ─────────────────────────────────────
+            Non-premium users see the full pricing card at the bottom of
+            their preview. Premium users skip straight to share. */}
+        {status === "complete" && sections?.identity && !isPremium && (
+          <div className="mt-16 animate-fade-rise">
+            <div className="animated-border-card p-6 sm:p-8 glow-champagne">
+              <div className="text-center space-y-3 mb-6">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/60">
+                  Your preview is ready
+                </p>
+                <h2 className="heading-editorial text-2xl sm:text-3xl">
+                  Unlock your full birthday plan
+                </h2>
+                <p className="mx-auto max-w-md text-[14px] text-muted-foreground leading-relaxed">
+                  Unlock the full destinations, zodiac energy, complete
+                  caption sets, color palettes, and celebration plan.
+                  We&apos;ll email your report right after checkout.
+                </p>
+              </div>
+              <GenerationGate sessionId={sessionId} inline />
+            </div>
+          </div>
+        )}
+
+        {status === "complete" && sections?.identity && isPremium && (
           <div className="mt-16 animate-fade-rise">
             <div className="beam-card p-6 sm:p-8 text-center space-y-4">
               <p className="text-[11px] uppercase tracking-[0.3em] text-champagne/50">

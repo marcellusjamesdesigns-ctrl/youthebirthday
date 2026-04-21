@@ -1,22 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
-import { getRedis } from "@/lib/cache/redis";
 import { getDb } from "@/lib/db";
 import { userWaitlist } from "@/lib/db/schema";
 import { eq, or } from "drizzle-orm";
-import { isPremiumFlag, isSessionPaid } from "@/lib/limits/generation-limits";
-
-const PREMIUM_REDIS_TTL_SECONDS = 7 * 24 * 60 * 60;
+import { isSessionPaid, getPassCredits } from "@/lib/limits/generation-limits";
 
 /**
  * GET /api/user/tier
  *
- * Resolves the caller's tier using the same fallback chain as
- * generation-limits.ts:
- *   Redis(device) → Redis(ip) → DB(user_waitlist by deviceToken or ipHash)
+ * Resolves the caller's access state for the preview-first model.
+ * Returns:
+ *   - isPaidForSession: whether the named session is unlocked (either
+ *     via single-report purchase OR Birthday Pass auto-unlock)
+ *   - passCredits: remaining Birthday Pass credits (or null if no pass)
+ *   - tier: one of "free" | "single_report" | "birthday_pass"
  *
- * This is deliberately redundant with checkGenerationLimit() so the UI
- * and the generation route can never disagree on "is this user paid?"
+ * The old "premium" tier is retained for backward compat with admin-
+ * flagged rows but no longer auto-grants unlimited access.
  */
 export async function GET(request: NextRequest) {
   const deviceToken = request.headers.get("x-device-token");
@@ -28,39 +28,18 @@ export async function GET(request: NextRequest) {
     "unknown";
   const ipHash = createHash("sha256").update(ip).digest("hex");
 
-  const redis = getRedis();
+  // Two independent checks:
+  //   1. Is THIS session unlocked?
+  //   2. Does the caller have a Birthday Pass with credits remaining?
+  const [isPaidForSession, passCredits] = await Promise.all([
+    sessionId ? isSessionPaid(sessionId) : Promise.resolve(false),
+    getPassCredits(ipHash, deviceToken),
+  ]);
 
-  // Session-scoped paid check first — if the caller names a specific
-  // birthday session, we want to report whether THAT session is unlocked,
-  // independent of whether they have a subscription.
-  const isPaidForSession = sessionId ? await isSessionPaid(sessionId) : false;
+  const hasActivePass = !!passCredits && passCredits.remaining > 0;
 
-  if (deviceToken) {
-    const hit = await redis.get(`gen:device:${deviceToken}:premium`);
-    if (isPremiumFlag(hit)) {
-      const pt = await redis.get<string>(`gen:device:${deviceToken}:purchase_type`);
-      return NextResponse.json({
-        tier: "premium",
-        purchaseType: pt ?? "unknown",
-        isPaidForSession: true, // subscriptions cover all sessions
-      });
-    }
-  }
-
-  const ipHit = await redis.get(`gen:ip:${ipHash}:premium`);
-  if (isPremiumFlag(ipHit)) {
-    const pt = await redis.get<string>(`gen:ip:${ipHash}:purchase_type`);
-    return NextResponse.json({
-      tier: "premium",
-      purchaseType: pt ?? "unknown",
-      isPaidForSession: true,
-    });
-  }
-
-  // DB fallback — note we only rehydrate the subscription-level Redis
-  // flags when the DB says tier === "premium" (subscription). A
-  // tier === "one_time" row does NOT grant device/ip-level access;
-  // that row is informational only.
+  // DB tier lookup — mostly informational. Does not grant unlimited.
+  let dbTier: string = "free";
   try {
     const db = getDb();
     const clauses = [eq(userWaitlist.ipHash, ipHash)];
@@ -71,24 +50,7 @@ export async function GET(request: NextRequest) {
       .where(or(...clauses))
       .limit(1)
       .then((r) => r[0] ?? null);
-
-    if (row?.tier === "premium") {
-      await Promise.all([
-        deviceToken
-          ? redis.set(`gen:device:${deviceToken}:premium`, "true", {
-              ex: PREMIUM_REDIS_TTL_SECONDS,
-            })
-          : Promise.resolve(),
-        redis.set(`gen:ip:${ipHash}:premium`, "true", {
-          ex: PREMIUM_REDIS_TTL_SECONDS,
-        }),
-      ]);
-      return NextResponse.json({
-        tier: "premium",
-        purchaseType: "subscription",
-        isPaidForSession: true,
-      });
-    }
+    if (row?.tier) dbTier = row.tier;
   } catch (err) {
     console.error(
       JSON.stringify({
@@ -99,11 +61,16 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Not a subscriber. Return session-paid status so the UI can still
-  // treat this session as unlocked for a one-time buyer.
   return NextResponse.json({
-    tier: "free",
-    purchaseType: isPaidForSession ? "one_time" : "none",
+    tier: dbTier,
     isPaidForSession,
+    hasActivePass,
+    passCredits: passCredits
+      ? {
+          total: passCredits.total,
+          used: passCredits.used,
+          remaining: passCredits.remaining,
+        }
+      : null,
   });
 }

@@ -1,10 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe, PRICES } from "@/lib/stripe/client";
 
+/**
+ * Checkout route.
+ *
+ * Plans:
+ *   - "single_report" ($2.99): unlock THIS report only. Stripe mode=payment.
+ *   - "birthday_pass" ($4.99): grant 10 full-report credits. Stripe mode=payment.
+ *
+ * Legacy aliases accepted (for any client still sending the old names):
+ *   - "one_time" → single_report
+ *   - "monthly"  → birthday_pass (intentionally remapped: the old monthly
+ *                  subscription is being replaced with a one-time 10-credit
+ *                  pack. If STRIPE_PRICE_BIRTHDAY_PASS isn't set yet, we
+ *                  fall back to the legacy STRIPE_PRICE_MONTHLY price ID.)
+ */
+type PlanName = "single_report" | "birthday_pass" | "one_time" | "monthly";
+
+function normalizePlan(plan: PlanName): "single_report" | "birthday_pass" {
+  if (plan === "one_time") return "single_report";
+  if (plan === "monthly") return "birthday_pass";
+  return plan;
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { plan, deviceToken, email, sessionId } = body as {
-    plan: "one_time" | "monthly";
+    plan: PlanName;
     deviceToken: string;
     email?: string;
     sessionId?: string;
@@ -14,13 +36,27 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing plan or deviceToken" }, { status: 400 });
   }
 
-  const priceId = plan === "monthly" ? PRICES.monthly : PRICES.oneTime;
-  const mode = plan === "monthly" ? "subscription" : "payment";
+  const normalized = normalizePlan(plan);
+  const priceId =
+    normalized === "birthday_pass" ? PRICES.birthdayPass : PRICES.singleReport;
+
+  if (!priceId) {
+    return NextResponse.json(
+      { error: "Stripe price not configured for plan", plan: normalized },
+      { status: 500 },
+    );
+  }
+
+  // Pricing modes:
+  //   single_report  → one-time payment ($2.99), unlocks this report only
+  //   birthday_pass  → recurring subscription ($4.99/mo), grants 10
+  //                    report credits per billing period
+  // The pass is a real Stripe subscription so credits refresh monthly
+  // via invoice.payment_succeeded. The existing STRIPE_PRICE_MONTHLY
+  // env var (now $4.99 for 10 reports/month) is kept as the price source.
+  const mode = normalized === "birthday_pass" ? "subscription" : "payment";
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://youthebirthday.app";
 
-  // Preserve the user's birthday session through the Stripe round-trip.
-  // Without this, `/premium/success` has no idea which paid session to
-  // send the user back to, and they end up at fresh onboarding.
   const successUrl = sessionId
     ? `${base}/premium/success?session_id={CHECKOUT_SESSION_ID}&birthday=${encodeURIComponent(sessionId)}`
     : `${base}/premium/success?session_id={CHECKOUT_SESSION_ID}`;
@@ -35,6 +71,9 @@ export async function POST(request: NextRequest) {
       metadata: {
         deviceToken,
         sessionId: sessionId ?? "",
+        // Record the normalized plan name so the webhook can apply the
+        // right unlock logic without re-inferring from Stripe's mode.
+        purchaseType: normalized,
       },
       allow_promotion_codes: true,
     });
@@ -42,7 +81,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: checkoutSession.url });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(JSON.stringify({ level: "error", msg: "stripe:checkout_failed", error: message, plan, priceId }));
+    console.error(
+      JSON.stringify({
+        level: "error",
+        msg: "stripe:checkout_failed",
+        error: message,
+        plan: normalized,
+        priceId,
+      }),
+    );
     return NextResponse.json({ error: "Failed to create checkout", detail: message }, { status: 500 });
   }
 }
