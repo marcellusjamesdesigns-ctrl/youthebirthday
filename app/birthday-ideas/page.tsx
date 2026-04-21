@@ -249,15 +249,21 @@ export default function IdeasHub() {
             <h2 className="heading-editorial text-2xl sm:text-3xl">Start here</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {featured.map(({ page, why }) => (
+            {featured.map(({ page, why }, i) => (
               <Link
                 key={page!.canonicalPath}
                 href={page!.canonicalPath}
                 className="lift-card p-6 space-y-3 block group"
               >
-                <p className="text-[10px] uppercase tracking-[0.25em] text-champagne/50">
-                  Featured
-                </p>
+                <div className="flex items-center gap-3">
+                  <span className="text-[11px] font-mono tracking-wider text-champagne/40 group-hover:text-champagne/70 transition-colors">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="w-4 h-px bg-foreground/10 group-hover:w-6 group-hover:bg-foreground/20 transition-all duration-500" />
+                  <p className="text-[10px] uppercase tracking-[0.25em] text-champagne/50">
+                    Featured
+                  </p>
+                </div>
                 <h3 className="font-editorial text-xl text-foreground group-hover:text-champagne transition-colors">
                   {page!.headline}
                 </h3>
