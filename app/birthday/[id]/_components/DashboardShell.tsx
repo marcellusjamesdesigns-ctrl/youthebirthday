@@ -959,7 +959,7 @@ function DestinationCard({ dest, index }: { dest: Destination; index: number }) 
           )}
         </p>
       )}
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap items-center gap-2 pt-1">
         {dest.vibeMatch.map((v) => (
           <span
             key={v}
@@ -968,6 +968,14 @@ function DestinationCard({ dest, index }: { dest: Destination; index: number }) 
             {v}
           </span>
         ))}
+        <a
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${dest.city} ${dest.country}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto text-[10px] uppercase tracking-[0.15em] text-champagne/60 hover:text-champagne/90 transition-colors"
+        >
+          Open in Maps →
+        </a>
       </div>
     </div>
   );

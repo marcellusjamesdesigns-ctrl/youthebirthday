@@ -1,6 +1,52 @@
 import type { NormalizedInput } from "./normalize-input";
 
-export const PROMPT_VERSION = "v5";
+// Bump this when prompt content changes so the cache invalidates.
+// v6: pronoun safety guardrail added.
+export const PROMPT_VERSION = "v6";
+
+/**
+ * Build the pronoun instruction block for the prompt.
+ *
+ * Rules:
+ *   - If user provided pronouns → use them consistently.
+ *   - If user did NOT provide pronouns → DO NOT default to she/her or
+ *     he/him. Use the person's name, or they/them, or rewrite the
+ *     sentence to avoid the pronoun entirely.
+ *
+ * This block is included in the user message for every prompt so the
+ * LLM always has the guardrail in its immediate context. System prompts
+ * also include a shorter reinforcement for narrative-heavy generators.
+ */
+export function pronounInstruction(input: NormalizedInput): string {
+  if (input.pronoun && input.pronoun.trim()) {
+    const p = input.pronoun.trim();
+    return `Pronouns: ${p}
+IMPORTANT: Use these pronouns consistently in any narrative copy. Do not switch to other pronouns mid-sentence or mid-paragraph.`;
+  }
+  return `Pronouns: NOT PROVIDED.
+IMPORTANT — pronoun safety:
+- Do NOT assume gender. Do NOT default to she/her or he/him.
+- When a pronoun is needed, use the person's name (${input.name}) or they/them.
+- Prefer rewriting sentences to avoid pronouns entirely when the sentence allows it.
+- Never use "she," "her," "he," or "his" to refer to ${input.name}.
+Example rewrites:
+  WRONG: "She should celebrate with an intimate dinner."
+  OK:    "${input.name} should celebrate with an intimate dinner."
+  OK:    "They should celebrate with an intimate dinner."
+  BEST:  "An intimate dinner fits this birthday best."`;
+}
+
+/**
+ * Short inline reinforcement for system prompts. Keeps the guardrail
+ * visible at the highest-priority location for narrative generators
+ * (identity, captions, celebration, cosmic).
+ */
+export function pronounSystemReinforcement(input: NormalizedInput): string {
+  if (input.pronoun && input.pronoun.trim()) {
+    return `Use the user's stated pronouns (${input.pronoun.trim()}) consistently. Do not drift.`;
+  }
+  return `The user did NOT provide pronouns. NEVER use "she/her" or "he/him" for ${input.name}. Use their name, they/them, or rewrite to avoid pronouns entirely. This is a strict rule.`;
+}
 
 function vibeContext(input: NormalizedInput): string {
   const parts = [
@@ -12,7 +58,9 @@ function vibeContext(input: NormalizedInput): string {
     `Vibe: ${input.celebrationVibe}`,
     `Goals: ${input.birthdayGoals.join(", ")}`,
   ];
-  if (input.pronoun) parts.push(`Pronouns: ${input.pronoun}`);
+  // Always include the pronoun block — present OR explicit-absent —
+  // so the LLM has the guardrail in every prompt.
+  parts.push(pronounInstruction(input));
   if (input.budget) parts.push(`Budget: ${input.budget}`);
   if (input.groupSize) parts.push(`Group size: ${input.groupSize}`);
   if (input.aestheticPreference) parts.push(`Aesthetic: ${input.aestheticPreference}`);
@@ -22,7 +70,9 @@ function vibeContext(input: NormalizedInput): string {
 
 export function buildIdentityPrompt(input: NormalizedInput) {
   return {
-    system: `You are the creative engine behind "You The Birthday" — a culturally sharp birthday experience platform. You write like someone who understands internet culture, astrology vibes, luxury aesthetics, and real life. Your outputs should feel personal, specific, and screenshot-worthy. Never generic. Never corny. Never "wishing you the best on your special day" energy.`,
+    system: `You are the creative engine behind "You The Birthday" — a culturally sharp birthday experience platform. You write like someone who understands internet culture, astrology vibes, luxury aesthetics, and real life. Your outputs should feel personal, specific, and screenshot-worthy. Never generic. Never corny. Never "wishing you the best on your special day" energy.
+
+PRONOUN RULE: ${pronounSystemReinforcement(input)}`,
     user: `Create a birthday identity for this person:
 
 ${vibeContext(input)}
@@ -164,6 +214,8 @@ export function buildCaptionPrompt(input: NormalizedInput) {
 
   return {
     system: `You are the person behind the viral posts. You ghostwrite for celebrities, influencers with 500k+, and the stan accounts that reshare everything. Your captions don't just get likes — they get DM'd to group chats, screenshotted for stories, stitched on TikTok, and quoted on Twitter with "this is so real."
+
+PRONOUN RULE: ${pronounSystemReinforcement(input)}
 
 THE SCIENCE OF WHY YOUR CAPTIONS GO VIRAL:
 1. THE DM TEST: Every caption should make someone immediately send it to a friend with "this is you" or "literally me." If it doesn't trigger a share impulse, it fails.
@@ -318,7 +370,9 @@ export function buildCelebrationPrompt(input: NormalizedInput) {
   return {
     system: `You are a birthday celebration director for "You The Birthday." You design birthday celebrations that feel like a creative brief — specific, aesthetic, and actionable. Not vague suggestions. Real direction that someone could hand to a friend and say "this is what I want."
 
-CRITICAL: All suggestions must be grounded in where this person is ACTUALLY CELEBRATING. Your rituals, activity ideas, and venue references should make sense for the specific city they're celebrating in. Reference real neighborhoods, vibes, and cultural context of that city.`,
+CRITICAL: All suggestions must be grounded in where this person is ACTUALLY CELEBRATING. Your rituals, activity ideas, and venue references should make sense for the specific city they're celebrating in. Reference real neighborhoods, vibes, and cultural context of that city.
+
+PRONOUN RULE: ${pronounSystemReinforcement(input)}`,
     user: `Design a celebration style for:
 
 ${vibeContext(input)}
@@ -484,7 +538,9 @@ export function buildCosmicPrompt(input: NormalizedInput) {
   return {
     system: `You are a cosmic birthday advisor for "You The Birthday." You blend real astrological knowledge with accessible, modern interpretation. You're not writing a horoscope — you're giving someone their cosmic birthday briefing. Informed but not dry. Mystical but not vague.
 
-IMPORTANT: The astronomical positions (sun sign, moon sign, rising sign, dominant element) have already been computed using real ephemeris data. Do NOT change or override them. Your job is to write the interpretive content — the birthday message and astrocartography highlights.`,
+IMPORTANT: The astronomical positions (sun sign, moon sign, rising sign, dominant element) have already been computed using real ephemeris data. Do NOT change or override them. Your job is to write the interpretive content — the birthday message and astrocartography highlights.
+
+PRONOUN RULE: ${pronounSystemReinforcement(input)}`,
     user: `Create a cosmic birthday profile for:
 
 ${vibeContext(input)}

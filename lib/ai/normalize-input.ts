@@ -120,5 +120,9 @@ export function inputToCacheKey(input: NormalizedInput, step: string, promptVers
     ...(input.groupSize && { groupSize: input.groupSize }),
     ...(input.aestheticPreference && { aestheticPreference: input.aestheticPreference }),
     ...(input.foodVibe && { foodVibe: input.foodVibe }),
+    // Include pronoun in the cache key so outputs generated under the
+    // old (pre-v6) prompt without pronoun safety don't get reused for
+    // users who now have pronoun-aware generation.
+    pronoun: input.pronoun ?? "__none__",
   };
 }
