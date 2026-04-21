@@ -6,6 +6,7 @@ import { userWaitlist, birthdaySessions } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { createId } from "@/lib/utils/id";
 import { getRedis } from "@/lib/cache/redis";
+import { SESSION_PAID_TTL_SECONDS } from "@/lib/limits/generation-limits";
 import { sendBirthdayReport } from "@/lib/email/send-report";
 
 /**
@@ -45,6 +46,13 @@ export async function handleCheckoutCompleted(
     }
   }
 
+  const isSubscription = session.mode === "subscription";
+  const purchaseType = isSubscription ? "subscription" : "one_time";
+  // Subscriptions grant unlimited. One-time purchases unlock ONLY the
+  // specific session they paid for. This is the core monetization gate —
+  // don't collapse the two branches.
+  const dbTier = isSubscription ? "premium" : "one_time";
+
   if (deviceToken) {
     try {
       await db
@@ -54,7 +62,7 @@ export async function handleCheckoutCompleted(
           email: email ?? `premium-${deviceToken}@youthebirthday.app`,
           deviceToken,
           ipHash,
-          tier: "premium",
+          tier: dbTier,
           stripeCustomerId: customerId ?? null,
         })
         .onConflictDoNothing();
@@ -63,7 +71,7 @@ export async function handleCheckoutCompleted(
         await db
           .update(userWaitlist)
           .set({
-            tier: "premium",
+            tier: dbTier,
             stripeCustomerId: customerId ?? null,
             deviceToken,
             ipHash: ipHash ?? undefined,
@@ -75,12 +83,27 @@ export async function handleCheckoutCompleted(
     }
 
     const redis = getRedis();
-    const purchaseType = session.mode === "subscription" ? "subscription" : "one_time";
-    await redis.set(`gen:device:${deviceToken}:premium`, "true");
-    await redis.set(`gen:device:${deviceToken}:purchase_type`, purchaseType);
-    if (ipHash) {
-      await redis.set(`gen:ip:${ipHash}:premium`, "true");
-      await redis.set(`gen:ip:${ipHash}:purchase_type`, purchaseType);
+
+    if (isSubscription) {
+      // Subscription → unlimited generations across any session.
+      await redis.set(`gen:device:${deviceToken}:premium`, "true");
+      await redis.set(`gen:device:${deviceToken}:purchase_type`, purchaseType);
+      if (ipHash) {
+        await redis.set(`gen:ip:${ipHash}:premium`, "true");
+        await redis.set(`gen:ip:${ipHash}:purchase_type`, purchaseType);
+      }
+    }
+
+    // Session-scoped unlock — written for BOTH one-time and subscription
+    // purchases so the user can view/regen/re-email the exact session
+    // they just paid for, regardless of future device changes.
+    if (sessionId) {
+      await redis.set(`gen:session:${sessionId}:paid`, "true", {
+        ex: SESSION_PAID_TTL_SECONDS,
+      });
+      await redis.set(`gen:session:${sessionId}:purchase_type`, purchaseType, {
+        ex: SESSION_PAID_TTL_SECONDS,
+      });
     }
   } else if (email) {
     // Edge case: checkout completed with email but no deviceToken
@@ -94,35 +117,69 @@ export async function handleCheckoutCompleted(
           email,
           deviceToken: null,
           ipHash,
-          tier: "premium",
+          tier: dbTier,
           stripeCustomerId: customerId ?? null,
         })
         .onConflictDoUpdate({
           target: userWaitlist.email,
           set: {
-            tier: "premium",
+            tier: dbTier,
             stripeCustomerId: customerId ?? null,
             ipHash: ipHash ?? undefined,
           },
         });
 
-      if (ipHash) {
-        await getRedis().set(`gen:ip:${ipHash}:premium`, "true");
+      const redis = getRedis();
+      if (isSubscription && ipHash) {
+        await redis.set(`gen:ip:${ipHash}:premium`, "true");
+      }
+      if (sessionId) {
+        await redis.set(`gen:session:${sessionId}:paid`, "true", {
+          ex: SESSION_PAID_TTL_SECONDS,
+        });
       }
     } catch {
       // soft-fail
     }
   }
 
+  // Log the email-send decision unconditionally so diagnosis is trivial.
+  console.log(
+    JSON.stringify({
+      level: "info",
+      msg: "email:gate_check",
+      hasEmail: !!email,
+      hasSessionId: !!sessionId && sessionId !== "",
+      sessionIdValue: sessionId ?? null,
+      emailValue: email ?? null,
+    }),
+  );
+
   if (email && sessionId && sessionId !== "") {
-    const isSubscription = session.mode === "subscription";
-    const sent = await sendBirthdayReport(email, sessionId, isSubscription);
+    // Retry once on transient Resend / DB failures. The second attempt
+    // runs after a short delay which also covers webhook→DB races where
+    // the generation row hasn't been marked complete yet.
+    let sent = await sendBirthdayReport(email, sessionId, isSubscription);
+    if (!sent) {
+      await new Promise((r) => setTimeout(r, 2000));
+      sent = await sendBirthdayReport(email, sessionId, isSubscription);
+    }
     console.log(
       JSON.stringify({
-        level: "info",
+        level: sent ? "info" : "error",
         msg: sent ? "email:report_sent" : "email:report_failed",
         email,
         sessionId,
+        mode: session.mode,
+      }),
+    );
+  } else {
+    console.warn(
+      JSON.stringify({
+        level: "warn",
+        msg: "email:skipped_missing_data",
+        hasEmail: !!email,
+        hasSessionId: !!sessionId && sessionId !== "",
       }),
     );
   }

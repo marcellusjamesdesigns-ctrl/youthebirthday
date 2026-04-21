@@ -65,7 +65,9 @@ export function DashboardShell({
   initialGeneration,
   sessionId,
 }: DashboardShellProps) {
-  const { isPremium, purchaseType } = usePremiumState();
+  // Pass sessionId so a one-time buyer sees THIS session as unlocked
+  // without granting them unlimited access across other sessions.
+  const { isPremium, purchaseType } = usePremiumState(sessionId);
   const [status, setStatus] = useState(
     initialGeneration?.status ?? session.status
   );

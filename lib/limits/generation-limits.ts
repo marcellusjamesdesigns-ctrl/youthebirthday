@@ -8,6 +8,22 @@ const TTL_SECONDS = 30 * 24 * 60 * 60; // 30 days
 // Premium flags in Redis are rehydrated from DB on miss, so a short-ish TTL
 // is fine — if Redis evicts, we re-fill from the DB on next check.
 const PREMIUM_REDIS_TTL_SECONDS = 7 * 24 * 60 * 60;
+// Session-scoped "paid" flags (one-time purchases) live longer since we
+// won't re-derive them from the DB easily. One year is plenty for a report.
+export const SESSION_PAID_TTL_SECONDS = 365 * 24 * 60 * 60;
+
+/**
+ * Check whether a specific birthday session was unlocked via a one-time
+ * purchase. One-time buyers ($2.99) get this session unlocked forever —
+ * but they do NOT get unlimited generations across new sessions. For
+ * that, they need a subscription (which sets the device/ip premium
+ * flags via `isPremium`).
+ */
+export async function isSessionPaid(sessionId: string): Promise<boolean> {
+  if (!sessionId) return false;
+  const redis = getRedis();
+  return isPremiumFlag(await redis.get(`gen:session:${sessionId}:paid`));
+}
 
 /**
  * Normalize a Redis "is this flag set" check.
@@ -101,9 +117,18 @@ export async function checkGenerationLimit(
   ipHash: string,
   deviceToken: string | null,
   tierLimit: number = FREE_GENERATION_LIMIT,
+  sessionId: string | null = null,
 ): Promise<LimitResult> {
   if (tierLimit === Infinity) return { allowed: true, remaining: Infinity };
 
+  // Session-scoped unlock (one-time purchase) — user paid for THIS
+  // specific session and is regenerating or re-running the pipeline
+  // on the same birthday. Allow.
+  if (sessionId && (await isSessionPaid(sessionId))) {
+    return { allowed: true, remaining: Infinity };
+  }
+
+  // Device/IP-level subscription check — grants unlimited across all sessions.
   if (await isPremium(ipHash, deviceToken)) {
     return { allowed: true, remaining: Infinity };
   }

@@ -40,7 +40,16 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
   }
 
   // Check generation limit
-  const limitResult = await checkGenerationLimit(ipHash, deviceToken);
+  //   - If this session was already paid for (one-time), allow unlimited
+  //     regen on THIS session only.
+  //   - If the device/IP has a subscription, allow unlimited across sessions.
+  //   - Otherwise apply the free-tier limit.
+  const limitResult = await checkGenerationLimit(
+    ipHash,
+    deviceToken,
+    undefined,
+    id,
+  );
   if (!limitResult.allowed) {
     return NextResponse.json(
       { gated: true, reason: limitResult.reason, remaining: 0 },
