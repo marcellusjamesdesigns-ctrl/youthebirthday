@@ -9,7 +9,9 @@ const NAV_LINKS = [
   { href: "/birthday-captions", label: "Captions" },
   { href: "/birthday-ideas", label: "Ideas" },
   { href: "/birthday-themes", label: "Themes" },
+  { href: "/birthday-palettes", label: "Palettes" },
   { href: "/birthday-destinations", label: "Destinations" },
+  { href: "/milestone-birthdays", label: "Milestones" },
   { href: "/zodiac-birthdays", label: "Zodiac" },
   { href: "/blog", label: "Journal" },
 ];

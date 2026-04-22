@@ -24,6 +24,57 @@ export const metadata: Metadata = {
   },
 };
 
+const HUBS = [
+  {
+    eyebrow: "Captions",
+    title: "Birthday Captions",
+    desc: "Instagram-ready captions by age, vibe, and relationship — copy-paste ready.",
+    href: "/birthday-captions",
+  },
+  {
+    eyebrow: "Ideas",
+    title: "Birthday Ideas",
+    desc: "Celebration plans by age, format, and budget — from dinners to full weekends.",
+    href: "/birthday-ideas",
+  },
+  {
+    eyebrow: "Themes",
+    title: "Birthday Themes",
+    desc: "Aesthetic directions — soft life, quiet luxury, Y2K, and more, fully built out.",
+    href: "/birthday-themes",
+  },
+  {
+    eyebrow: "Palettes",
+    title: "Color Palettes",
+    desc: "Curated palettes with hex codes for outfits, decor, and the Instagram grid.",
+    href: "/birthday-palettes",
+  },
+  {
+    eyebrow: "Destinations",
+    title: "Birthday Destinations",
+    desc: "Where to celebrate — luxury, solo, group, domestic, and abroad picks.",
+    href: "/birthday-destinations",
+  },
+  {
+    eyebrow: "Milestones",
+    title: "Milestone Birthdays",
+    desc: "Dedicated guides for 21st, 25th, 30th, 35th, 40th, and 50th birthdays.",
+    href: "/milestone-birthdays",
+  },
+  {
+    eyebrow: "Zodiac",
+    title: "Zodiac Birthdays",
+    desc: "How each sign should celebrate — Aries through Pisces, built by element.",
+    href: "/zodiac-birthdays",
+  },
+  {
+    eyebrow: "Journal",
+    title: "The Journal",
+    desc: "Editorial guides on birthday planning, etiquette, and cultural context.",
+    href: "/blog",
+  },
+];
+
 const features = [
   {
     label: "Birthday Title",
@@ -142,28 +193,35 @@ export default function Home() {
       {/* ── ZODIAC BAR ────────────────────────────────────────────────── */}
       <ZodiacBar />
 
-      {/* ── EXPLORE CONTENT ───────────────────────────────────────────── */}
-      <section className="py-16 px-6 border-t border-border/20">
+      {/* ── BROWSE HUBS ───────────────────────────────────────────────── */}
+      <section className="py-20 px-6 border-t border-border/20">
         <Reveal>
-          <div className="mx-auto max-w-5xl text-center space-y-8">
-            <h2 className="heading-editorial text-2xl sm:text-3xl">
-              Explore birthday inspiration
-            </h2>
-            <div className="flex flex-wrap justify-center gap-2.5">
-              {[
-                { label: "30th Captions",      href: "/birthday-captions/30th-birthday-captions"             },
-                { label: "Luxury Destinations", href: "/birthday-destinations/luxury-birthday-destinations"   },
-                { label: "Soft Life Theme",     href: "/birthday-themes/soft-life-birthday-theme"             },
-                { label: "Color Palettes",      href: "/birthday-palettes/birthday-color-palette-inspiration" },
-                { label: "Zodiac Birthdays",    href: "/zodiac-birthdays"                                     },
-                { label: "Birthday Ideas",      href: "/birthday-ideas"                                       },
-              ].map((link) => (
+          <div className="mx-auto max-w-5xl space-y-10">
+            <div className="text-center space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground/50">
+                Every angle on the birthday
+              </p>
+              <h2 className="heading-editorial text-2xl sm:text-3xl">
+                Browse the guides
+              </h2>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {HUBS.map((hub) => (
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-full border border-border/50 px-5 py-2 text-[13px] text-muted-foreground/60 hover:text-champagne hover:border-champagne/30 hover:bg-champagne/5 transition-all duration-200"
+                  key={hub.href}
+                  href={hub.href}
+                  className="lift-card p-5 space-y-1.5"
                 >
-                  {link.label}
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/50">
+                    {hub.eyebrow}
+                  </p>
+                  <p className="text-sm font-medium text-foreground/90">
+                    {hub.title}
+                  </p>
+                  <p className="text-[13px] text-muted-foreground/60 leading-relaxed">
+                    {hub.desc}
+                  </p>
                 </Link>
               ))}
             </div>
