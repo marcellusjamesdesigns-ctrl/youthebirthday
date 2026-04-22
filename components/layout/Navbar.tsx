@@ -29,10 +29,10 @@ export function Navbar() {
           <Image
             src="/logo.png"
             alt="You the Birthday"
-            width={200}
-            height={200}
+            width={400}
+            height={100}
             priority
-            className="h-14 w-auto"
+            className="h-10 w-auto"
           />
         </Link>
 

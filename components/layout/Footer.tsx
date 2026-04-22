@@ -15,9 +15,9 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt="You the Birthday"
-                width={200}
-                height={200}
-                className="h-12 w-auto"
+                width={400}
+                height={100}
+                className="h-9 w-auto"
               />
             </Link>
             <p className="text-xs text-muted-foreground/60 mt-3 leading-relaxed">
@@ -56,9 +56,9 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt="You the Birthday"
-                width={200}
-                height={200}
-                className="h-11 w-auto"
+                width={400}
+                height={100}
+                className="h-8 w-auto"
               />
             </Link>
           </div>
