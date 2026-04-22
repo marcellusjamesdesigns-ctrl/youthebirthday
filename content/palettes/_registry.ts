@@ -146,4 +146,184 @@ const palettePages: ContentPage[] = [
   },
 ];
 
+// ─── Pink palettes ───────────────────────────────────────────────────────────
+palettePages.push({
+  slug: "pink-birthday-color-palettes",
+  category: "palettes",
+  title: "Pink Birthday Color Palettes (2026) — Hot Pink, Blush, Rose & More",
+  description: "Pink birthday color palettes with hex codes — hot pink Barbiecore, soft blush, moody dusty rose, and Y2K pink. For decor, outfits, and Instagram.",
+  headline: "Pink Birthday Color Palettes",
+  subheadline: "From Barbiecore to soft blush — pick the pink that matches the mood.",
+  tags: { celebrationType: "decor" },
+  canonicalPath: "/birthday-palettes/pink-birthday-color-palettes",
+  schemaType: "ItemList",
+  publishStatus: "published",
+  publishedAt: "2026-04-22",
+  sections: [
+    { type: "hero", headline: "Pink Birthday Color Palettes", subheadline: "From Barbiecore to soft blush — pick the pink that matches the mood." },
+    { type: "paragraph", body: "Pink is not one color — it's a whole spectrum of moods. Hot pink reads loud and celebratory; dusty pink reads moody and grown; blush reads soft and romantic; rose gold reads expensive. The palette you pick tells guests what kind of birthday this is before they read the invite. These four pink directions each carry a distinct feeling, with hex codes for everything from balloons to the Instagram story template." },
+    {
+      type: "palette-showcase",
+      heading: "Four Pink Directions",
+      palettes: [
+        { name: "Barbiecore", mood: "loud, celebratory, confident", colors: [{ hex: "#ff2e93", name: "Barbie Pink" }, { hex: "#ff6eb4", name: "Hot Pink" }, { hex: "#ffc0cb", name: "Classic Pink" }, { hex: "#d4af37", name: "Gold" }, { hex: "#ffffff", name: "White" }] },
+        { name: "Soft Bloom", mood: "romantic, gentle, photographable", colors: [{ hex: "#fbe8e8", name: "Petal" }, { hex: "#f5c6c6", name: "Blush" }, { hex: "#e8a4a4", name: "Dusty Rose" }, { hex: "#a7c5bd", name: "Sage" }, { hex: "#fff8f0", name: "Cream" }] },
+        { name: "Moody Mauve", mood: "grown, sophisticated, low-key", colors: [{ hex: "#8b3a5c", name: "Deep Rose" }, { hex: "#c97b9c", name: "Dusty Pink" }, { hex: "#d4a5a5", name: "Warm Blush" }, { hex: "#4a1c2e", name: "Wine" }, { hex: "#ebd8c3", name: "Nude" }] },
+        { name: "Y2K Bubblegum", mood: "playful, nostalgic, electric", colors: [{ hex: "#ff006e", name: "Electric Pink" }, { hex: "#ff71ce", name: "Bubblegum" }, { hex: "#01cdfe", name: "Cyan Pop" }, { hex: "#fffc4d", name: "Citrus" }, { hex: "#000000", name: "Black" }] },
+      ],
+    },
+    { type: "tip-list", heading: "Pink Birthday Pro Tips", tips: [
+      { title: "Pair hot pink with one grounding color", body: "Pure Barbie pink for a full room reads chaotic. Anchor it with gold, black, or white and the whole palette tightens up." },
+      { title: "Blush photographs best with natural light", body: "Soft pinks can wash out under tungsten or fluorescent lighting. If you're indoors, add warm gold accents (candles, brass) to restore depth." },
+      { title: "Don't mix more than two pink shades", body: "Hot pink plus blush plus dusty plus rose gold turns into visual noise. Pick one pink, one accent color, and let them carry the palette." },
+    ]},
+    { type: "cta", headline: "Get a pink palette made for your exact birthday vibe", subheadline: "Our generator tunes the pink to your age, zodiac, and how loud you want the day.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+    { type: "related-content" },
+  ],
+});
+
+// ─── Gold palettes ───────────────────────────────────────────────────────────
+palettePages.push({
+  slug: "gold-birthday-color-palettes",
+  category: "palettes",
+  title: "Gold Birthday Color Palettes (2026) — Black & Gold, Rose Gold, Champagne",
+  description: "Gold birthday color palettes with hex codes — black & gold, champagne & ivory, rose gold, burgundy & gold. For luxe birthday decor, outfits, and invites.",
+  headline: "Gold Birthday Color Palettes",
+  subheadline: "The color of celebration, done four ways.",
+  tags: { celebrationType: "decor" },
+  canonicalPath: "/birthday-palettes/gold-birthday-color-palettes",
+  schemaType: "ItemList",
+  publishStatus: "published",
+  publishedAt: "2026-04-22",
+  sections: [
+    { type: "hero", headline: "Gold Birthday Color Palettes", subheadline: "The color of celebration, done four ways." },
+    { type: "paragraph", body: "Gold is the default birthday color — which is exactly why it needs a point of view. Done wrong, it reads generic. Done well, it carries the whole room. These four gold palettes each lock gold into a specific mood: black and gold for classic drama, champagne and ivory for quiet luxury, rose gold and blush for romance, burgundy and gold for moody opulence. Pick the one that matches the feeling, not just the color." },
+    {
+      type: "palette-showcase",
+      heading: "Four Gold Directions",
+      palettes: [
+        { name: "Black & Gold", mood: "classic, dramatic, high-contrast", colors: [{ hex: "#0a0a0a", name: "Jet Black" }, { hex: "#d4af37", name: "Rich Gold" }, { hex: "#b8860b", name: "Antique Gold" }, { hex: "#ffffff", name: "White" }, { hex: "#3a3a3a", name: "Charcoal" }] },
+        { name: "Champagne & Ivory", mood: "quiet luxury, timeless, soft", colors: [{ hex: "#f5ecd9", name: "Champagne" }, { hex: "#faf5e8", name: "Ivory" }, { hex: "#c9a96e", name: "Muted Gold" }, { hex: "#d4c3a0", name: "Sand" }, { hex: "#5e4730", name: "Tobacco" }] },
+        { name: "Rose Gold & Blush", mood: "romantic, feminine, warm", colors: [{ hex: "#e8b4a0", name: "Rose Gold" }, { hex: "#f5c8c2", name: "Blush" }, { hex: "#d4a5a5", name: "Warm Pink" }, { hex: "#faf0e8", name: "Cream" }, { hex: "#b76e79", name: "Deep Rose" }] },
+        { name: "Bordeaux & Gold", mood: "moody, opulent, old world", colors: [{ hex: "#4a0e1a", name: "Bordeaux" }, { hex: "#6b1f2e", name: "Deep Wine" }, { hex: "#d4af37", name: "Rich Gold" }, { hex: "#f5ecd9", name: "Champagne" }, { hex: "#1a0a0a", name: "Near-Black" }] },
+      ],
+    },
+    { type: "tip-list", heading: "Gold Palette Pro Tips", tips: [
+      { title: "Commit to one metal", body: "Gold, rose gold, and silver accessories together read unintentional. If the palette is gold, the cutlery, candles, hardware, and jewelry should all be gold." },
+      { title: "Use champagne gold for daylight events", body: "Rich antique gold can look dull in natural light. For a brunch or daytime photoshoot, soft champagne gold photographs better than saturated gold." },
+      { title: "Balance gold with something matte", body: "All-gold reflective surfaces (metallic balloons, sequin tablecloth, foil signage) turn into glare. Mix gold accents with matte textures — linen, velvet, wood — to create depth." },
+    ]},
+    { type: "cta", headline: "Get a gold palette tuned to your birthday vibe", subheadline: "Our generator picks the gold direction based on your aesthetic — classic, quiet, romantic, or opulent.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+    { type: "related-content" },
+  ],
+});
+
+// ─── Pastel palettes ─────────────────────────────────────────────────────────
+palettePages.push({
+  slug: "pastel-birthday-color-palettes",
+  category: "palettes",
+  title: "Pastel Birthday Color Palettes (2026) — Soft Hex Codes for Every Pastel Mood",
+  description: "Pastel birthday color palettes with hex codes — soft bloom, mint sherbet, lilac cloud, and coastal pastel. For romantic and dreamy birthday decor.",
+  headline: "Pastel Birthday Color Palettes",
+  subheadline: "Soft doesn't mean bland. Four pastel palettes with a point of view.",
+  tags: { celebrationType: "decor" },
+  canonicalPath: "/birthday-palettes/pastel-birthday-color-palettes",
+  schemaType: "ItemList",
+  publishStatus: "published",
+  publishedAt: "2026-04-22",
+  sections: [
+    { type: "hero", headline: "Pastel Birthday Color Palettes", subheadline: "Soft doesn't mean bland. Four pastel palettes with a point of view." },
+    { type: "paragraph", body: "Pastels are the most photographed birthday palette family for a reason — they read dreamy, editorial, and photograph beautifully in natural light. The trap is going too sweet. Strong pastel palettes balance softness with a grounding element: a single saturated accent, a metal, or a deeper neutral that keeps the whole thing from disappearing. These four directions show four different ways to do pastels right." },
+    {
+      type: "palette-showcase",
+      heading: "Four Pastel Directions",
+      palettes: [
+        { name: "Soft Bloom", mood: "romantic, garden, feminine", colors: [{ hex: "#fbe8e8", name: "Petal Pink" }, { hex: "#f5e6d3", name: "Butter" }, { hex: "#d4e8d4", name: "Spring Sage" }, { hex: "#c9b1d0", name: "Wisteria" }, { hex: "#d4af37", name: "Gold Accent" }] },
+        { name: "Mint Sherbet", mood: "fresh, summery, cool", colors: [{ hex: "#c9e4ca", name: "Mint" }, { hex: "#f4c2c2", name: "Peach" }, { hex: "#ffe5a5", name: "Cream Yellow" }, { hex: "#b5d5e8", name: "Sky" }, { hex: "#ffffff", name: "White" }] },
+        { name: "Lilac Cloud", mood: "dreamy, ethereal, soft-focus", colors: [{ hex: "#e8d5f5", name: "Lilac" }, { hex: "#d4eaf7", name: "Ice Blue" }, { hex: "#f5e6d3", name: "Cream" }, { hex: "#b8a9c9", name: "Muted Violet" }, { hex: "#c0c0c0", name: "Silver" }] },
+        { name: "Coastal Pastel", mood: "serene, grown, beachy", colors: [{ hex: "#d4e8d4", name: "Sea Glass" }, { hex: "#f4e8d3", name: "Sand" }, { hex: "#b8d0e0", name: "Pale Sky" }, { hex: "#ebd8c3", name: "Shell" }, { hex: "#1d3557", name: "Navy Anchor" }] },
+      ],
+    },
+    { type: "tip-list", heading: "Pastel Palette Pro Tips", tips: [
+      { title: "Always include one saturated anchor", body: "Full pastel without a deeper color reads like a baby shower. A single dark accent — navy, charcoal, forest, or gold — turns the same palette into a grown-up birthday." },
+      { title: "Pastels need texture to hold up on camera", body: "Flat pastel surfaces blow out in bright light. Use linen, velvet, dried florals, and matte paper to give pastels depth the camera can read." },
+      { title: "Match your outfit to the saturated anchor", body: "Wearing head-to-toe pastel to a pastel party makes you blend in. Pick the palette's darkest color for your outfit and let the decor do the soft work." },
+    ]},
+    { type: "cta", headline: "Get a pastel palette matched to your birthday season", subheadline: "Spring-pastel palettes look different from summer or winter pastels. Our generator tunes for both the season and your vibe.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+    { type: "related-content" },
+  ],
+});
+
+// ─── Jewel tone palettes ─────────────────────────────────────────────────────
+palettePages.push({
+  slug: "jewel-tone-birthday-palettes",
+  category: "palettes",
+  title: "Jewel Tone Birthday Palettes (2026) — Emerald, Sapphire, Ruby, Amethyst",
+  description: "Jewel tone birthday color palettes with hex codes — emerald, sapphire, ruby, amethyst. For moody luxury, fall/winter birthdays, and dramatic decor.",
+  headline: "Jewel Tone Birthday Palettes",
+  subheadline: "Saturated, moody, cinematic. The grown-up birthday palette.",
+  tags: { celebrationType: "decor" },
+  canonicalPath: "/birthday-palettes/jewel-tone-birthday-palettes",
+  schemaType: "ItemList",
+  publishStatus: "published",
+  publishedAt: "2026-04-22",
+  sections: [
+    { type: "hero", headline: "Jewel Tone Birthday Palettes", subheadline: "Saturated, moody, cinematic. The grown-up birthday palette." },
+    { type: "paragraph", body: "Jewel tones are what pastels grow into. Emerald, sapphire, ruby, amethyst — deep saturated colors pulled from actual gemstones. They read expensive, intentional, and photograph beautifully under candlelight. For milestone birthdays, fall and winter celebrations, or anyone who wants the decor to feel less 'birthday party' and more 'private dinner' — jewel tones do the work. Four palettes, each anchored by a single gemstone color." },
+    {
+      type: "palette-showcase",
+      heading: "Four Jewel Tone Directions",
+      palettes: [
+        { name: "Emerald Forest", mood: "rich, grounded, old world", colors: [{ hex: "#0f4c3a", name: "Emerald" }, { hex: "#1b4d3e", name: "Deep Green" }, { hex: "#c9a96e", name: "Antique Gold" }, { hex: "#f5ecd9", name: "Champagne" }, { hex: "#1a0a00", name: "Near Black" }] },
+        { name: "Sapphire Midnight", mood: "dramatic, cinematic, regal", colors: [{ hex: "#0f3460", name: "Sapphire" }, { hex: "#1a1a2e", name: "Midnight" }, { hex: "#d4af37", name: "Rich Gold" }, { hex: "#c0c0c0", name: "Silver" }, { hex: "#f5f5f0", name: "Ivory" }] },
+        { name: "Ruby Velvet", mood: "warm, opulent, moody romantic", colors: [{ hex: "#8b0000", name: "Ruby" }, { hex: "#c1121f", name: "Scarlet" }, { hex: "#4a0e1a", name: "Bordeaux" }, { hex: "#d4af37", name: "Gold" }, { hex: "#faf0e8", name: "Cream" }] },
+        { name: "Amethyst Dusk", mood: "mystical, feminine-dark, intentional", colors: [{ hex: "#4a2c5e", name: "Amethyst" }, { hex: "#7b2d8b", name: "Royal Purple" }, { hex: "#e8b4a0", name: "Rose Gold" }, { hex: "#2d1b3d", name: "Plum Black" }, { hex: "#f5ecd9", name: "Champagne" }] },
+      ],
+    },
+    { type: "tip-list", heading: "Jewel Tone Pro Tips", tips: [
+      { title: "Candlelight is non-negotiable", body: "Jewel tones lose their richness under overhead lighting. Book a venue with dimmable lights or commit to candles — emerald and ruby look cheap in fluorescent and astonishing by flame." },
+      { title: "Pair with a metal, not another jewel", body: "Emerald plus sapphire plus ruby reads like a Christmas ornament box. Lock in one jewel tone, add gold or silver, and let a cream neutral carry the rest." },
+      { title: "Velvet, satin, and brass over matte plastic", body: "The palette carries luxury weight — cheap materials undercut it instantly. Use fabric tablecloths (velvet, satin, linen), real brass or gold hardware, and real candles instead of battery ones." },
+    ]},
+    { type: "cta", headline: "Get a jewel tone palette tuned to your birthday vibe", subheadline: "Our generator picks the gemstone anchor based on your sign, season, and the kind of drama you want.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+    { type: "related-content" },
+  ],
+});
+
+// ─── Luxury palettes ─────────────────────────────────────────────────────────
+palettePages.push({
+  slug: "luxury-birthday-color-palettes",
+  category: "palettes",
+  title: "Luxury Birthday Color Palettes (2026) — Quiet Luxury, Old Money, Champagne",
+  description: "Luxury birthday color palettes with hex codes — quiet luxury, old money, champagne & ivory, bordeaux & cream. For sophisticated, grown-up birthday decor.",
+  headline: "Luxury Birthday Color Palettes",
+  subheadline: "Quiet luxury, old money, private dinner — four palettes that carry weight.",
+  tags: { celebrationType: "decor" },
+  canonicalPath: "/birthday-palettes/luxury-birthday-color-palettes",
+  schemaType: "ItemList",
+  publishStatus: "published",
+  publishedAt: "2026-04-22",
+  sections: [
+    { type: "hero", headline: "Luxury Birthday Color Palettes", subheadline: "Quiet luxury, old money, private dinner — four palettes that carry weight." },
+    { type: "paragraph", body: "Luxury palettes don't announce themselves. Where a Barbiecore palette tells you it's a party before you walk in, a luxury palette tells you this is a dinner. The colors sit at the quieter, warmer end of the spectrum: tobacco, cream, champagne, olive, bordeaux, cognac. Everything reads expensive because the palette is committed — no bright accent, no pastel break, no metallic streamers. Four directions, each built for a specific kind of grown birthday." },
+    {
+      type: "palette-showcase",
+      heading: "Four Luxury Directions",
+      palettes: [
+        { name: "Quiet Luxury", mood: "understated, considered, expensive", colors: [{ hex: "#faf5e8", name: "Ivory" }, { hex: "#f5ecd9", name: "Champagne" }, { hex: "#c9a96e", name: "Muted Gold" }, { hex: "#5e4730", name: "Tobacco" }, { hex: "#d4c3a0", name: "Sand" }] },
+        { name: "Old Money", mood: "traditional, crisp, WASP-y", colors: [{ hex: "#f5f0e8", name: "Cream" }, { hex: "#1d3557", name: "Navy" }, { hex: "#c9a96e", name: "Gold" }, { hex: "#8b4513", name: "Saddle" }, { hex: "#0f4c3a", name: "Hunter Green" }] },
+        { name: "Private Dinner", mood: "intimate, moody, candlelit", colors: [{ hex: "#4a0e1a", name: "Bordeaux" }, { hex: "#faf0e8", name: "Cream" }, { hex: "#1a0a0a", name: "Near Black" }, { hex: "#c9a96e", name: "Antique Gold" }, { hex: "#6b4c2a", name: "Espresso" }] },
+        { name: "Villa", mood: "Mediterranean, sun-worn, warm", colors: [{ hex: "#ebd8c3", name: "Limestone" }, { hex: "#d4845a", name: "Terracotta" }, { hex: "#8b6f47", name: "Olive" }, { hex: "#c45c1e", name: "Burnt Sienna" }, { hex: "#f5ecd9", name: "Tuscan Cream" }] },
+      ],
+    },
+    { type: "tip-list", heading: "Luxury Palette Pro Tips", tips: [
+      { title: "Cut the balloons", body: "Nothing kills a luxury palette faster than a Mylar balloon arch. Swap for candles, real florals in neutral ceramic vases, and fabric runners. If you need a celebratory marker, use a custom-printed menu or signage." },
+      { title: "Linen, not plastic", body: "Paper plates, plastic flatware, and plastic tablecloths instantly downgrade the palette. Even a budget-conscious luxury birthday uses real linen napkins, ceramic plates, and proper glassware — rentable by the dozen for less than you'd think." },
+      { title: "Lighting is part of the palette", body: "Warm-toned bulbs (2700K or lower), candles, and dimmer switches are as much part of the luxury palette as the hex codes. Overhead fluorescents or bright daylight bulbs flatten every luxury color instantly." },
+    ]},
+    { type: "cta", headline: "Get a luxury palette built around your exact celebration", subheadline: "Our generator tunes the luxury direction to your age, venue, and how quiet or cinematic you want the evening to read.", buttonText: "Generate My Birthday", buttonHref: "/onboarding" },
+    { type: "related-content" },
+  ],
+});
+
 palettePages.forEach(registerPage);
