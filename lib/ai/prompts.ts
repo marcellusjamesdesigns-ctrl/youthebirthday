@@ -2,7 +2,9 @@ import type { NormalizedInput } from "./normalize-input";
 
 // Bump this when prompt content changes so the cache invalidates.
 // v6: pronoun safety guardrail added.
-export const PROMPT_VERSION = "v6";
+// v7: activity schema adds venueName so Maps links resolve to the
+//     actual business, not the full descriptive phrase.
+export const PROMPT_VERSION = "v7";
 
 /**
  * Build the pronoun instruction block for the prompt.
@@ -519,7 +521,8 @@ Generate a curated mix of things to DO (not eat — restaurants are covered sepa
 - 1-2 CELEBRATION ACTIVITIES: Things that specifically match their birthday energy — ${input.celebrationVibe} vibe. Could be wellness (spa, sound bath), adventure (boat tour, rooftop), cultural (gallery, live music), or social (comedy show, wine tasting).
 
 For each activity:
-- name: Real name of the experience, attraction, or venue
+- name: Descriptive title of the experience (e.g. "Sound bath and meditation", "Sunset kayaking", "Rooftop drinks at golden hour"). Can be evocative — this is what the user reads on the card.
+- venueName: The actual business/place/venue name where this happens, SEPARATE from the description. Example: for "Sound bath and meditation at Restoration Yoga", venueName is "Restoration Yoga". For "Kayaking the Potomac at Jack's Boat Rental", venueName is "Jack's Boat Rental". Omit ONLY if the activity has no fixed venue (e.g. "a self-guided walk through Georgetown"). This is critical — it's used to build accurate Google Maps links.
 - category: "experience" | "attraction" | "outdoor" | "nightlife" | "wellness" | "culture"
 - description: 1-2 sentences describing what this is
 - whyItFitsYou: 1-2 sentences explaining why THIS person should do THIS on their birthday. Reference their vibe, goals, or celebration energy.

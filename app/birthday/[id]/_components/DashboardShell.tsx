@@ -24,6 +24,7 @@ import { GenerationGate } from "@/components/GenerationGate";
 import { PremiumTeaser } from "@/components/PremiumTeaser";
 import { getOrCreateDeviceToken, incrementLocalCount } from "@/lib/limits/device-token";
 import { usePremiumState } from "@/lib/limits/use-premium";
+import { buildMapsUrl } from "@/lib/utils/maps-query";
 import { analytics } from "@/lib/analytics/events";
 import { ContentDiscovery } from "./ContentDiscovery";
 
@@ -385,7 +386,14 @@ export function DashboardShell({
               <SectionLabel>Where to Go</SectionLabel>
               <div className="space-y-3">
                 {sections.restaurants.map((r) => {
-                  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${r.name} ${r.address ?? ""}`)}`;
+                  // Build the Maps query from the venue name + address/city.
+                  // Restaurant.name is "Real name of the venue" per schema,
+                  // so it's usually correct — but pass through the helper
+                  // for consistent fallback behavior.
+                  const mapsUrl = buildMapsUrl(
+                    { name: r.name, address: r.address },
+                    session.celebrationCity?.trim() || session.currentCity,
+                  );
                   return (
                   <a
                     key={r.name}
@@ -457,7 +465,13 @@ export function DashboardShell({
                     wellness: "border-rose-400/15 text-rose-400/50 bg-rose-400/3",
                     culture: "border-champagne/15 text-champagne/50 bg-champagne/3",
                   };
-                  const activityUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${a.name} ${a.neighborhood ?? ""}`)}`;
+                  // Prefer the new venueName field (v7 prompt). Fall back
+                  // to parsing " at {venue}" out of the descriptive `name`
+                  // for legacy records.
+                  const activityUrl = buildMapsUrl(
+                    { name: a.name, venueName: a.venueName, neighborhood: a.neighborhood },
+                    session.celebrationCity?.trim() || session.currentCity,
+                  );
                   return (
                     <a key={a.name} href={activityUrl} target="_blank" rel="noopener noreferrer" className="block lift-card p-5 space-y-2.5 hover:border-champagne/15 transition-all">
                       <div className="flex justify-between items-start gap-3">

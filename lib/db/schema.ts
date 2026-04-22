@@ -224,6 +224,10 @@ export interface Restaurant {
 
 export interface Activity {
   name: string;
+  /** Business/venue name, separate from the descriptive `name`. Used
+   *  for Google Maps query building so links route to the actual place
+   *  instead of searching the full descriptive phrase. */
+  venueName?: string;
   category: "experience" | "attraction" | "outdoor" | "nightlife" | "wellness" | "culture";
   description: string;
   whyItFitsYou: string;

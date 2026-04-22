@@ -105,7 +105,13 @@ export const RestaurantSchema = z.object({
 export const ActivitySchema = z.object({
   activities: z.array(
     z.object({
-      name: z.string().describe("Real name of the experience or attraction"),
+      name: z.string().describe("Descriptive title of the experience or activity (e.g. 'Sound bath and meditation')"),
+      venueName: z
+        .string()
+        .optional()
+        .describe(
+          "The actual business/venue/place name where this happens, separate from the experience description. Example: for 'Sound bath and meditation at Restoration Yoga', this field should be 'Restoration Yoga'. Omit only if the activity has no fixed venue (e.g. 'a self-guided walk').",
+        ),
       category: z.enum(["experience", "attraction", "outdoor", "nightlife", "wellness", "culture"]),
       description: z.string().describe("1-2 sentence description of what this is"),
       whyItFitsYou: z.string().describe("1-2 sentence personalized explanation"),

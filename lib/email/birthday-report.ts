@@ -7,6 +7,7 @@ import type {
   Restaurant,
   Activity,
 } from "@/lib/db/schema";
+import { buildMapsQuery } from "@/lib/utils/maps-query";
 
 interface ReportData {
   name: string;
@@ -34,9 +35,6 @@ interface ReportData {
 
 function mapsLink(query: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-}
-function searchLink(query: string): string {
-  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 }
 
 // Escape a string for safe insertion into HTML attributes / text content.
@@ -104,10 +102,15 @@ export function buildReportEmailHtml(data: ReportData): string {
 
   const restaurantHtml = data.restaurants
     .map((r) => {
-      // Add destination context if the restaurant is in one of the
-      // recommended cities (first destination is the best guess).
+      // Use the shared Maps-query helper. Restaurants usually have a
+      // clean venue name in `r.name` per the schema contract, but we
+      // route through the helper for consistent fallback behavior
+      // (venue parsing + city append).
       const cityHint = data.destinations[0]?.city ?? "";
-      const query = `${r.name} ${cityHint}`.trim();
+      const query = buildMapsQuery(
+        { name: r.name, address: r.address },
+        cityHint,
+      );
       return `
     <div style="padding:14px 16px;background:#1a1a1d;border-radius:10px;margin-bottom:10px;">
       <p style="font-size:15px;font-weight:600;color:#f5f0eb;margin:0 0 6px;line-height:1.4;">${esc(r.name)} <span style="color:#d4af37;font-weight:400;font-size:13px;">· ${esc(r.priceRange)}</span></p>
@@ -121,14 +124,20 @@ export function buildReportEmailHtml(data: ReportData): string {
 
   const activityHtml = data.activities
     .map((a) => {
+      // Prefer venueName (v7 prompt) so "Sound bath at Restoration Yoga"
+      // searches "Restoration Yoga {city}" rather than the full phrase.
+      // Falls back to parsing " at {venue}" for legacy records.
       const cityHint = data.destinations[0]?.city ?? "";
-      const query = `${a.name} ${cityHint}`.trim();
+      const query = buildMapsQuery(
+        { name: a.name, venueName: a.venueName, neighborhood: a.neighborhood },
+        cityHint,
+      );
       return `
     <div style="padding:14px 16px;background:#1a1a1d;border-radius:10px;margin-bottom:10px;">
       <p style="font-size:15px;font-weight:600;color:#f5f0eb;margin:0 0 6px;line-height:1.4;">${esc(a.name)}</p>
       <p style="font-size:13px;color:#a8a39d;margin:0 0 8px;line-height:1.55;word-break:break-word;">${esc(a.description)}</p>
       <p style="font-size:12px;color:#d4af37;margin:0 0 10px;">${esc(a.neighborhood)} · ${esc(a.priceRange)} · ${esc(a.bestTimeOfDay)}</p>
-      <a href="${searchLink(query)}" target="_blank" rel="noopener" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#d4af37;text-decoration:none;border:1px solid #d4af3740;padding:6px 12px;border-radius:999px;">Search Google →</a>
+      <a href="${mapsLink(query)}" target="_blank" rel="noopener" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#d4af37;text-decoration:none;border:1px solid #d4af3740;padding:6px 12px;border-radius:999px;">Open in Google Maps →</a>
     </div>
   `;
     })
@@ -210,7 +219,7 @@ export function buildReportEmailHtml(data: ReportData): string {
 
     ${restaurantHtml ? `<hr style="border:none;border-top:1px solid #222;margin:32px 0;"><p style="font-size:12px;text-transform:uppercase;letter-spacing:0.2em;color:#d4af37;margin:0 0 8px;">Where to Eat & Drink</p><p style="font-size:12px;color:#777;margin:0 0 18px;line-height:1.5;">Tap any restaurant to find it on Google Maps.</p>${restaurantHtml}` : ""}
 
-    ${activityHtml ? `<hr style="border:none;border-top:1px solid #222;margin:32px 0;"><p style="font-size:12px;text-transform:uppercase;letter-spacing:0.2em;color:#d4af37;margin:0 0 8px;">What to Do</p><p style="font-size:12px;color:#777;margin:0 0 18px;line-height:1.5;">Tap any activity to search Google.</p>${activityHtml}` : ""}
+    ${activityHtml ? `<hr style="border:none;border-top:1px solid #222;margin:32px 0;"><p style="font-size:12px;text-transform:uppercase;letter-spacing:0.2em;color:#d4af37;margin:0 0 8px;">What to Do</p><p style="font-size:12px;color:#777;margin:0 0 18px;line-height:1.5;">Tap any activity to find its venue on Google Maps.</p>${activityHtml}` : ""}
 
     ${cosmicHtml}
 
