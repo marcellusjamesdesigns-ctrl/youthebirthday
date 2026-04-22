@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export function Footer() {
@@ -10,8 +11,16 @@ export function Footer() {
         {/* Desktop */}
         <div className="hidden sm:grid gap-8 sm:grid-cols-3">
           <div>
-            <p className="font-editorial text-base text-foreground/80">You the Birthday</p>
-            <p className="text-xs text-muted-foreground/60 mt-1.5 leading-relaxed">
+            <Link href="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="You the Birthday — home">
+              <Image
+                src="/logo.png"
+                alt="You the Birthday"
+                width={160}
+                height={40}
+                className="h-9 w-auto"
+              />
+            </Link>
+            <p className="text-xs text-muted-foreground/60 mt-3 leading-relaxed">
               Your personalized birthday experience.
             </p>
           </div>
@@ -42,8 +51,16 @@ export function Footer() {
 
         {/* Mobile — compact accordion */}
         <div className="sm:hidden space-y-4">
-          <div className="text-center">
-            <p className="font-editorial text-base text-foreground/80">You the Birthday</p>
+          <div className="flex justify-center">
+            <Link href="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="You the Birthday — home">
+              <Image
+                src="/logo.png"
+                alt="You the Birthday"
+                width={160}
+                height={40}
+                className="h-8 w-auto"
+              />
+            </Link>
           </div>
           <MobileFooterGroup title="Explore">
             <FooterLink href="/birthday-captions">Captions</FooterLink>
