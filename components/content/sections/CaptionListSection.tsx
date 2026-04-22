@@ -45,13 +45,14 @@ export function CaptionListSection({
                 <button
                   key={key}
                   onClick={() => handleCopy(caption, key)}
-                  className="w-full text-left lift-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group"
+                  aria-label={`Copy caption: ${caption}`}
+                  className="w-full text-left lift-card p-4 text-sm text-foreground/80 hover:text-foreground transition-all group flex items-start justify-between gap-3 cursor-pointer"
                 >
-                  <span>{caption}</span>
-                  <span className={`ml-2 text-[10px] uppercase tracking-[0.1em] transition-all duration-300 ${
+                  <span className="flex-1">{caption}</span>
+                  <span className={`shrink-0 text-[10px] uppercase tracking-[0.1em] transition-all duration-300 ${
                     copiedIndex === key
-                      ? "text-champagne/60 opacity-100"
-                      : "text-muted-foreground/30 opacity-0 group-hover:opacity-100"
+                      ? "text-champagne/80 opacity-100"
+                      : "text-muted-foreground/50 group-hover:text-champagne/70"
                   }`}>
                     {copiedIndex === key ? "Copied \u2713" : "Copy"}
                   </span>

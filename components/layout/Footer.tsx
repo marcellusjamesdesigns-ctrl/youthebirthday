@@ -25,7 +25,7 @@ export function Footer() {
             </p>
           </div>
           <div className="space-y-2.5">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/80">
               Explore
             </p>
             <div className="flex flex-col gap-1.5">
@@ -36,7 +36,7 @@ export function Footer() {
             </div>
           </div>
           <div className="space-y-2.5">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/80">
               More
             </p>
             <div className="flex flex-col gap-1.5">
@@ -77,15 +77,21 @@ export function Footer() {
           </MobileFooterGroup>
         </div>
 
-        <div className="mt-6 pt-4 border-t border-border/10 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-[10px] text-muted-foreground/25 tracking-wide">
+        <div className="mt-6 pt-4 border-t border-border/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-[11px] text-muted-foreground/80 tracking-wide">
             &copy; {new Date().getFullYear()} You the Birthday
           </p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="text-[10px] text-muted-foreground/25 hover:text-muted-foreground/50 transition-colors">
+          <div className="flex gap-2">
+            <Link
+              href="/privacy"
+              className="text-[11px] text-muted-foreground/80 hover:text-foreground transition-colors px-3 py-2 min-h-[44px] inline-flex items-center"
+            >
               Privacy
             </Link>
-            <Link href="/terms" className="text-[10px] text-muted-foreground/25 hover:text-muted-foreground/50 transition-colors">
+            <Link
+              href="/terms"
+              className="text-[11px] text-muted-foreground/80 hover:text-foreground transition-colors px-3 py-2 min-h-[44px] inline-flex items-center"
+            >
               Terms
             </Link>
           </div>
@@ -99,7 +105,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="text-[13px] text-muted-foreground/60 hover:text-foreground/60 transition-colors"
+      className="text-[13px] text-muted-foreground/80 hover:text-foreground transition-colors"
     >
       {children}
     </Link>

@@ -206,20 +206,20 @@ export default function Home() {
               </h2>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {HUBS.map((hub) => (
                 <Link
                   key={hub.href}
                   href={hub.href}
                   className="lift-card p-5 space-y-1.5"
                 >
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/50">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-champagne/70">
                     {hub.eyebrow}
                   </p>
                   <p className="text-sm font-medium text-foreground/90">
                     {hub.title}
                   </p>
-                  <p className="text-[13px] text-muted-foreground/60 leading-relaxed">
+                  <p className="text-[13px] text-muted-foreground/80 leading-relaxed">
                     {hub.desc}
                   </p>
                 </Link>

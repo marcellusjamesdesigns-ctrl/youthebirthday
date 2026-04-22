@@ -25,6 +25,21 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
 
+    // If the element is already within the viewport at mount (e.g. sections
+    // above the fold on a fresh page load), reveal it immediately. Without
+    // this, the IntersectionObserver would leave above-the-fold content at
+    // opacity-0 until the user scrolls — producing a visible "void" below
+    // the hero on search-landing pages.
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      if (delay > 0) {
+        const t = setTimeout(() => setVisible(true), delay);
+        return () => clearTimeout(t);
+      }
+      setVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
