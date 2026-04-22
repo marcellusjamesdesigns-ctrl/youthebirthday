@@ -1,0 +1,27 @@
+# Files excluded from CLI-based Vercel deploys.
+#
+# Why this exists: `npx vercel --prod` tarballs the local project and
+# uploads it to Vercel's build system. Without this file, local dev
+# artifacts (including `.env.production`) get shipped to the build
+# tarball. Vercel's build UI then warns "Detected .env file" because
+# it sees two sources of env vars — the uploaded file AND the Vercel
+# env dashboard. The dashboard is the source of truth; this file keeps
+# the tarball lean.
+
+# Env files — Vercel's env var dashboard is the single source of truth.
+.env
+.env.*
+!.env.example
+
+# Local dev output that shouldn't travel to the build
+.next
+node_modules
+.vercel
+
+# Project ephemera
+tmp/
+.DS_Store
+*.log
+
+# Test / gauntlet output (was accidentally staged before)
+scripts/*.log
