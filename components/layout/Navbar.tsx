@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -22,9 +23,17 @@ export function Navbar() {
       <div className="mx-auto max-w-6xl flex h-16 items-center justify-between px-6">
         <Link
           href="/"
-          className="font-editorial text-lg tracking-tight text-foreground/90 hover:text-foreground transition-colors"
+          className="flex items-center hover:opacity-80 transition-opacity"
+          aria-label="You the Birthday — home"
         >
-          You the Birthday
+          <Image
+            src="/logo.png"
+            alt="You the Birthday"
+            width={160}
+            height={40}
+            priority
+            className="h-9 w-auto"
+          />
         </Link>
 
         {/* Desktop nav */}
