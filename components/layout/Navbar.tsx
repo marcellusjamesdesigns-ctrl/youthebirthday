@@ -27,7 +27,7 @@ export function Navbar() {
           aria-label="You the Birthday — home"
         >
           <Image
-            src="/logo.png"
+            src="/logo-v2.png"
             alt="You the Birthday"
             width={400}
             height={100}

@@ -13,7 +13,7 @@ export function Footer() {
           <div>
             <Link href="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="You the Birthday — home">
               <Image
-                src="/logo.png"
+                src="/logo-v2.png"
                 alt="You the Birthday"
                 width={400}
                 height={100}
@@ -54,7 +54,7 @@ export function Footer() {
           <div className="flex justify-center">
             <Link href="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="You the Birthday — home">
               <Image
-                src="/logo.png"
+                src="/logo-v2.png"
                 alt="You the Birthday"
                 width={400}
                 height={100}
