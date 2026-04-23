@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
-import { getAllContentPages } from "@/lib/content/render";
+import { getAllContentPagesAsync } from "@/lib/traffic-db";
 import { getPublishedBlogPosts } from "@/content/blog/_registry";
 
 const BASE_URL = "https://youthebirthday.app";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const contentPages = getAllContentPages();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Merges static registry + DB-published traffic pages so agent-generated
+  // content is discoverable by Googlebot the moment the admin approves it.
+  const contentPages = await getAllContentPagesAsync();
   const blogPosts = getPublishedBlogPosts();
 
   const staticPages: MetadataRoute.Sitemap = [

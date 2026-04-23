@@ -146,12 +146,16 @@ export const blogDrafts = pgTable("blog_drafts", {
   id: text("id").primaryKey(),
   // Lifecycle
   status: text("status").notNull().default("draft"), // "draft" | "approved" | "rejected" | "published"
+  // Lane discriminator — added by the Growth Operator extension.
+  kind: text("kind").notNull().default("blog"), // "blog" | "traffic-page"
+  targetCategory: text("target_category"), // for kind='traffic-page' only
+  targetSlug: text("target_slug"), // seed's proposed slug for kind='traffic-page'
   // Topic research
   topicSeedId: text("topic_seed_id"),
   topicTitle: text("topic_title").notNull(),
   topicScore: jsonb("topic_score"), // { total, searchOpportunity, clusterFit, affiliateFit, freshness, dedupRisk }
   topicReason: text("topic_reason"), // why this topic was chosen
-  // Draft content (full BlogPost object)
+  // Draft content (full BlogPost OR ContentPage object depending on kind)
   postData: jsonb("post_data").notNull(),
   // QA
   qualityGates: jsonb("quality_gates"), // { [gateName]: { passed, details } }

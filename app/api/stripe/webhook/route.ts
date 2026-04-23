@@ -275,6 +275,13 @@ export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature");
 
   if (!sig) {
+    // Ops Watcher: count missing signatures separately from failed ones —
+    // both indicate webhook misconfiguration or probing, but the remediation
+    // differs.
+    try {
+      await getRedis().incr("ops:stripe-webhook:missing-sig:24h");
+      await getRedis().expire("ops:stripe-webhook:missing-sig:24h", 86_400);
+    } catch { /* non-fatal */ }
     return NextResponse.json({ error: "No signature" }, { status: 400 });
   }
 
@@ -287,6 +294,12 @@ export async function POST(request: NextRequest) {
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
+    // Ops Watcher: surface signature verification failures (misconfigured
+    // webhook secret, expired, or replay). 24h rolling counter.
+    try {
+      await getRedis().incr("ops:stripe-webhook:bad-sig:24h");
+      await getRedis().expire("ops:stripe-webhook:bad-sig:24h", 86_400);
+    } catch { /* non-fatal */ }
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 

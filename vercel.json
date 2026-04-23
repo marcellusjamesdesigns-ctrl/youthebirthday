@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/blog-agent",
       "schedule": "0 14 * * 1-5"
+    },
+    {
+      "path": "/api/cron/ops-watcher",
+      "schedule": "0 15 * * *"
     }
   ]
 }

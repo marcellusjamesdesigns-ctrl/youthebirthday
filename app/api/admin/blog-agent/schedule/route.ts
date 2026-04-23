@@ -20,9 +20,10 @@ export async function GET(request: NextRequest) {
 
   const redis = getRedis();
 
-  const [pausedRaw, maxPerDayRaw] = await Promise.all([
+  const [pausedRaw, maxPerDayRaw, minHoursRaw] = await Promise.all([
     redis.get("blog-agent:schedule:paused"),
     redis.get<number>("blog-agent:schedule:max-per-day"),
+    redis.get<number>("blog-agent:schedule:min-hours-between-runs"),
   ]);
 
   const paused =
@@ -31,6 +32,8 @@ export async function GET(request: NextRequest) {
     pausedRaw === 1 ||
     pausedRaw === "1";
   const maxPerDay = typeof maxPerDayRaw === "number" ? maxPerDayRaw : 1;
+  const minHoursBetweenRuns =
+    typeof minHoursRaw === "number" && minHoursRaw >= 0 ? minHoursRaw : 48;
 
   // Today's draft count
   const todayStart = new Date();
@@ -63,6 +66,7 @@ export async function GET(request: NextRequest) {
     schedule: {
       paused,
       maxPerDay,
+      minHoursBetweenRuns,
       todayCount,
       remainingToday: Math.max(0, maxPerDay - todayCount),
       cronExpression: "0 14 * * 1-5",
@@ -108,6 +112,14 @@ export async function POST(request: NextRequest) {
   if (typeof body.maxPerDay === "number" && body.maxPerDay >= 0) {
     await redis.set("blog-agent:schedule:max-per-day", body.maxPerDay);
     changes.push(`maxPerDay set to ${body.maxPerDay}`);
+  }
+
+  if (typeof body.minHoursBetweenRuns === "number" && body.minHoursBetweenRuns >= 0) {
+    await redis.set(
+      "blog-agent:schedule:min-hours-between-runs",
+      body.minHoursBetweenRuns,
+    );
+    changes.push(`minHoursBetweenRuns set to ${body.minHoursBetweenRuns}`);
   }
 
   console.log(
