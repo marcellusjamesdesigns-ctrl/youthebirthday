@@ -17,6 +17,8 @@ import { AmazonShopModule } from "@/components/affiliate/AmazonShopModule";
 import { ImageBlock } from "./sections/ImageBlock";
 import { PullQuoteBlock } from "./sections/PullQuoteBlock";
 import { QuickTakeBlock } from "./sections/QuickTakeBlock";
+import { ItineraryBlock } from "./sections/ItineraryBlock";
+import { TravelInquiryCTABlock } from "./sections/TravelInquiryCTABlock";
 import type { ContentPage } from "@/lib/content/types";
 
 interface SectionRendererProps {
@@ -102,6 +104,27 @@ export function SectionRenderer({ sections, page }: SectionRendererProps) {
               );
             case "pull-quote":
               return <PullQuoteBlock key={i} quote={section.quote} attribution={section.attribution} />;
+            case "itinerary":
+              return (
+                <ItineraryBlock
+                  key={i}
+                  heading={section.heading}
+                  subheading={section.subheading}
+                  days={section.days}
+                />
+              );
+            case "travel-inquiry-cta":
+              return (
+                <TravelInquiryCTABlock
+                  key={i}
+                  eyebrow={section.eyebrow}
+                  headline={section.headline}
+                  body={section.body}
+                  buttonText={section.buttonText}
+                  subject={section.subject}
+                  destinationSlug={section.destinationSlug}
+                />
+              );
             default:
               return null;
           }

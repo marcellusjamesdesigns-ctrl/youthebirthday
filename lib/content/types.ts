@@ -118,7 +118,9 @@ export type ContentSection =
   | ElementSignsSection
   | AmazonShopSection
   | ImageSection
-  | PullQuoteSection;
+  | PullQuoteSection
+  | ItinerarySection
+  | TravelInquiryCTASection;
 
 export interface QuickTakeSection {
   type: "quick-take";
@@ -261,4 +263,42 @@ export interface PullQuoteSection {
   type: "pull-quote";
   quote: string;
   attribution?: string;
+}
+
+// ─── Destination-cluster sections ───────────────────────────────────────────
+// Added for the editorial destinations rebuild (hub → category → city pages).
+
+/**
+ * A multi-day trip schedule. Used on city pages ("Sample 3-day itinerary").
+ * Each day has a title, optional theme, and ordered activities.
+ */
+export interface ItinerarySection {
+  type: "itinerary";
+  heading: string;
+  subheading?: string;
+  days: {
+    title: string;           // "Day 1 — Arrival & settle in"
+    theme?: string;          // optional short mood tag, e.g. "golden hour"
+    activities: {
+      time?: string;         // "Morning", "2pm", "Evening" — flexible
+      label: string;         // "Walk from the hotel to the harbor"
+      description?: string;  // one sentence of editorial color
+    }[];
+  }[];
+}
+
+/**
+ * Mailto CTA that hands off to the travel-planning business. Built to be
+ * swapped for a real form + inbox later without changing the section type.
+ */
+export interface TravelInquiryCTASection {
+  type: "travel-inquiry-cta";
+  eyebrow?: string;
+  headline: string;                // "Want this trip planned for you?"
+  body?: string;                   // 1-2 sentence pitch
+  buttonText?: string;             // defaults to "Start a trip inquiry"
+  /** Pre-filled subject for the mailto. Defaults generic. */
+  subject?: string;
+  /** Optional destination slug used to pre-fill the inquiry email body. */
+  destinationSlug?: string;
 }

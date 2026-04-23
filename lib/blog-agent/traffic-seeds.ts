@@ -17,12 +17,15 @@ import type { ContentCategory } from "@/lib/content/taxonomy";
 export type TrafficSectionType =
   | "hero"
   | "paragraph"
+  | "quick-take"
   | "caption-list"
   | "idea-list"
   | "destination-list"
   | "palette-showcase"
   | "tip-list"
   | "faq"
+  | "itinerary"
+  | "travel-inquiry-cta"
   | "cta"
   | "related-content";
 
@@ -210,6 +213,202 @@ export const TRAFFIC_SEEDS: TrafficSeed[] = [
     priority: 8,
     requiredSections: ["hero", "paragraph", "destination-list", "tip-list", "faq", "cta", "related-content"],
     keywordHints: ["weekend birthday trip", "2 night birthday getaway"],
+  },
+
+  // ── Destination categories (editorial template, not stop-gap) ────
+  {
+    id: "destinations-romantic",
+    category: "destinations",
+    slug: "romantic-birthday-destinations",
+    titleHint: "Romantic Birthday Destinations — Trips for Two",
+    subheadlineHint: "Cliffside dinners, private villas, slow mornings.",
+    brief:
+      "Category page for romantic (couple-first) birthday destinations. Full editorial template: hero, thesis, quick-take, destination-list with 8-12 picks (Positano, Kyoto, Santorini, Marrakech, Paris, Tulum, Napa, Prague, Banff, Florence, Quebec City, Cartagena), 'who this is for', 'how to choose', budget note, travel-inquiry-cta, generator CTA.",
+    priority: 9,
+    requiredSections: ["hero", "paragraph", "quick-take", "destination-list", "tip-list", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["romantic birthday trip", "birthday destinations for couples"],
+  },
+  {
+    id: "destinations-girls-trip",
+    category: "destinations",
+    slug: "girls-trip-birthday-destinations",
+    titleHint: "Girls Trip Birthday Destinations — Group-Friendly Picks",
+    subheadlineHint: "Cabo, Nashville, Miami, Ibiza — the birthdays with the group text that never stops.",
+    brief:
+      "Category page for group-of-women birthday trips. Full editorial template. Destinations: Nashville, Miami, Cabo, Ibiza, Tulum, Charleston, Scottsdale, Napa, Mexico City, Lisbon, Mykonos, New Orleans. Include group sizing notes (5-10 ideal) + who-pays-for-what section.",
+    priority: 9,
+    requiredSections: ["hero", "paragraph", "quick-take", "destination-list", "tip-list", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["girls trip birthday", "best girls trip destinations"],
+  },
+  {
+    id: "destinations-party",
+    category: "destinations",
+    slug: "party-birthday-destinations",
+    titleHint: "Party Birthday Destinations — Where to Go to Actually Go Out",
+    subheadlineHint: "Ibiza, Vegas, Mykonos, Medellín. Nights that don't end at 11.",
+    brief:
+      "Category page for nightlife-forward birthday trips. 8-12 destinations: Ibiza, Mykonos, Vegas, Miami, Medellín, Tulum, Berlin, Bangkok, Rio, Dubai, Tel Aviv. Include notes on which venues actually deliver, how to build a 48h party trip, and which destinations are overrated for nightlife.",
+    priority: 8,
+    requiredSections: ["hero", "paragraph", "quick-take", "destination-list", "tip-list", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["party birthday destinations", "best birthday party trips"],
+  },
+  {
+    id: "destinations-wellness",
+    category: "destinations",
+    slug: "wellness-birthday-destinations",
+    titleHint: "Wellness Birthday Destinations — Retreats, Resets, Spa Trips",
+    subheadlineHint: "For the birthday that needs to feel like a rebuild, not a performance.",
+    brief:
+      "Category page for wellness-first birthday trips. 8-12 destinations: Tulum, Bali, Sedona, Ojai, Costa Rica, Big Sur, Iceland, Kyoto, Napa, Joshua Tree, Cabo, Amalfi. Include 'solo-friendly or partnered' flag, retreat vs hotel guidance, and what to book 3-6 months out.",
+    priority: 8,
+    requiredSections: ["hero", "paragraph", "quick-take", "destination-list", "tip-list", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["wellness birthday trip", "birthday retreat destinations"],
+  },
+  {
+    id: "destinations-foodie",
+    category: "destinations",
+    slug: "foodie-birthday-destinations",
+    titleHint: "Foodie Birthday Destinations — Where the Meal Is the Trip",
+    subheadlineHint: "Tokyo, Lyon, Oaxaca, San Sebastián — trips built around the reservations.",
+    brief:
+      "Category page for food-forward birthday trips. 8-12 destinations: Tokyo, Paris, Lyon, San Sebastián, Oaxaca, Mexico City, Bologna, Copenhagen, Napa, Charleston, Lima, Bangkok. Include must-book-ahead windows (Noma is 6 months) and markets to hit on arrival.",
+    priority: 7,
+    requiredSections: ["hero", "paragraph", "quick-take", "destination-list", "tip-list", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["foodie birthday trip", "best culinary birthday destinations"],
+  },
+  {
+    id: "destinations-winter",
+    category: "destinations",
+    slug: "winter-birthday-destinations",
+    titleHint: "Winter Birthday Destinations — Where to Go November–February",
+    subheadlineHint: "Cabins, ski lodges, sun escapes, quiet cities in off-season.",
+    brief:
+      "Category page for winter-month birthday destinations. Split into two buckets: snow/cozy (Banff, Zermatt, Aspen, Lake Tahoe, Reykjavik, Kyoto, Quebec City) and sun-escape (Cabo, Tulum, Caribbean, Dubai, Cartagena, Medellín). 10-12 total with notes on flight windows and peak-week pricing.",
+    priority: 7,
+    requiredSections: ["hero", "paragraph", "quick-take", "destination-list", "tip-list", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["winter birthday trip", "december january february birthday destinations"],
+  },
+
+  // ── City pages (10 top cities) ─────────────────────────────────────
+  {
+    id: "city-miami",
+    category: "destinations",
+    slug: "miami-birthday-trip",
+    titleHint: "Miami Birthday Trip — Complete Guide & Itinerary",
+    subheadlineHint: "Beach clubs, Cuban breakfasts, night-1 energy for days.",
+    brief:
+      "Full city-page for a Miami birthday. Hero, 2-3 paragraph thesis (Wynwood vs South Beach vs Brickell energy), quick-take, why-it-works, where-to-stay (3-4 neighborhoods: South Beach, Brickell, Wynwood, Coconut Grove), what-to-do (beach clubs, Wynwood walls, Key Biscayne, boat days), where-to-eat (5 specific places), style direction, 3-day itinerary, travel-inquiry-cta.",
+    priority: 10,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["miami birthday trip", "miami birthday itinerary"],
+  },
+  {
+    id: "city-vegas",
+    category: "destinations",
+    slug: "vegas-birthday-trip",
+    titleHint: "Las Vegas Birthday Trip — Complete Guide",
+    subheadlineHint: "Pool days, steak dinners, one show, a memory that gets retold.",
+    brief:
+      "Full city-page for a Vegas birthday. Neighborhoods: Strip vs downtown. What to do: pool parties, shows, day trip to Red Rock. Where to eat: 5 dinner picks beyond Gordon Ramsay cliches. Style direction. 3-day itinerary. Include 'how to not waste money on bottle service unless it's actually your thing.'",
+    priority: 10,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["las vegas birthday", "vegas birthday trip"],
+  },
+  {
+    id: "city-tulum",
+    category: "destinations",
+    slug: "tulum-birthday-trip",
+    titleHint: "Tulum Birthday Trip — Complete Guide",
+    subheadlineHint: "Jungle hotels, cenote swims, beachfront omakase, mezcal sunsets.",
+    brief:
+      "Full city-page for a Tulum birthday. Neighborhoods: beach road vs downtown. Hotel recommendations by vibe (jungle, beachfront, wellness). What to do: cenotes, Sian Ka'an, ruins, yoga. Where to eat: 5 picks from tulum-hype to locals'. Style direction. 4-day itinerary. Address Tulum's 2024-2026 price creep honestly.",
+    priority: 9,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["tulum birthday trip", "tulum birthday itinerary"],
+  },
+  {
+    id: "city-nyc",
+    category: "destinations",
+    slug: "nyc-birthday-trip",
+    titleHint: "NYC Birthday Trip — Complete Guide",
+    subheadlineHint: "The density play — 72 hours that feel like a week.",
+    brief:
+      "Full city-page for an NYC birthday. Neighborhoods: Soho vs West Village vs LES vs UWS. What to do: signature experiences (rooftop, Broadway, museum hour, park walk). Where to eat: 6 picks across price tiers. Style direction. 3-day itinerary. Include 'how to not over-schedule.'",
+    priority: 9,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["nyc birthday trip", "new york city birthday itinerary"],
+  },
+  {
+    id: "city-paris",
+    category: "destinations",
+    slug: "paris-birthday-trip",
+    titleHint: "Paris Birthday Trip — Complete Guide",
+    subheadlineHint: "Long lunches, neighborhood walks, the birthday that earns itself.",
+    brief:
+      "Full city-page for a Paris birthday. Neighborhoods: Marais, Saint-Germain, 11th arr, Canal Saint-Martin. Best for which vibe. What to do beyond obvious (Louvre is crowded; Musée Marmottan isn't). Where to eat: 6 picks. Style direction. 4-day itinerary. Season guide.",
+    priority: 9,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["paris birthday trip", "paris birthday itinerary"],
+  },
+  {
+    id: "city-bali",
+    category: "destinations",
+    slug: "bali-birthday-trip",
+    titleHint: "Bali Birthday Trip — Complete Guide",
+    subheadlineHint: "Two bases: jungle (Ubud) + beach (Uluwatu or Canggu). How to do both.",
+    brief:
+      "Full city-page for a Bali birthday. Base split: Ubud for wellness + Uluwatu/Canggu for beach. Villa vs resort guidance. What to do: sunrise hike, temple, rice terrace walk, surf. Where to eat: 5 picks across both bases. Style direction. 6-day itinerary including travel between bases.",
+    priority: 9,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["bali birthday trip", "bali birthday itinerary"],
+  },
+  {
+    id: "city-tokyo",
+    category: "destinations",
+    slug: "tokyo-birthday-trip",
+    titleHint: "Tokyo Birthday Trip — Complete Guide",
+    subheadlineHint: "Omakase, Shibuya at night, cherry blossom if you time it.",
+    brief:
+      "Full city-page for a Tokyo birthday. Neighborhoods: Ginza vs Shibuya vs Aoyama vs Ebisu. Best hotels by vibe. What to do: reservations-required (Golden Gai, Jiro-level omakase, teamLab). Where to eat: 6 across price tiers. Style direction. 5-day itinerary. Season guide (cherry blossom vs fall foliage vs off-season).",
+    priority: 8,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["tokyo birthday trip", "tokyo birthday itinerary"],
+  },
+  {
+    id: "city-dubai",
+    category: "destinations",
+    slug: "dubai-birthday-trip",
+    titleHint: "Dubai Birthday Trip — Complete Guide",
+    subheadlineHint: "The maximalist birthday city — infinity pools, desert nights, Michelin tables.",
+    brief:
+      "Full city-page for a Dubai birthday. Neighborhoods: Palm Jumeirah vs Downtown vs Business Bay. Hotels by budget tier. What to do: desert safari, Burj Khalifa lounge, beach club, souk. Where to eat: 5 picks. Style direction. 4-day itinerary. When to go (October-March only, honestly).",
+    priority: 8,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["dubai birthday trip", "dubai birthday itinerary"],
+  },
+  {
+    id: "city-cape-town",
+    category: "destinations",
+    slug: "cape-town-birthday-trip",
+    titleHint: "Cape Town Birthday Trip — Complete Guide",
+    subheadlineHint: "Winelands, Table Mountain, ocean suites — luxury that costs half of Europe.",
+    brief:
+      "Full city-page for a Cape Town birthday. Neighborhoods: V&A Waterfront vs Camps Bay vs Constantia. What to do: Table Mountain, Cape Point, Stellenbosch day trip, shark cage diving (if brave). Where to eat: 5 picks including La Colombe. Style direction. 5-day itinerary including wine country. Season (Nov-March).",
+    priority: 7,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["cape town birthday trip", "cape town birthday itinerary"],
+  },
+  {
+    id: "city-cartagena",
+    category: "destinations",
+    slug: "cartagena-birthday-trip",
+    titleHint: "Cartagena Birthday Trip — Complete Guide",
+    subheadlineHint: "Colonial-walled, Caribbean-warm, still-not-overrun.",
+    brief:
+      "Full city-page for a Cartagena birthday. Neighborhoods: Old City (Walled) vs Getsemaní vs Bocagrande. What to do: Old City evening walk, Rosario Islands boat day, salsa lesson, Palenque day trip. Where to eat: 5 picks. Style direction. 4-day itinerary. Best for groups of 4-8 on $3k/person.",
+    priority: 7,
+    requiredSections: ["hero", "paragraph", "quick-take", "tip-list", "itinerary", "travel-inquiry-cta", "cta", "related-content"],
+    keywordHints: ["cartagena birthday trip", "cartagena colombia birthday"],
   },
 
   // ── Palettes gaps (we just shipped 5 new ones, so only filling remaining holes) ──

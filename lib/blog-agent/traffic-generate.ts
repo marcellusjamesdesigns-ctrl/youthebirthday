@@ -117,15 +117,55 @@ const RelatedContentSchema = z.object({
   type: z.literal("related-content"),
 });
 
+// ─── Destination-cluster additions ──────────────────────────────────
+
+const QuickTakeSchema = z.object({
+  type: z.literal("quick-take"),
+  heading: z.string().optional().nullable(),
+  rows: z.array(z.object({ label: z.string(), value: z.string() })),
+});
+
+const ItinerarySchema = z.object({
+  type: z.literal("itinerary"),
+  heading: z.string(),
+  subheading: z.string().optional().nullable(),
+  days: z.array(
+    z.object({
+      title: z.string(),
+      theme: z.string().optional().nullable(),
+      activities: z.array(
+        z.object({
+          time: z.string().optional().nullable(),
+          label: z.string(),
+          description: z.string().optional().nullable(),
+        }),
+      ),
+    }),
+  ),
+});
+
+const TravelInquiryCTASchema = z.object({
+  type: z.literal("travel-inquiry-cta"),
+  eyebrow: z.string().optional().nullable(),
+  headline: z.string(),
+  body: z.string().optional().nullable(),
+  buttonText: z.string().optional().nullable(),
+  subject: z.string().optional().nullable(),
+  destinationSlug: z.string().optional().nullable(),
+});
+
 const TrafficSectionSchema = z.discriminatedUnion("type", [
   HeroSchema,
   ParagraphSchema,
+  QuickTakeSchema,
   CaptionListSchema,
   IdeaListSchema,
   DestinationListSchema,
   PaletteShowcaseSchema,
   TipListSchema,
   FAQSchema,
+  ItinerarySchema,
+  TravelInquiryCTASchema,
   CTASchema,
   RelatedContentSchema,
 ]);
@@ -228,9 +268,12 @@ function categoryRules(category: ContentCategory): string {
       ].join("\n");
     case "destinations":
       return [
-        "- destination-list should have 8-12 destinations.",
-        "- Each includes name, location (city, region, country), 2-3 sentence description, and bestFor (who/what this trip suits).",
-        "- Balance geography: mix domestic and international, price tiers, group sizes.",
+        "- If the seed requires destination-list (category page): include 8-12 destinations, each with name, location (city, region, country), 2-3 sentence description, and bestFor (who/what this trip suits). Mix domestic and international, price tiers, group sizes.",
+        "- If the seed requires itinerary (city page): 3-5 days, each with a title like 'Day 1 — Arrive and settle', optional theme tag, and 3-5 activities per day. Activity time field is short ('Morning', '2pm', 'Evening') or omitted. Each activity has a concrete label and one sentence of editorial color.",
+        "- If the seed requires quick-take: include 5 rows — 'Best for', 'Best season', 'Budget', 'Trip type', 'Avoid if' — each value 1 specific sentence, no padding.",
+        "- If the seed requires travel-inquiry-cta: short body copy (~2 sentences) pitching trip-planning handoff; subject defaults to '<Destination> birthday trip inquiry'.",
+        "- For city pages, use tip-list for 'where to stay' (3-4 neighborhoods), 'what to do' (4-6 options), 'where to eat' (4-5 picks). Each tip has title + 1-2 sentence body.",
+        "- Avoid clichés: 'hidden gem', 'must-see', 'off the beaten path'. Be specific — restaurant names, neighborhood names, real prices or 'free'.",
       ].join("\n");
     case "palettes":
       return [
@@ -322,6 +365,40 @@ function cleanupTrafficDraft(raw: RawTrafficDraft, seed: TrafficSeed): ContentPa
         };
       }
       if (s.type === "related-content") return { type: "related-content" };
+      if (s.type === "quick-take") {
+        return {
+          type: "quick-take",
+          ...(s.heading ? { heading: s.heading } : {}),
+          rows: s.rows,
+        };
+      }
+      if (s.type === "itinerary") {
+        return {
+          type: "itinerary",
+          heading: s.heading,
+          ...(s.subheading ? { subheading: s.subheading } : {}),
+          days: s.days.map((d) => ({
+            title: d.title,
+            ...(d.theme ? { theme: d.theme } : {}),
+            activities: d.activities.map((a) => ({
+              ...(a.time ? { time: a.time } : {}),
+              label: a.label,
+              ...(a.description ? { description: a.description } : {}),
+            })),
+          })),
+        };
+      }
+      if (s.type === "travel-inquiry-cta") {
+        return {
+          type: "travel-inquiry-cta",
+          ...(s.eyebrow ? { eyebrow: s.eyebrow } : {}),
+          headline: s.headline,
+          ...(s.body ? { body: s.body } : {}),
+          ...(s.buttonText ? { buttonText: s.buttonText } : {}),
+          ...(s.subject ? { subject: s.subject } : {}),
+          ...(s.destinationSlug ? { destinationSlug: s.destinationSlug } : {}),
+        };
+      }
       return s;
     }) as unknown as ContentSection[];
 

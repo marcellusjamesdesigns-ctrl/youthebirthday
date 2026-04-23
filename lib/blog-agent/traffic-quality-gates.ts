@@ -134,13 +134,28 @@ function categoryDensityGate(page: ContentPage, seed: TrafficSeed): GateResult |
   }
 
   if (seed.category === "destinations") {
-    const s = find<{ type: "destination-list"; destinations: Array<unknown> }>("destination-list");
-    if (!s) return { gate: "destination-density", passed: false, details: `destination-list missing.` };
-    return {
-      gate: "destination-density",
-      passed: s.destinations.length >= 8,
-      details: `${s.destinations.length} destinations. Required: 8+.`,
-    };
+    // Category pages require a dense destination-list. City pages require a
+    // dense itinerary. Route on the seed's requiredSections.
+    if (seed.requiredSections.includes("destination-list")) {
+      const s = find<{ type: "destination-list"; destinations: Array<unknown> }>("destination-list");
+      if (!s) return { gate: "destination-density", passed: false, details: `destination-list missing.` };
+      return {
+        gate: "destination-density",
+        passed: s.destinations.length >= 8,
+        details: `${s.destinations.length} destinations. Required: 8+.`,
+      };
+    }
+    if (seed.requiredSections.includes("itinerary")) {
+      const s = find<{ type: "itinerary"; days: Array<{ activities: Array<unknown> }> }>("itinerary");
+      if (!s) return { gate: "itinerary-density", passed: false, details: `itinerary section missing.` };
+      const minActivities = s.days.every((d) => d.activities.length >= 3);
+      return {
+        gate: "itinerary-density",
+        passed: s.days.length >= 3 && minActivities,
+        details: `${s.days.length} days, each with 3+ activities? ${minActivities}. Required: 3+ days, 3+ activities/day.`,
+      };
+    }
+    return null;
   }
 
   if (seed.category === "palettes") {
