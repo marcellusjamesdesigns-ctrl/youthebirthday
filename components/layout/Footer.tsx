@@ -45,6 +45,8 @@ export function Footer() {
               <FooterLink href="/milestone-birthdays">Milestones</FooterLink>
               <FooterLink href="/blog">The Journal</FooterLink>
               <FooterLink href="/onboarding">Generate My Birthday</FooterLink>
+              <FooterLink href="/about">About</FooterLink>
+              <FooterLink href="/contact">Contact</FooterLink>
             </div>
           </div>
         </div>
@@ -74,6 +76,8 @@ export function Footer() {
             <FooterLink href="/milestone-birthdays">Milestones</FooterLink>
             <FooterLink href="/blog">Journal</FooterLink>
             <FooterLink href="/onboarding">Generate</FooterLink>
+            <FooterLink href="/about">About</FooterLink>
+            <FooterLink href="/contact">Contact</FooterLink>
           </MobileFooterGroup>
         </div>
 
