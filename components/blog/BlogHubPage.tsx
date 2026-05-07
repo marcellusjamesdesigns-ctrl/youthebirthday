@@ -66,7 +66,7 @@ export function BlogHubPage({ posts }: BlogHubPageProps) {
                 <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em]">
                   <span className="text-champagne/70">{CATEGORY_LABELS[feature.category]}</span>
                   <span className="text-muted-foreground/30">·</span>
-                  <span className="text-muted-foreground/50">{feature.readingTimeMinutes} min read</span>
+                  <span className="text-muted-foreground/50">{feature.readingTimeMinutes ?? "—"} min read</span>
                 </div>
                 <h2 className="font-editorial text-2xl sm:text-3xl leading-snug text-foreground/90 group-hover:text-foreground transition-colors">
                   {feature.headline}
@@ -105,7 +105,7 @@ export function BlogHubPage({ posts }: BlogHubPageProps) {
                   <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em]">
                     <span className="text-champagne/60">{CATEGORY_LABELS[post.category]}</span>
                     <span className="text-muted-foreground/30">·</span>
-                    <span className="text-muted-foreground/40">{post.readingTimeMinutes} min</span>
+                    <span className="text-muted-foreground/40">{post.readingTimeMinutes ?? "—"} min</span>
                   </div>
                   <h3 className="font-editorial text-lg text-foreground/85 leading-snug group-hover:text-foreground transition-colors">
                     {post.headline}
