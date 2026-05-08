@@ -8,7 +8,9 @@ import { usePathname } from "next/navigation";
  *
  * Lives in the natural thumb-zone for one-handed phone use. Hidden on
  * surfaces where the user is already mid-flow (onboarding, paywall,
- * dashboard) or in admin/legal views.
+ * dashboard), in admin/legal views, OR on content detail pages
+ * (which use ContentPageLayout's own scroll-triggered
+ * MobileStickyGenerateCTA — we defer to it there to avoid double CTAs).
  *
  * Audit driver: ux-laws-audit + ux-mobile-audit + ux-burden-audit all
  * flagged the missing persistent mobile primary CTA — Navbar's Start
@@ -23,11 +25,31 @@ const HIDE_PREFIXES = [
   "/birthday/", // generated report routes
 ];
 
+// Content detail pages already render their own scroll-triggered sticky
+// CTA via ContentPageLayout. Skip on any path that has a slug under one
+// of these hubs (e.g. /birthday-ideas/30th-birthday-ideas).
+const CONTENT_HUB_PREFIXES = [
+  "/birthday-captions/",
+  "/birthday-ideas/",
+  "/birthday-themes/",
+  "/birthday-palettes/",
+  "/birthday-destinations/",
+  "/zodiac-birthdays/",
+];
+
+function isContentDetailRoute(pathname: string): boolean {
+  return CONTENT_HUB_PREFIXES.some(
+    (prefix) =>
+      pathname.startsWith(prefix) && pathname.length > prefix.length
+  );
+}
+
 export function StickyMobileCTA() {
   const pathname = usePathname();
 
   if (!pathname) return null;
   if (HIDE_PREFIXES.some((prefix) => pathname.startsWith(prefix))) return null;
+  if (isContentDetailRoute(pathname)) return null;
 
   return (
     <>
