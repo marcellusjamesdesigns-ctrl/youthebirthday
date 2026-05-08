@@ -121,11 +121,11 @@ export function BlogHubPage({ posts }: BlogHubPageProps) {
 
         {/* Final CTA */}
         <div className="mt-16 text-center space-y-3">
-          <p className="text-sm text-muted-foreground/60">
-            Ready to plan your own?
+          <p className="text-sm text-muted-foreground/80">
+            Now plan yours.
           </p>
           <Link href="/onboarding" className="glow-btn">
-            Generate My Birthday
+            Start my birthday plan
           </Link>
         </div>
       </div>

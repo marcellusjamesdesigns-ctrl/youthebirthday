@@ -102,7 +102,7 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className="glow-btn inline-flex w-full justify-center"
               >
-                Start Your Birthday
+                Plan my birthday
               </Link>
             </div>
           </div>
