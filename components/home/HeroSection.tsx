@@ -50,7 +50,7 @@ export function HeroSection() {
 
         <div className="space-y-4 animate-fade-rise stagger-3">
           <Link href="/onboarding" className="glow-btn">
-            Generate My Birthday
+            Plan my birthday
           </Link>
           <p className="text-xs text-muted-foreground/60 tracking-wide">
             Free to start. No account needed.

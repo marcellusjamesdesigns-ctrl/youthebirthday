@@ -62,26 +62,28 @@ export function PremiumTeaser({ label, description, sessionId }: PremiumTeaserPr
 
       {/* CTA overlay */}
       <div className="absolute inset-0 z-20 flex items-center justify-center">
-        <div className="text-center space-y-4 px-6 max-w-sm">
-          <div className="inline-flex items-center gap-2 rounded-full border border-champagne/20 bg-champagne/5 px-3 py-1">
-            <span className="text-champagne/70 text-xs">&#9830;</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-champagne/60 font-medium">{label}</span>
+        <div className="text-center space-y-4 px-6 max-w-md">
+          <div className="inline-flex items-center gap-2 rounded-full border border-plum/30 bg-plum/10 px-3 py-1">
+            <span className="text-plum text-xs">&#9830;</span>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-plum font-medium">{label}</span>
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
-          <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-1">
-            <button
-              onClick={() => handleUpgrade("one_time")}
-              disabled={!!loading}
-              className="glow-btn !py-2.5 !px-6 !text-[12px] disabled:opacity-40"
-            >
-              {loading === "one_time" ? "..." : "Unlock — $2.99"}
-            </button>
+          <p className="text-[14px] text-muted-foreground leading-relaxed">{description}</p>
+          <div className="flex flex-col gap-2.5 items-stretch sm:items-center pt-1">
+            {/* Birthday Pass — primary (matches GenerationGate hierarchy) */}
             <button
               onClick={() => handleUpgrade("monthly")}
               disabled={!!loading}
-              className="rounded-full border border-border/60 px-5 py-2.5 text-[12px] text-muted-foreground/70 hover:text-foreground hover:border-foreground/15 transition-all disabled:opacity-40"
+              className="rounded-full bg-foreground py-3 px-6 text-[14px] font-medium text-background tracking-wide min-h-[48px] shadow-[0_0_40px_-8px_rgba(212,175,55,0.35)] active:scale-[0.99] transition-all disabled:opacity-40"
             >
-              {loading === "monthly" ? "..." : "$4.99/mo — unlimited"}
+              {loading === "monthly" ? "Redirecting…" : "Birthday Pass — $4.99/mo"}
+            </button>
+            {/* Single report — secondary text link */}
+            <button
+              onClick={() => handleUpgrade("one_time")}
+              disabled={!!loading}
+              className="text-[13px] text-muted-foreground hover:text-foreground transition-colors min-h-[44px] disabled:opacity-40"
+            >
+              {loading === "one_time" ? "Redirecting…" : "Or just this one — $2.99"}
             </button>
           </div>
         </div>

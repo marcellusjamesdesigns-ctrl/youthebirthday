@@ -124,11 +124,11 @@ export default function Home() {
         <div className="mx-auto max-w-5xl">
           <Reveal>
             <div className="text-center mb-14 space-y-3">
-              <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground/50">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60">
                 What your birthday becomes
               </p>
               <h2 className="heading-editorial text-2xl sm:text-3xl">
-                Six personalized sections, one dashboard
+                A finished plan — captions, palette, places, and a celebration script written for you
               </h2>
             </div>
           </Reveal>
@@ -143,9 +143,9 @@ export default function Home() {
           <div className="mx-auto max-w-3xl">
             <div className="flex justify-center gap-8 sm:gap-16 text-center">
               {[
-                { value: "2 min", label: "to generate" },
-                { value: "6",     label: "sections"    },
-                { value: "Free",  label: "no account"  },
+                { value: "2 min", label: "to your plan"     },
+                { value: "Tailored", label: "to your sign + city" },
+                { value: "Free",  label: "no signup"        },
               ].map(({ value, label }, i) => (
                 <div key={i}>
                   <p className="text-2xl font-editorial text-foreground">{value}</p>
@@ -183,7 +183,7 @@ export default function Home() {
           <Reveal delay={300}>
             <div className="text-center mt-10">
               <Link href="/onboarding" className="glow-btn">
-                Generate Mine
+                Plan mine
               </Link>
             </div>
           </Reveal>

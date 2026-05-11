@@ -31,10 +31,10 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
     <div className="space-y-8 animate-fade-rise">
       <div className="text-center space-y-3">
         <h1 className="heading-editorial text-3xl sm:text-4xl">
-          Ready to go
+          One last look
         </h1>
         <p className="text-sm text-muted-foreground">
-          Here&apos;s everything we&apos;re working with.
+          We&apos;ll build the plan from this — you can edit any answer before we do.
         </p>
       </div>
 
@@ -143,7 +143,7 @@ export function StepReview({ onSubmit, isSubmitting, error }: StepReviewProps) {
           disabled={isSubmitting}
           className="flex-1 rounded-full bg-foreground py-3.5 text-[15px] font-medium text-background tracking-wide transition-all hover:bg-foreground/90 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.25)] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "Creating..." : "Generate My Birthday"}
+          {isSubmitting ? "Writing your plan…" : "Build my birthday plan"}
         </button>
       </div>
     </div>

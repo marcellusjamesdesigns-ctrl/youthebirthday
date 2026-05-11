@@ -7,6 +7,7 @@ export function StepBasics() {
   const { name, birthdate, birthYear, currentCity, celebrationCity, birthdayFor, setField, nextStep } =
     useOnboardingStore();
   const [birthdateTouched, setBirthdateTouched] = useState(false);
+  const [showCelebrationCity, setShowCelebrationCity] = useState(celebrationCity.trim().length > 0);
   const birthdateValid = /^\d{2}-\d{2}$/.test(birthdate);
 
   const canContinue =
@@ -39,7 +40,7 @@ export function StepBasics() {
           }`}
         >
           <p className="text-sm font-medium">It&apos;s mine</p>
-          <p className="text-[11px] text-muted-foreground/60 mt-1">Plan my celebration</p>
+          <p className="text-[12px] text-muted-foreground/80 mt-1">We&apos;ll plan everything around you</p>
         </button>
         <button
           type="button"
@@ -51,7 +52,7 @@ export function StepBasics() {
           }`}
         >
           <p className="text-sm font-medium">Someone else&apos;s</p>
-          <p className="text-[11px] text-muted-foreground/60 mt-1">Find them gifts + ideas</p>
+          <p className="text-[12px] text-muted-foreground/80 mt-1">We&apos;ll plan their day and gift ideas</p>
         </button>
       </div>
 
@@ -66,6 +67,11 @@ export function StepBasics() {
             value={name}
             onChange={(e) => setField("name", e.target.value)}
             maxLength={50}
+            autoComplete={birthdayFor === "other" ? "off" : "given-name"}
+            autoCapitalize="words"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="next"
             className="luxury-input w-full px-4 py-3.5 text-base"
           />
         </div>
@@ -92,6 +98,7 @@ export function StepBasics() {
               maxLength={5}
               inputMode="numeric"
               autoComplete="off"
+              enterKeyHint="next"
               className={`luxury-input w-full px-4 py-3.5 text-base ${
                 birthdateTouched && birthdate.length > 0 && !birthdateValid
                   ? "!border-rose/50"
@@ -99,7 +106,7 @@ export function StepBasics() {
               }`}
             />
             {birthdateTouched && birthdate.length > 0 && !birthdateValid && (
-              <p className="text-[11px] text-rose/70 mt-1">Enter month + day (e.g. 0315 for March 15)</p>
+              <p className="text-[12px] text-rose/80 mt-1">Two digits for month, two for day — like 03 15 for March 15.</p>
             )}
           </div>
           <div className="space-y-2">
@@ -108,16 +115,18 @@ export function StepBasics() {
             </label>
             <input
               id="birthYear"
-              type="number"
+              type="text"
               inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={4}
+              autoComplete="bday-year"
+              enterKeyHint="next"
               placeholder="1995"
               value={birthYear ?? ""}
-              onChange={(e) =>
-                setField(
-                  "birthYear",
-                  e.target.value ? parseInt(e.target.value) : null
-                )
-              }
+              onChange={(e) => {
+                const digits = e.target.value.replace(/\D/g, "").slice(0, 4);
+                setField("birthYear", digits ? parseInt(digits, 10) : null);
+              }}
               className="luxury-input w-full px-4 py-3.5 text-base"
             />
           </div>
@@ -132,26 +141,44 @@ export function StepBasics() {
             placeholder="Where do you live?"
             value={currentCity}
             onChange={(e) => setField("currentCity", e.target.value)}
+            autoComplete="address-level2"
+            autoCapitalize="words"
+            autoCorrect="off"
+            enterKeyHint={showCelebrationCity ? "next" : "done"}
             className="luxury-input w-full px-4 py-3.5 text-base"
           />
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="celebrationCity" className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">
-            Where are you celebrating?
-            <span className="text-muted-foreground/40 normal-case tracking-normal ml-1">optional</span>
-          </label>
-          <input
-            id="celebrationCity"
-            placeholder={currentCity || "Same as current city"}
-            value={celebrationCity}
-            onChange={(e) => setField("celebrationCity", e.target.value)}
-            className="luxury-input w-full px-4 py-3.5 text-base"
-          />
-          <p className="text-[11px] text-muted-foreground/60">
-            Leave blank if you&apos;re celebrating where you live. We&apos;ll use this for restaurant and activity recs.
-          </p>
-        </div>
+        {!showCelebrationCity ? (
+          <button
+            type="button"
+            onClick={() => setShowCelebrationCity(true)}
+            className="text-[12px] text-champagne/70 hover:text-champagne transition-colors"
+          >
+            + Celebrating somewhere else?
+          </button>
+        ) : (
+          <div className="space-y-2">
+            <label htmlFor="celebrationCity" className="text-[12px] text-muted-foreground/85">
+              Where are you celebrating?
+              <span className="text-muted-foreground/50 ml-1">optional</span>
+            </label>
+            <input
+              id="celebrationCity"
+              placeholder={currentCity || "Same as current city"}
+              value={celebrationCity}
+              onChange={(e) => setField("celebrationCity", e.target.value)}
+              autoComplete="address-level2"
+              autoCapitalize="words"
+              autoCorrect="off"
+              enterKeyHint="done"
+              className="luxury-input w-full px-4 py-3.5 text-base"
+            />
+            <p className="text-[12px] text-muted-foreground/70">
+              We&apos;ll use this for restaurant and activity recs.
+            </p>
+          </div>
+        )}
       </div>
 
       <button

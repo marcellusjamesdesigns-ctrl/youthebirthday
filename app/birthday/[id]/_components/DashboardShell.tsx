@@ -205,7 +205,7 @@ export function DashboardShell({
               {/* Lock the rest */}
               <PremiumTeaser
                 label={`${sections.destinations.length - 1} more destinations + interactive globe`}
-                description="Unlock all your personalized destination picks, the 3D destination globe, restaurant recommendations, activities, and your full cosmic profile."
+                description="The destinations to book, the captions to post, the palette to wear, and a full celebration script — emailed to you the moment you check out."
                 sessionId={sessionId}
               />
             </section>

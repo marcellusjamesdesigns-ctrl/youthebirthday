@@ -88,15 +88,16 @@ export function StepCosmic() {
                 </label>
                 <input
                   id="birthTime"
-                  placeholder="e.g. 10:30 PM or 22:30"
+                  type="time"
+                  placeholder="--:--"
                   value={birthTime}
                   onChange={(e) => setField("birthTime", e.target.value)}
                   onBlur={handleTimeBlur}
                   maxLength={8}
                   className="luxury-input w-full px-4 py-3.5 text-base"
                 />
-                <p className="text-[11px] text-muted-foreground/60">
-                  12h (10:30 PM) or 24h (22:30) — both work
+                <p className="text-[12px] text-muted-foreground/70">
+                  Helps us calculate your Moon sign — find it on your birth certificate.
                 </p>
               </div>
               <div className="space-y-2">
@@ -111,18 +112,22 @@ export function StepCosmic() {
                   placeholder="e.g. Atlanta, GA"
                   value={birthCity}
                   onChange={(e) => setField("birthCity", e.target.value)}
+                  autoComplete="address-level2"
+                  autoCapitalize="words"
+                  autoCorrect="off"
+                  enterKeyHint="done"
                   className="luxury-input w-full px-4 py-3.5 text-base"
                 />
-                <p className="text-[11px] text-muted-foreground/60">
-                  Used to calculate your Rising sign
+                <p className="text-[12px] text-muted-foreground/70">
+                  Used to calculate your Rising sign.
                 </p>
               </div>
             </div>
 
             {/* Inline validation nudge */}
             {(!birthTime.trim() || !birthCity.trim()) && (
-              <p className="text-[12px] text-center text-muted-foreground/65">
-                Fill in both fields above to unlock your full chart, or switch to Quick Mode.
+              <p className="text-[12px] text-center text-muted-foreground/75">
+                Don&apos;t know your birth time? <button type="button" onClick={() => setField("mode", "quick")} className="text-champagne/80 hover:text-champagne underline-offset-2 hover:underline">Quick Mode</button> still gets you a Sun-sign read — you can always come back later.
               </p>
             )}
           </div>
