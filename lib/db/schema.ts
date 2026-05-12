@@ -239,6 +239,12 @@ export interface Activity {
   priceRange: "free" | "$" | "$$" | "$$$";
   bestTimeOfDay: "morning" | "afternoon" | "evening" | "anytime";
   bookingTip?: string;
+  /** Google Place ID — when present we deep-link straight to the
+   *  business's Maps page instead of a search results list. */
+  googlePlaceId?: string;
+  /** Real Google rating, used as a quality gate (≥4.0 required). */
+  rating?: number;
+  address?: string;
 }
 
 export interface CelebrationStyle {
