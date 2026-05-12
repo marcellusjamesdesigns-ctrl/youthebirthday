@@ -391,7 +391,7 @@ export function DashboardShell({
                   // so it's usually correct — but pass through the helper
                   // for consistent fallback behavior.
                   const mapsUrl = buildMapsUrl(
-                    { name: r.name, address: r.address },
+                    { name: r.name, address: r.address, googlePlaceId: r.googlePlaceId },
                     session.celebrationCity?.trim() || session.currentCity,
                   );
                   return (
@@ -469,7 +469,13 @@ export function DashboardShell({
                   // to parsing " at {venue}" out of the descriptive `name`
                   // for legacy records.
                   const activityUrl = buildMapsUrl(
-                    { name: a.name, venueName: a.venueName, neighborhood: a.neighborhood },
+                    {
+                      name: a.name,
+                      venueName: a.venueName,
+                      neighborhood: a.neighborhood,
+                      address: a.address,
+                      googlePlaceId: a.googlePlaceId,
+                    },
                     session.celebrationCity?.trim() || session.currentCity,
                   );
                   return (
@@ -486,6 +492,11 @@ export function DashboardShell({
                             {a.neighborhood} · {a.priceRange} · {a.bestTimeOfDay}
                           </p>
                         </div>
+                        {a.rating != null && (
+                          <span className="text-sm font-mono text-champagne/60 shrink-0">
+                            {a.rating}★
+                          </span>
+                        )}
                       </div>
                       <p className="text-[13px] text-muted-foreground/70 leading-relaxed">
                         {a.description}

@@ -30,6 +30,9 @@ interface VenueItemLike {
   city?: string;
   address?: string;
   neighborhood?: string;
+  /** Verified Google Place ID — when present we deep-link straight to
+   *  that business's Maps page instead of a (fuzzy) text search. */
+  googlePlaceId?: string;
 }
 
 /**
@@ -102,12 +105,25 @@ export function buildMapsQuery(
 }
 
 /**
- * Convenience wrapper that returns the full Google Maps search URL.
+ * Convenience wrapper that returns the full Google Maps URL.
+ *
+ * When the item has a verified `googlePlaceId`, this returns a Maps URL
+ * that deep-links to that exact business's place page. Otherwise it
+ * falls back to a text search (which renders as a results list — not
+ * ideal, but better than nothing for legacy/unverified records).
+ *
+ * Format reference: https://developers.google.com/maps/documentation/urls/get-started#search-action
+ *   - With place ID: `?api=1&query=NAME&query_place_id=ChIJ...`
+ *   - Search only:   `?api=1&query=NAME`
  */
 export function buildMapsUrl(
   item: VenueItemLike,
   cityFallback?: string,
 ): string {
   const query = buildMapsQuery(item, cityFallback);
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  const base = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  if (item.googlePlaceId && item.googlePlaceId.trim()) {
+    return `${base}&query_place_id=${encodeURIComponent(item.googlePlaceId.trim())}`;
+  }
+  return base;
 }

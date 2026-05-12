@@ -42,6 +42,7 @@ import { userWaitlist } from "@/lib/db/schema";
 import { or, eq as eqDrizzle } from "drizzle-orm";
 import { sendBirthdayReport } from "@/lib/email/send-report";
 import { verifyRestaurantsWithGooglePlaces } from "./verify-restaurants";
+import { verifyActivitiesWithGooglePlaces } from "./verify-activities";
 
 type Session = InferSelectModel<typeof birthdaySessions>;
 
@@ -308,9 +309,32 @@ export async function runBirthdayPipeline(
     }
 
     if (activityResult) {
+      const rawActivities = activityResult.activities.map((a) => ({
+        name: a.name,
+        venueName: a.venueName ?? undefined,
+        category: a.category,
+        description: a.description,
+        whyItFitsYou: a.whyItFitsYou,
+        neighborhood: a.neighborhood,
+        priceRange: a.priceRange,
+        bestTimeOfDay: a.bestTimeOfDay,
+        bookingTip: a.bookingTip ?? undefined,
+      }));
+
+      // Verify each activity against Google Places — drops closed/missing
+      // venues, drops anything under 4.0 stars, enriches with googlePlaceId
+      // so the UI can deep-link to that exact business page instead of a
+      // search results list. If GOOGLE_PLACES_API_KEY is not set, this is
+      // a no-op and the AI suggestions go through as-is.
+      const celebrationCity = session.celebrationCity?.trim() || session.currentCity;
+      const activities = await verifyActivitiesWithGooglePlaces(
+        rawActivities,
+        celebrationCity,
+      );
+
       await db
         .update(birthdayGenerations)
-        .set({ activities: activityResult.activities })
+        .set({ activities })
         .where(eq(birthdayGenerations.id, generationId));
     }
 
