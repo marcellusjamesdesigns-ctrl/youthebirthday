@@ -5,6 +5,10 @@
       "schedule": "0 14 * * 1-5"
     },
     {
+      "path": "/api/cron/traffic-pages",
+      "schedule": "0 17 * * 1-5"
+    },
+    {
       "path": "/api/cron/ops-watcher",
       "schedule": "0 15 * * *"
     }
